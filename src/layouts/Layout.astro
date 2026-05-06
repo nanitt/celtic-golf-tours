@@ -1,0 +1,228 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import AmbientSoundToggle from '../components/AmbientSoundToggle.astro';
+import DigitalCaddie from '../components/DigitalCaddie.astro';
+import { site, hasAddress, formatAddressLines } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: string;
+  noindex?: boolean;
+  showAmbientToggle?: boolean;
+  showCaddie?: boolean;
+}
+
+const {
+  title,
+  description = "Luxury golf tours across Scotland, Ireland, Wales and England. Experience the finest courses with Celtic Golf Tours.",
+  image = site.ogImage,
+  type = "website",
+  noindex = false,
+  showAmbientToggle = false,
+  showCaddie = true  // Show on all pages by default
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || site.url);
+const fullTitle = `${title} | ${site.name}`;
+
+const addressLines = formatAddressLines();
+const includeAddress = hasAddress();
+---
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL.href} />
+
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.name} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
+    <!-- JSON-LD Organization -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": site.name,
+      "url": site.url,
+      "description": "Luxury golf tours across Scotland, Ireland, Wales and England.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": site.email,
+        ...(site.phone ? { "telephone": site.phone } : {}),
+        "contactType": "customer service"
+      },
+      ...(includeAddress ? {
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": addressLines.slice(0, 2).join(', '),
+          "addressLocality": site.address.city || undefined,
+          "addressRegion": site.address.region || undefined,
+          "postalCode": site.address.postalCode || undefined,
+          "addressCountry": site.address.country || undefined
+        }
+      } : {})
+    })} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+    <title>{fullTitle}</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main-content" class="flex-grow">
+      <slot />
+    </main>
+    <Footer />
+
+    <!-- Ambient Sound Toggle (opt-in per page) -->
+    {showAmbientToggle && <AmbientSoundToggle position="bottom-left" />}
+
+    <!-- Digital Caddie Chat Widget -->
+    {showCaddie && <DigitalCaddie />}
+
+    <!-- Custom Cursor -->
+    <div class="luxury-cursor" id="luxury-cursor"></div>
+
+    <script>
+      // Remove no-js class immediately
+      document.documentElement.classList.remove('no-js');
+    </script>
+    <script src="/src/scripts/scroll-reveal.ts"></script>
+    <script>
+      // Custom cursor functionality
+      (function initCustomCursor() {
+        const cursor = document.getElementById('luxury-cursor');
+        if (!cursor) return;
+
+        // Check for touch devices
+        if (window.matchMedia('(hover: none)').matches) {
+          cursor.style.display = 'none';
+          return;
+        }
+
+        // Check for reduced motion preference
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          cursor.style.display = 'none';
+          return;
+        }
+
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        // Smooth cursor movement with requestAnimationFrame
+        function updateCursor() {
+          // Smooth interpolation
+          cursorX += (mouseX - cursorX) * 0.15;
+          cursorY += (mouseY - cursorY) * 0.15;
+
+          cursor.style.left = cursorX + 'px';
+          cursor.style.top = cursorY + 'px';
+
+          requestAnimationFrame(updateCursor);
+        }
+
+        updateCursor();
+
+        // Handle hover states for interactive elements
+        const hoverElements = document.querySelectorAll('[data-cursor-hover]');
+        hoverElements.forEach((el) => {
+          el.addEventListener('mouseenter', () => {
+            const hoverType = el.getAttribute('data-cursor-hover');
+            cursor.classList.add('cursor-' + hoverType);
+          });
+          el.addEventListener('mouseleave', () => {
+            const hoverType = el.getAttribute('data-cursor-hover');
+            cursor.classList.remove('cursor-' + hoverType);
+          });
+        });
+
+        // Also handle dynamically added elements (for SPAs)
+        document.addEventListener('mouseenter', (e) => {
+          const target = e.target as HTMLElement;
+          if (target.hasAttribute && target.hasAttribute('data-cursor-hover')) {
+            const hoverType = target.getAttribute('data-cursor-hover');
+            cursor.classList.add('cursor-' + hoverType);
+          }
+        }, true);
+
+        document.addEventListener('mouseleave', (e) => {
+          const target = e.target as HTMLElement;
+          if (target.hasAttribute && target.hasAttribute('data-cursor-hover')) {
+            const hoverType = target.getAttribute('data-cursor-hover');
+            cursor.classList.remove('cursor-' + hoverType);
+          }
+        }, true);
+
+        // Hide cursor when leaving window
+        document.addEventListener('mouseleave', () => {
+          cursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+          cursor.style.opacity = '1';
+        });
+      })();
+    </script>
+
+    <!-- Card image parallax on mouse move (desktop only) -->
+    <script>
+      (function() {
+        if (!window.matchMedia('(hover: hover)').matches) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        document.addEventListener('mousemove', function(e) {
+          const card = (e.target as HTMLElement).closest('[data-parallax-card]');
+          if (!card) return;
+
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+          const bg = card.querySelector('.scale-on-hover') as HTMLElement;
+          if (bg) {
+            bg.style.transform = `scale(var(--scale-hover, 1)) translate(${x * -4}px, ${y * -4}px)`;
+          }
+        });
+
+        document.addEventListener('mouseleave', function(e) {
+          const card = (e.target as HTMLElement).closest('[data-parallax-card]');
+          if (!card) return;
+          const bg = card.querySelector('.scale-on-hover') as HTMLElement;
+          if (bg) {
+            bg.style.transform = '';
+          }
+        }, true);
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,366 @@
+---
+/**
+ * DigitalCaddie - Chat widget for tour recommendations
+ * "What's your handicap, and how do you like your whiskey?"
+ */
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['digital-caddie', className]} data-caddie-widget>
+  <!-- Toggle button -->
+  <button
+    class="caddie-toggle"
+    data-caddie-toggle
+    aria-label="Open digital caddie chat"
+    aria-expanded="false"
+    aria-controls="caddie-panel"
+  >
+    <div class="toggle-content">
+      <!-- Caddie icon / avatar -->
+      <div class="caddie-avatar">
+        <svg class="avatar-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <!-- Golf flag icon -->
+          <path d="M4 21V5a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H8l-2-2H4z"/>
+          <path d="M4 21l8-8"/>
+          <circle cx="16" cy="16" r="5"/>
+          <path d="M16 14v4M14 16h4"/>
+        </svg>
+      </div>
+      <!-- Pulse indicator -->
+      <span class="toggle-pulse" aria-hidden="true"></span>
+    </div>
+
+    <!-- Close icon (shown when open) -->
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 6L6 18M6 6l12 12"/>
+    </svg>
+  </button>
+
+  <!-- Chat panel -->
+  <div class="caddie-panel" id="caddie-panel" aria-label="Digital caddie chat">
+    <!-- Header -->
+    <div class="panel-header">
+      <div class="header-avatar">
+        <span class="avatar-emoji">⛳</span>
+      </div>
+      <div class="header-info">
+        <h3 class="header-name">Seamus</h3>
+        <p class="header-title">Your Digital Caddie</p>
+      </div>
+    </div>
+
+    <!-- Messages container -->
+    <div class="panel-messages" data-caddie-messages aria-live="polite">
+      <!-- Messages will be inserted here by JS -->
+    </div>
+
+    <!-- Footer hint -->
+    <div class="panel-footer">
+      <p class="footer-hint">Powered by Celtic Golf Tours</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .digital-caddie {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+    font-family: var(--font-body);
+  }
+
+  /* Toggle button */
+  .caddie-toggle {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-celtic), var(--color-celtic-light));
+    border: none;
+    box-shadow:
+      0 4px 20px rgba(26, 61, 46, 0.3),
+      0 8px 40px rgba(26, 61, 46, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s var(--ease-smooth);
+  }
+
+  .caddie-toggle:hover {
+    transform: scale(1.05);
+    box-shadow:
+      0 6px 25px rgba(26, 61, 46, 0.4),
+      0 12px 50px rgba(26, 61, 46, 0.25);
+  }
+
+  .caddie-toggle:focus-visible {
+    outline: 3px solid var(--color-brass);
+    outline-offset: 3px;
+  }
+
+  .toggle-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .caddie-avatar {
+    color: white;
+  }
+
+  .toggle-pulse {
+    position: absolute;
+    inset: -4px;
+    border: 2px solid var(--color-celtic);
+    border-radius: 50%;
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+
+  .close-icon {
+    position: absolute;
+    color: white;
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+    transition: all 0.3s var(--ease-smooth);
+  }
+
+  /* Open state toggle */
+  .digital-caddie.is-open .toggle-content {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+
+  .digital-caddie.is-open .close-icon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  .digital-caddie.is-open .toggle-pulse {
+    display: none;
+  }
+
+  /* Chat panel */
+  .caddie-panel {
+    position: absolute;
+    bottom: calc(100% + 1rem);
+    right: 0;
+    width: 360px;
+    max-height: 500px;
+    background: white;
+    border-radius: 16px;
+    box-shadow:
+      0 10px 40px rgba(0, 0, 0, 0.15),
+      0 20px 80px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transform-origin: bottom right;
+    transition: all 0.3s var(--ease-smooth);
+    overflow: hidden;
+  }
+
+  .digital-caddie.is-open .caddie-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Panel header */
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, var(--color-celtic), var(--color-celtic-light));
+    color: white;
+  }
+
+  .header-avatar {
+    width: 44px;
+    height: 44px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .header-name {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin: 0 0 0.125rem;
+  }
+
+  .header-title {
+    font-size: 0.75rem;
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* Messages area */
+  .panel-messages {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 200px;
+    max-height: 350px;
+  }
+
+  /* Footer */
+  .panel-footer {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--color-stone-dark);
+    text-align: center;
+  }
+
+  .footer-hint {
+    font-size: 0.7rem;
+    color: #999;
+    margin: 0;
+  }
+
+  /* Message styles */
+  :global(.caddie-message) {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s var(--ease-smooth);
+  }
+
+  :global(.caddie-message.is-visible) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  :global(.caddie-message-caddie .message-bubble) {
+    background: var(--color-stone);
+    border-radius: 16px 16px 16px 4px;
+    padding: 0.875rem 1rem;
+    max-width: 85%;
+  }
+
+  :global(.caddie-message-caddie .message-bubble p) {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-charcoal);
+    margin: 0 0 0.5rem;
+  }
+
+  :global(.caddie-message-caddie .message-bubble p:last-child) {
+    margin-bottom: 0;
+  }
+
+  :global(.caddie-message-user) {
+    align-self: flex-end;
+  }
+
+  :global(.caddie-message-user .message-bubble) {
+    background: var(--color-celtic);
+    color: white;
+    border-radius: 16px 16px 4px 16px;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Options */
+  :global(.caddie-message-options .options-container) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  :global(.option-btn) {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.625rem 1rem;
+    background: white;
+    border: 1.5px solid var(--color-stone-dark);
+    border-radius: 20px;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: var(--color-charcoal);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  :global(.option-btn:hover) {
+    background: var(--color-celtic);
+    border-color: var(--color-celtic);
+    color: white;
+  }
+
+  :global(.option-btn:focus-visible) {
+    outline: 2px solid var(--color-celtic);
+    outline-offset: 2px;
+  }
+
+  :global(.option-icon) {
+    font-size: 1rem;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 480px) {
+    .digital-caddie {
+      bottom: 1rem;
+      right: 1rem;
+    }
+
+    .caddie-panel {
+      width: calc(100vw - 2rem);
+      right: -0.5rem;
+      max-height: 70vh;
+    }
+
+    .caddie-toggle {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .toggle-pulse {
+      animation: none;
+    }
+
+    .caddie-toggle,
+    .caddie-panel,
+    :global(.caddie-message) {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initCaddieWidget } from '../scripts/caddie-widget';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initCaddieWidget('[data-caddie-widget]');
+  });
+</script>

@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import InteractiveMap from '../../components/InteractiveMap.astro';
+import TexturedSection from '../../components/TexturedSection.astro';
+import CelticDivider from '../../components/CelticDivider.astro';
+import { destinations as sharedDestinations, unsplashUrl } from '../../data/destinations';
+
+const destinations = sharedDestinations.map(d => ({
+  ...d,
+  image: unsplashUrl(d.photoId, 800),
+}));
+---
+
+<Layout title="Destinations" description="Explore our luxury golf tour destinations across Scotland, Ireland, Wales, and England.">
+  <Hero
+    title="Destinations"
+    subtitle="Four nations. Countless legendary courses. One unforgettable journey."
+    backgroundImage="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    size="large"
+    ctaText=""
+  />
+
+  <!-- Interactive Map Section -->
+  <TexturedSection texture="topo" background="cream" padding="section">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="text-center mb-12">
+        <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">Discover Your Destination</h2>
+        <CelticDivider variant="simple" color="brass" width="narrow" class="my-6" />
+        <p class="text-text max-w-2xl mx-auto">Explore the legendary golf regions of the British Isles. Hover over a region to see signature courses.</p>
+      </div>
+      <InteractiveMap enableAudio={false} />
+    </div>
+  </TexturedSection>
+
+  <!-- Destinations Grid -->
+  <section class="section-padding bg-white">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="text-center mb-12">
+        <h2 class="font-heading text-2xl mb-4">All Destinations</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        {destinations.map((dest) => (
+          <a href={dest.href} class="group block">
+            <div class="relative aspect-[16/10] overflow-hidden mb-6">
+              <div
+                class="absolute inset-0 bg-cover bg-center scale-on-hover"
+                style={`background-image: url('${dest.image}')`}
+              >
+              </div>
+              <div class="absolute inset-0 overlay-default overlay-hover transition-premium"></div>
+              <div class="absolute bottom-6 left-6">
+                <span class="inline-block bg-white/90 text-charcoal px-4 py-2 text-sm font-medium tracking-wide">
+                  Explore
+                </span>
+              </div>
+            </div>
+            <h2 class="font-heading text-2xl lg:text-3xl text-charcoal mb-2">{dest.name}</h2>
+            <p class="text-brass text-sm font-medium mb-3">{dest.tagline}</p>
+            <p class="text-text leading-relaxed">{dest.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="section-padding bg-stone">
+    <div class="content-narrow px-6 lg:px-12">
+      <div class="text-center mb-16">
+        <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">Why Travel With Us</h2>
+        <p class="text-text max-w-xl mx-auto">
+          Our deep connections and local expertise ensure an exceptional experience
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+        <div class="text-center">
+          <h3 class="font-heading text-xl mb-4">Priority Access</h3>
+          <p class="text-text leading-relaxed">
+            Our relationships with courses mean guaranteed tee times at even the most exclusive venues.
+          </p>
+        </div>
+        <div class="text-center">
+          <h3 class="font-heading text-xl mb-4">Local Knowledge</h3>
+          <p class="text-text leading-relaxed">
+            We've played every course we recommend and know the hidden gems off the beaten path.
+          </p>
+        </div>
+        <div class="text-center">
+          <h3 class="font-heading text-xl mb-4">Seamless Logistics</h3>
+          <p class="text-text leading-relaxed">
+            From airport pickup to farewell dinner, every detail is handled with precision.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="group relative py-40 lg:py-48 overflow-hidden">
+    <div
+      class="absolute inset-0 bg-cover bg-center scale-on-hover"
+      style="background-image: url('https://images.unsplash.com/photo-1687291133565-767706032bed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80')"
+    >
+    </div>
+    <div class="absolute inset-0 overlay-default overlay-hover transition-premium"></div>
+
+    <div class="relative z-10 max-w-3xl mx-auto px-6 lg:px-12 text-center">
+      <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl text-white mb-8">
+        Not Sure Where to Start?
+      </h2>
+      <p class="text-white/80 text-lg mb-12 max-w-xl mx-auto">
+        Let us help you choose the perfect destination based on your preferences and bucket list.
+      </p>
+      <a
+        href="/contact"
+        class="btn-primary btn-lg btn-primary-inverted"
+      >
+        Get Recommendations
+      </a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,34 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+---
+
+<Layout title="Thank You" description="Thank you for your enquiry. We'll be in touch shortly.">
+  <Hero
+    title="Thank You"
+    subtitle="Your enquiry has been received"
+    backgroundImage="https://images.unsplash.com/photo-1693113448288-015fb6eed7c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    size="medium"
+    ctaText=""
+  />
+
+  <section class="section-padding bg-white">
+    <div class="max-w-2xl mx-auto text-center px-6">
+      <div class="mb-8">
+        <svg class="w-16 h-16 text-celtic mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h2 class="font-heading text-3xl lg:text-4xl mb-6">We'll Be in Touch</h2>
+      <p class="text-text text-lg leading-relaxed mb-10">
+        Thank you for your interest in Celtic Golf Tours. Our team will review your enquiry and get back to you within 24 hours to begin planning your perfect golf experience.
+      </p>
+      <a
+        href="/"
+        class="btn-primary btn-md btn-primary-celtic"
+      >
+        Back to Home
+      </a>
+    </div>
+  </section>
+</Layout>

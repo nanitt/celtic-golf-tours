@@ -1,0 +1,220 @@
+---
+/**
+ * TimelineStop - Individual card for the day-in-the-life timeline
+ * Shows a moment in a typical golf tour day
+ */
+
+interface Props {
+  time: string;           // e.g., "8:00 AM"
+  title: string;          // e.g., "Full Irish Breakfast"
+  description: string;
+  image: string;
+  icon?: 'coffee' | 'golf' | 'dining' | 'whiskey' | 'sunset' | 'hotel';
+  isFirst?: boolean;
+  isLast?: boolean;
+}
+
+const {
+  time,
+  title,
+  description,
+  image,
+  icon = 'golf',
+  isFirst = false,
+  isLast = false
+} = Astro.props;
+
+const iconPaths: Record<string, string> = {
+  coffee: 'M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3',
+  golf: 'M12 18v-6M12 12l5-5M12 12l-3 3M19 14a7 7 0 1 1-14 0 7 7 0 0 1 14 0zM12 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+  dining: 'M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2l-4 6 4 6zM21 15v7',
+  whiskey: 'M8 2h8l4 8-4 8H8l-4-8 4-8zM6 10h12M8 14h8',
+  sunset: 'M17 18a5 5 0 0 0-10 0M12 2v7M4.22 10.22l1.42 1.42M1 18h2M21 18h2M18.36 11.64l1.42-1.42M23 22H1M8 6l4-4 4 4',
+  hotel: 'M3 22V8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14M3 10h18M9 6v4M15 6v4M7 14h4v8H7zM13 14h4v4h-4z'
+};
+---
+
+<article class:list={['timeline-stop', { 'is-first': isFirst, 'is-last': isLast }]}>
+  <!-- Time badge -->
+  <div class="stop-time">
+    <span class="time-text">{time}</span>
+  </div>
+
+  <!-- Card -->
+  <div class="stop-card">
+    <!-- Image -->
+    <div class="stop-image">
+      <img src={image} alt={title} loading="lazy" decoding="async" />
+      <div class="image-overlay"></div>
+
+      <!-- Icon badge -->
+      <div class="stop-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d={iconPaths[icon]} />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="stop-content">
+      <h3 class="stop-title">{title}</h3>
+      <p class="stop-description">{description}</p>
+    </div>
+  </div>
+
+  <!-- Connector line (except for last item) -->
+  {!isLast && (
+    <div class="stop-connector" aria-hidden="true">
+      <div class="connector-line"></div>
+      <div class="connector-dot"></div>
+    </div>
+  )}
+</article>
+
+<style>
+  .timeline-stop {
+    position: relative;
+    flex: 0 0 320px;
+    scroll-snap-align: center;
+    padding: 0 1rem;
+  }
+
+  .stop-time {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .time-text {
+    display: inline-block;
+    background: var(--color-celtic);
+    color: white;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 0.375rem 1rem;
+    border-radius: 9999px;
+  }
+
+  .stop-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
+  }
+
+  .stop-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  .stop-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .stop-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease-smooth);
+  }
+
+  .stop-card:hover .stop-image img {
+    transform: scale(1.05);
+  }
+
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent 50%);
+    pointer-events: none;
+  }
+
+  .stop-icon {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .stop-icon svg {
+    color: var(--color-celtic);
+  }
+
+  .stop-content {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  .stop-title {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-charcoal);
+    margin-bottom: 0.5rem;
+  }
+
+  .stop-description {
+    font-size: 0.875rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Connector */
+  .stop-connector {
+    position: absolute;
+    top: 2.5rem;
+    right: -2rem;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+  }
+
+  .connector-line {
+    width: 3rem;
+    height: 2px;
+    background: linear-gradient(to right, var(--color-brass), transparent);
+  }
+
+  .connector-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--color-brass);
+    border-radius: 50%;
+    margin-left: -3px;
+  }
+
+  /* First/Last adjustments */
+  .timeline-stop.is-first {
+    padding-left: 2rem;
+  }
+
+  .timeline-stop.is-last {
+    padding-right: 2rem;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    .timeline-stop {
+      flex: 0 0 280px;
+    }
+
+    .stop-image {
+      height: 160px;
+    }
+
+    .stop-connector {
+      display: none;
+    }
+  }
+</style>

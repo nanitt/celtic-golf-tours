@@ -1,0 +1,186 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from './Hero.astro';
+
+interface Course {
+  name: string;
+  description: string;
+  image: string;
+}
+
+interface Props {
+  name: string;
+  tagline: string;
+  description: string;
+  heroImage: string;
+  courses: Course[];
+  highlights: string[];
+}
+
+const { name, tagline, description, heroImage, courses, highlights } = Astro.props;
+---
+
+<Layout title={name} description={`Luxury golf tours in ${name}. ${tagline}`}>
+  <Hero
+    title={`Golf in ${name}`}
+    subtitle={tagline}
+    backgroundImage={heroImage}
+    size="medium"
+    ctaText="Plan Your Tour"
+    ctaLink="/contact"
+  />
+
+  <!-- Overview Section -->
+  <section class="section-padding bg-cream">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+
+        <!-- Left: editorial description -->
+        <div data-reveal="fade-up">
+          <p class="section-kicker mb-6">{name}</p>
+          <p class="font-heading-display text-2xl lg:text-3xl text-charcoal leading-snug mb-8" style="font-weight: 300;">
+            {tagline}
+          </p>
+          <p class="text-text leading-relaxed mb-10">{description}</p>
+          <a href="/contact" class="btn-ghost btn-md">
+            Plan Your {name} Tour <span class="arrow ml-2">→</span>
+          </a>
+        </div>
+
+        <!-- Right: highlights as editorial list -->
+        <div class="pt-0 lg:pt-16" data-reveal="fade-up" data-reveal-delay="2">
+          <div class="space-y-6">
+            {highlights.map((highlight, i) => (
+              <div class="flex gap-5 items-start">
+                <span class="font-heading-display text-brass text-2xl flex-shrink-0" style="font-weight: 300; line-height: 1;">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <p class="text-text leading-relaxed pt-0.5">{highlight}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Courses Section -->
+  <section class="section-padding bg-white">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="mb-12" data-reveal="fade-up">
+        <p class="section-kicker mb-4">Where You'll Play</p>
+        <h2 class="font-heading text-charcoal" style="font-size: clamp(2rem, 4vw, var(--text-section));">
+          The courses on your list
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {courses.map((course, index) => (
+          <div
+            class="group"
+            data-reveal="fade-up"
+            data-reveal-delay={(index % 3) + 1}
+          >
+            <div class="aspect-[16/10] overflow-hidden mb-5">
+              <img
+                src={course.image}
+                alt={course.name}
+                class="w-full h-full object-cover scale-on-hover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="font-heading text-xl text-charcoal mb-2">{course.name}</h3>
+            <p class="text-text text-sm leading-relaxed">{course.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Itinerary Section -->
+  <section class="section-padding bg-stone">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+
+        <!-- Left: section intro -->
+        <div data-reveal="fade-up">
+          <p class="section-kicker mb-6">How It Works</p>
+          <h2 class="font-heading text-charcoal mb-6" style="font-size: clamp(2rem, 4vw, var(--text-section));">
+            A week in {name},<br />done right
+          </h2>
+          <p class="text-text leading-relaxed mb-8">
+            Every tour we build is unique. This is a guide to what a typical week looks like — your itinerary will be crafted around your courses, your dates, and your pace.
+          </p>
+          <a href="/contact" class="btn-primary btn-md">
+            Build Your Itinerary
+          </a>
+        </div>
+
+        <!-- Right: timeline -->
+        <div class="space-y-8" data-reveal="fade-up" data-reveal-delay="2">
+          <div class="flex gap-6 items-start">
+            <div>
+              <div class="flex items-center gap-4 mb-3">
+                <span class="w-8 h-px bg-brass flex-shrink-0"></span>
+                <p class="section-kicker">Day 1</p>
+              </div>
+              <h4 class="font-heading text-lg text-charcoal mb-1">Arrival & Welcome</h4>
+              <p class="text-text text-sm leading-relaxed">Private airport transfer, check-in to your accommodation, and a welcome briefing over dinner.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-6 items-start">
+            <div>
+              <div class="flex items-center gap-4 mb-3">
+                <span class="w-8 h-px bg-brass flex-shrink-0"></span>
+                <p class="section-kicker">Days 2–4</p>
+              </div>
+              <h4 class="font-heading text-lg text-charcoal mb-1">Championship Golf</h4>
+              <p class="text-text text-sm leading-relaxed">Three rounds at your chosen courses, with caddies available and tee times we've secured in advance.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-6 items-start">
+            <div>
+              <div class="flex items-center gap-4 mb-3">
+                <span class="w-8 h-px bg-brass flex-shrink-0"></span>
+                <p class="section-kicker">Day 5</p>
+              </div>
+              <h4 class="font-heading text-lg text-charcoal mb-1">Your Day</h4>
+              <p class="text-text text-sm leading-relaxed">Optional rest, local exploration, a distillery visit, or one more round — your call.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-6 items-start">
+            <div>
+              <div class="flex items-center gap-4 mb-3">
+                <span class="w-8 h-px bg-brass flex-shrink-0"></span>
+                <p class="section-kicker">Days 6–7</p>
+              </div>
+              <h4 class="font-heading text-lg text-charcoal mb-1">Final Rounds & Farewell</h4>
+              <p class="text-text text-sm leading-relaxed">Two more rounds at the courses you've been waiting for, farewell dinner, and airport transfer home.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section-padding bg-charcoal">
+    <div class="content-narrow px-6 lg:px-12 text-center">
+      <h2 class="font-heading-display text-3xl md:text-4xl text-white mb-4" style="font-weight: 300;">
+        Ready to experience {name}?
+      </h2>
+      <p class="text-white/60 text-lg mb-10 max-w-xl mx-auto">
+        Tell us your courses. We'll handle the rest.
+      </p>
+      <a href="/contact" class="btn-primary btn-lg btn-primary-inverted">
+        Start Planning
+      </a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,296 @@
+---
+/**
+ * AmbientSoundToggle - Floating audio toggle UI
+ * Positioned fixed in corner, respects user preference
+ */
+
+interface Props {
+  position?: 'bottom-left' | 'bottom-right';
+  class?: string;
+}
+
+const { position = 'bottom-right', class: className = '' } = Astro.props;
+
+const positionClasses = {
+  'bottom-left': 'bottom-6 left-6',
+  'bottom-right': 'bottom-6 right-6'
+};
+---
+
+<div
+  class:list={['ambient-toggle-container fixed z-50', positionClasses[position], className]}
+  data-ambient-toggle
+>
+  <button
+    class="ambient-toggle-btn"
+    aria-label="Toggle ambient sounds"
+    aria-pressed="false"
+    title="Toggle ambient sounds"
+  >
+    <!-- Sound Off Icon -->
+    <svg class="toggle-icon icon-off" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <line x1="22" y1="9" x2="16" y2="15"/>
+      <line x1="16" y1="9" x2="22" y2="15"/>
+    </svg>
+
+    <!-- Sound On Icon -->
+    <svg class="toggle-icon icon-on" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+
+    <!-- Animated sound waves (visible when playing) -->
+    <div class="sound-waves" aria-hidden="true">
+      <span class="wave"></span>
+      <span class="wave"></span>
+      <span class="wave"></span>
+    </div>
+  </button>
+
+  <!-- Tooltip -->
+  <div class="toggle-tooltip" role="tooltip">
+    <span class="tooltip-text-off">Enable ambient sounds</span>
+    <span class="tooltip-text-on">Disable ambient sounds</span>
+  </div>
+</div>
+
+<style>
+  .ambient-toggle-container {
+    --toggle-size: 52px;
+  }
+
+  .ambient-toggle-btn {
+    position: relative;
+    width: var(--toggle-size);
+    height: var(--toggle-size);
+    border-radius: 50%;
+    background: white;
+    border: 1px solid var(--color-stone-dark);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s var(--ease-smooth);
+    overflow: hidden;
+  }
+
+  .ambient-toggle-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--color-brass);
+  }
+
+  .ambient-toggle-btn:focus-visible {
+    outline: 2px solid var(--color-celtic);
+    outline-offset: 3px;
+  }
+
+  /* Icons */
+  .toggle-icon {
+    position: absolute;
+    color: var(--color-charcoal);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .icon-on {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .icon-off {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Active state */
+  .ambient-toggle-btn[aria-pressed="true"] {
+    background: var(--color-celtic);
+    border-color: var(--color-celtic);
+  }
+
+  .ambient-toggle-btn[aria-pressed="true"] .toggle-icon {
+    color: white;
+  }
+
+  .ambient-toggle-btn[aria-pressed="true"] .icon-on {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .ambient-toggle-btn[aria-pressed="true"] .icon-off {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  /* Sound waves animation */
+  .sound-waves {
+    position: absolute;
+    display: flex;
+    gap: 3px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .ambient-toggle-btn[aria-pressed="true"] .sound-waves {
+    opacity: 1;
+  }
+
+  .wave {
+    width: 2px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    animation: wave-bounce 1s ease-in-out infinite;
+  }
+
+  .wave:nth-child(1) {
+    animation-delay: 0s;
+    height: 6px;
+  }
+
+  .wave:nth-child(2) {
+    animation-delay: 0.15s;
+    height: 10px;
+  }
+
+  .wave:nth-child(3) {
+    animation-delay: 0.3s;
+    height: 6px;
+  }
+
+  @keyframes wave-bounce {
+    0%, 100% {
+      transform: scaleY(0.5);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+
+  /* Hide waves when audio is on (show icons instead) */
+  .ambient-toggle-btn[aria-pressed="true"] .sound-waves {
+    display: none;
+  }
+
+  /* Tooltip */
+  .toggle-tooltip {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-charcoal);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s;
+    pointer-events: none;
+  }
+
+  .toggle-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--color-charcoal);
+  }
+
+  .ambient-toggle-container:hover .toggle-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .tooltip-text-on {
+    display: none;
+  }
+
+  .ambient-toggle-btn[aria-pressed="true"] ~ .toggle-tooltip .tooltip-text-off {
+    display: none;
+  }
+
+  .ambient-toggle-btn[aria-pressed="true"] ~ .toggle-tooltip .tooltip-text-on {
+    display: inline;
+  }
+
+  /* Mobile: hide tooltip, make button slightly smaller */
+  @media (max-width: 768px) {
+    .ambient-toggle-container {
+      --toggle-size: 46px;
+    }
+
+    .toggle-tooltip {
+      display: none;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .wave {
+      animation: none;
+    }
+
+    .ambient-toggle-btn {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initAmbientAudio, toggleAudio, getAudioState, loadTrack, playTrack } from '../scripts/ambient-audio';
+
+  // Available ambient tracks
+  const AMBIENT_TRACKS = [
+    { id: 'wind', url: '/audio/wind-over-dunes.mp3', volume: 1, loop: true },
+    { id: 'ocean', url: '/audio/ocean-waves.mp3', volume: 0.8, loop: true }
+  ];
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const container = document.querySelector('[data-ambient-toggle]');
+    const button = container?.querySelector('.ambient-toggle-btn');
+
+    if (!button || !container) return;
+
+    // Initialize audio system
+    const supported = await initAmbientAudio();
+
+    if (!supported) {
+      // Hide toggle if audio not supported
+      (container as HTMLElement).style.display = 'none';
+      return;
+    }
+
+    // Load tracks in background
+    for (const track of AMBIENT_TRACKS) {
+      await loadTrack(track);
+    }
+
+    // Set initial state from saved preference
+    const { enabled } = getAudioState();
+    button.setAttribute('aria-pressed', String(enabled));
+
+    // If enabled on load, start playing default track
+    if (enabled) {
+      playTrack('wind', true);
+    }
+
+    // Toggle handler
+    button.addEventListener('click', () => {
+      const isEnabled = toggleAudio();
+      button.setAttribute('aria-pressed', String(isEnabled));
+
+      if (isEnabled) {
+        // Start default ambient track
+        playTrack('wind', true);
+      }
+    });
+  });
+</script>

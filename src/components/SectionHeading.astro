@@ -1,0 +1,69 @@
+---
+import CelticDivider from './CelticDivider.astro';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  kicker?: string;
+  centered?: boolean;
+  light?: boolean;
+  showDivider?: boolean;
+  dividerVariant?: 'simple' | 'knot' | 'wave' | 'ornate';
+  serif?: 'eb-garamond' | 'cormorant';  // Choose heading font
+}
+
+const {
+  title,
+  subtitle,
+  kicker,
+  centered = true,
+  light = false,
+  showDivider = false,
+  dividerVariant = 'simple',
+  serif = 'eb-garamond'
+} = Astro.props;
+
+const fontClass = serif === 'cormorant' ? 'font-heading-display' : 'font-heading';
+
+// Stagger delay counter
+let delay = 1;
+---
+
+<div class={`section-heading mb-16 ${centered ? 'text-center' : ''}`}>
+  {kicker && (
+    <p
+      class={`section-kicker mb-4 ${light ? 'text-brass-light' : ''}`}
+      data-reveal="fade-up"
+      data-reveal-delay={delay++}
+    >
+      {kicker}
+    </p>
+  )}
+  <h2
+    class={`${fontClass} text-section mb-4 ${light ? 'text-white' : ''}`}
+    style="font-size: clamp(2rem, 4vw, var(--text-section));"
+    data-reveal="fade-up"
+    data-reveal-delay={delay++}
+  >
+    {title}
+  </h2>
+  {showDivider && (
+    <div data-reveal="fade-up" data-reveal-delay={delay++}>
+      <CelticDivider
+        variant={dividerVariant}
+        color={light ? 'white' : 'brass'}
+        width="narrow"
+        class="my-6"
+      />
+    </div>
+  )}
+  {subtitle && (
+    <p
+      class={`text-lg max-w-2xl leading-relaxed ${centered ? 'mx-auto' : ''} ${light ? 'text-white/70' : 'text-text'}`}
+      data-reveal="fade-up"
+      data-reveal-delay={delay++}
+    >
+      {subtitle}
+    </p>
+  )}
+</div>

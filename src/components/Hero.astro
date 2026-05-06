@@ -1,0 +1,376 @@
+---
+import BritishIslesSilhouette from './icons/BritishIslesSilhouette.astro';
+import CelticKnot from './icons/CelticKnot.astro';
+
+interface Props {
+  title: string;
+  titleAccent?: string;        // Second line with different styling
+  subtitle?: string;
+  kicker?: string;             // Small text above title
+  ctaText?: string;
+  ctaLink?: string;
+  secondaryCta?: {             // Secondary outline button
+    text: string;
+    link: string;
+  };
+  backgroundImage?: string;
+  backgroundVideo?: string;    // MP4 video URL (optional)
+  size?: 'full' | 'large' | 'medium';
+  layout?: 'centered' | 'split-left' | 'split-right' | 'editorial';
+  panelStyle?: 'glass' | 'solid' | 'gradient';
+  location?: string;           // Location badge text
+  stats?: Array<{              // Stats row
+    value: string;
+    label: string;
+  }>;
+  showMapSilhouette?: boolean; // Show British Isles silhouette (editorial layout)
+}
+
+const {
+  title,
+  titleAccent,
+  subtitle,
+  kicker,
+  ctaText = "Start Your Experience",
+  ctaLink = "/contact",
+  secondaryCta,
+  backgroundImage = "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80",
+  backgroundVideo,
+  size = 'full',
+  layout = 'centered',
+  panelStyle = 'glass',
+  location,
+  stats,
+  showMapSilhouette = false
+} = Astro.props;
+
+const sizeClasses = {
+  full: 'min-h-screen',
+  large: 'min-h-[80vh]',
+  medium: 'min-h-[65vh]'
+};
+
+const panelStyles = {
+  glass: 'bg-charcoal/70 backdrop-blur-md',
+  solid: 'bg-charcoal',
+  gradient: 'bg-gradient-to-br from-charcoal/90 to-celtic/80'
+};
+
+const isSplit = layout === 'split-left' || layout === 'split-right';
+const isRight = layout === 'split-right';
+const isEditorial = layout === 'editorial';
+---
+
+<section
+  class={`hero-section group relative flex flex-col ${sizeClasses[size]} overflow-hidden`}
+  data-parallax={size === 'full' ? 'true' : undefined}
+>
+  <!-- Video/Image Background -->
+  {backgroundVideo ? (
+    <video
+      class="hero-bg absolute inset-0 w-full h-full object-cover"
+      autoplay
+      muted
+      loop
+      playsinline
+      poster={backgroundImage}
+      data-hero-video
+    >
+      <source src={backgroundVideo} type="video/mp4" />
+    </video>
+  ) : (
+    <div
+      class="hero-bg absolute inset-0 bg-cover bg-center scale-on-hover"
+      style={`background-image: url('${backgroundImage}')`}
+    >
+    </div>
+  )}
+
+  <!-- Overlay - Strong gradient for text readability -->
+  <div class={`absolute inset-0 transition-smooth ${isEditorial ? 'bg-gradient-to-r from-black/70 via-black/40 to-transparent' : 'bg-black/50'}`}></div>
+
+  <!-- Celtic Knot Corner Decorations (hidden on editorial layout and mobile) -->
+  {!isEditorial && (
+    <>
+      <div class="absolute top-6 left-6 w-20 h-20 opacity-0 animate-fade-in-up animation-delay-500 hidden lg:block celtic-knot-animate">
+        <CelticKnot class="w-full h-full text-white/15" position="top-left" />
+      </div>
+      <div class="absolute bottom-6 right-6 w-20 h-20 opacity-0 animate-fade-in-up animation-delay-500 hidden lg:block celtic-knot-animate">
+        <CelticKnot class="w-full h-full text-white/15" position="bottom-right" />
+      </div>
+    </>
+  )}
+
+  <!-- British Isles Silhouette (Editorial layout) -->
+  {(isEditorial && showMapSilhouette) && (
+    <div class="map-silhouette top-20 right-8 lg:right-20 z-10 hidden lg:block opacity-0 animate-fade-in-up animation-delay-500">
+      <BritishIslesSilhouette class="w-48 xl:w-64 h-auto text-white/20" />
+    </div>
+  )}
+
+  <!-- Content Area -->
+  <div class="relative z-10 flex-1 flex items-center">
+    {isEditorial ? (
+      <!-- Editorial Layout - Open, floating content inspired by Wanderlush -->
+      <div class="w-full h-full flex flex-col justify-center px-6 lg:px-16 xl:px-24">
+        <div class="max-w-3xl">
+          <!-- Pill Kicker Badge -->
+          {kicker && (
+            <div class="kicker-pill inline-block text-white text-sm font-medium tracking-wide mb-6 animate-fade-in-up">
+              {kicker}
+            </div>
+          )}
+
+          <!-- Title -->
+          <h1 class="font-heading text-white mb-6 leading-[1.0] tracking-tight animate-fade-in-up animation-delay-100" style="font-size: clamp(3rem, 8vw, 5.5rem);">
+            {title}
+            {titleAccent && (
+              <span class="block text-brass">{titleAccent}</span>
+            )}
+          </h1>
+
+          <!-- Subtitle -->
+          {subtitle && (
+            <p class="text-lg lg:text-xl text-white/85 mb-10 max-w-xl font-light tracking-wide leading-relaxed animate-fade-in-up animation-delay-200">
+              {subtitle}
+            </p>
+          )}
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-wrap items-center gap-4 animate-fade-in-up animation-delay-300">
+            {ctaText && (
+              <a
+                href={ctaLink}
+                class="cta-rounded inline-flex items-center gap-3 bg-white text-charcoal px-8 py-4 text-sm font-medium tracking-wide hover:bg-gray-100"
+              >
+                {ctaText}
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            )}
+            {secondaryCta && (
+              <a
+                href={secondaryCta.link}
+                class="cta-rounded inline-flex items-center gap-3 border-2 border-white/60 text-white px-8 py-4 text-sm font-medium tracking-wide hover:bg-white/10 transition-smooth"
+              >
+                {secondaryCta.text}
+              </a>
+            )}
+          </div>
+        </div>
+
+        <!-- Bottom Stats Row -->
+        {stats && stats.length > 0 && (
+          <div class="absolute bottom-0 left-0 right-0 hero-bottom-stats py-6 px-6 lg:px-16 xl:px-24 animate-fade-in-up animation-delay-400">
+            <div class="flex flex-wrap gap-8 lg:gap-16">
+              {stats.map((stat, index) => (
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center">
+                    <span class="text-white/70 text-sm">{String(index + 1).padStart(2, '0')}</span>
+                  </div>
+                  <div>
+                    <div class="font-heading text-xl lg:text-2xl text-white">{stat.value}</div>
+                    <div class="text-white/60 text-xs uppercase tracking-wider">{stat.label}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    ) : isSplit ? (
+      <!-- Split Layout -->
+      <div class="w-full h-full flex flex-col lg:flex-row">
+        <!-- Empty side (shows background) - hidden on mobile -->
+        <div class={`hidden lg:block lg:w-1/2 ${isRight ? 'order-1' : 'order-2'}`}></div>
+
+        <!-- Content Panel -->
+        <div class={`flex-1 lg:w-1/2 flex items-center ${isRight ? 'order-2 lg:justify-end' : 'order-1 lg:justify-start'}`}>
+          <div class={`w-full lg:max-w-2xl ${panelStyles[panelStyle]} p-8 md:p-12 lg:p-16`}>
+            <!-- Location Badge -->
+            {location && (
+              <div class="flex items-center gap-2 text-white/70 text-sm mb-6 animate-fade-in-up">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>{location}</span>
+              </div>
+            )}
+
+            <!-- Kicker -->
+            {kicker && (
+              <p class="text-brass text-sm font-medium tracking-wider uppercase mb-4 animate-fade-in-up animation-delay-100">
+                {kicker}
+              </p>
+            )}
+
+            <!-- Title -->
+            <h1 class="font-heading text-white mb-4 leading-[1.05] tracking-tight animate-fade-in-up animation-delay-200" style="font-size: clamp(2.5rem, 6vw, 4rem);">
+              {title}
+              {titleAccent && (
+                <span class="block text-brass">{titleAccent}</span>
+              )}
+            </h1>
+
+            <!-- Subtitle -->
+            {subtitle && (
+              <p class="text-lg text-white/85 mb-8 max-w-xl font-light tracking-wide leading-relaxed animate-fade-in-up animation-delay-300">
+                {subtitle}
+              </p>
+            )}
+
+            <!-- Stats Row -->
+            {stats && stats.length > 0 && (
+              <div class="flex flex-wrap gap-8 mb-10 animate-fade-in-up animation-delay-300">
+                {stats.map((stat) => (
+                  <div class="text-center">
+                    <div class="font-heading text-3xl md:text-4xl text-white mb-1">{stat.value}</div>
+                    <div class="text-white/60 text-xs uppercase tracking-wider">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap gap-4 animate-fade-in-up animation-delay-400">
+              {ctaText && (
+                <a
+                  href={ctaLink}
+                  class="inline-block bg-white text-charcoal px-10 py-4 text-sm font-medium uppercase tracking-wider hover:bg-gray-100 transition-smooth"
+                >
+                  {ctaText}
+                </a>
+              )}
+              {secondaryCta && (
+                <a
+                  href={secondaryCta.link}
+                  class="inline-block border-2 border-white/80 text-white px-10 py-4 text-sm font-medium uppercase tracking-wider hover:bg-white/10 transition-smooth"
+                >
+                  {secondaryCta.text}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <!-- Centered Layout (default/backward compatible) -->
+      <div class="text-center px-6 max-w-4xl mx-auto">
+        <!-- Kicker with decorative divider -->
+        {kicker && (
+          <div class="mb-8 animate-fade-in-up">
+            <p class="text-white/90 text-sm font-medium tracking-[0.35em] uppercase mb-4 hero-text-shadow">
+              {kicker}
+            </p>
+            <!-- Decorative gold divider -->
+            <div class="flex items-center justify-center gap-3">
+              <div class="w-12 h-px bg-gradient-to-r from-transparent to-brass"></div>
+              <div class="w-1.5 h-1.5 bg-brass rotate-45"></div>
+              <div class="w-12 h-px bg-gradient-to-l from-transparent to-brass"></div>
+            </div>
+          </div>
+        )}
+
+        <h1 class="font-heading text-white mb-8 leading-[1.1] tracking-tight animate-fade-in-up animation-delay-100 italic hero-title-shadow" style="font-size: clamp(2.5rem, 7vw, 4.5rem);">
+          {title}
+          {titleAccent && (
+            <span class="block text-brass italic text-glow-brass" style="font-size: 1.05em;">{titleAccent}</span>
+          )}
+        </h1>
+
+        {subtitle && (
+          <p class="text-lg md:text-xl text-white/85 mb-12 max-w-2xl mx-auto font-light tracking-wide leading-relaxed animate-fade-in-up animation-delay-200">
+            {subtitle}
+          </p>
+        )}
+
+        <!-- Stats Row (centered) -->
+        {stats && stats.length > 0 && (
+          <div class="flex flex-wrap justify-center gap-8 md:gap-12 mb-10 animate-fade-in-up animation-delay-200">
+            {stats.map((stat) => (
+              <div class="text-center">
+                <div class="font-heading text-3xl md:text-4xl text-white mb-1">{stat.value}</div>
+                <div class="text-white/60 text-xs uppercase tracking-wider">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap justify-center gap-4 animate-fade-in-up animation-delay-300">
+          {ctaText && (
+            <a
+              href={ctaLink}
+              class="inline-flex items-center gap-3 bg-celtic text-white px-10 py-5 text-base font-medium tracking-wide rounded-sm hover:bg-celtic-light transition-smooth"
+            >
+              {ctaText}
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          )}
+          {secondaryCta && (
+            <a
+              href={secondaryCta.link}
+              class="inline-block border-2 border-white/70 text-white px-10 py-5 text-base font-medium tracking-wide rounded-sm hover:bg-white/10 transition-smooth"
+            >
+              {secondaryCta.text}
+            </a>
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+
+  <!-- Scroll indicator (hidden on editorial layout with stats) -->
+  {size === 'full' && !(isEditorial && stats && stats.length > 0) && (
+    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 opacity-60 animate-fade-in-up animation-delay-500">
+      <div class="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
+        <div class="w-1 h-2 bg-white/60 rounded-full animate-bounce"></div>
+      </div>
+    </div>
+  )}
+</section>
+
+<script>
+  // Parallax effect for hero backgrounds
+  const heroSections = document.querySelectorAll('.hero-section[data-parallax="true"]');
+
+  if (heroSections.length > 0 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let ticking = false;
+
+    const updateParallax = () => {
+      heroSections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.bottom > 0 && rect.top < window.innerHeight) {
+          const scrolled = window.scrollY;
+          const bg = section.querySelector('.hero-bg') as HTMLElement;
+          if (bg) {
+            bg.style.transform = `translateY(${scrolled * 0.4}px)`;
+          }
+        }
+      });
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  // Respect reduced motion for background videos
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLVideoElement>('[data-hero-video]').forEach((video) => {
+      video.pause();
+      video.autoplay = false;
+      video.loop = false;
+      video.removeAttribute('autoplay');
+      video.removeAttribute('loop');
+    });
+  }
+</script>

@@ -1,0 +1,31 @@
+{
+  "name": "celtic-golf-tours",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "seed": "node scripts/seed-sanity.mjs"
+  },
+  "dependencies": {
+    "@astrojs/node": "^9.5.2",
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/sitemap": "^3.7.0",
+    "@sanity/astro": "^3.2.11",
+    "@sanity/client": "^7.14.1",
+    "@sanity/image-url": "^2.0.3",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/react": "^19.2.11",
+    "@types/react-dom": "^19.2.3",
+    "astro": "^5.16.9",
+    "framer-motion": "^12.31.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-is": "^19.2.4",
+    "sanity": "^5.8.1",
+    "styled-components": "^6.3.9",
+    "tailwindcss": "^4.1.18"
+  }
+}

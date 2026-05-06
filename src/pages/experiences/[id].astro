@@ -1,0 +1,160 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import HostedExperienceCard from '../../components/HostedExperienceCard.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { getExperienceBySlug, getAllExperiences } from '../../data/sanity-experiences';
+
+const { id } = Astro.params;
+const experience = await getExperienceBySlug(id!);
+
+if (!experience) {
+  return Astro.redirect('/404');
+}
+
+const allExperiences = await getAllExperiences();
+const otherExperiences = allExperiences.filter(exp => exp.id !== experience.id).slice(0, 3);
+const initials = experience.host.name.split(' ').map(n => n[0]).join('');
+
+const statusLabel = {
+  open: 'Spots Available',
+  limited: experience.spotsRemaining ? `Only ${experience.spotsRemaining} Spots Left` : 'Limited Spots',
+  sold_out: 'Sold Out',
+};
+
+const statusClass = {
+  open: 'bg-celtic text-white',
+  limited: 'bg-brass text-white',
+  sold_out: 'bg-gray-400 text-white',
+};
+---
+
+<Layout
+  title={experience.name}
+  description={experience.description}
+  image={experience.image}
+>
+  <Hero
+    title={experience.name}
+    subtitle={experience.dates}
+    backgroundImage={experience.image}
+    size="medium"
+    location={experience.destination}
+    ctaText=""
+  />
+
+  <section class="section-padding bg-white">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
+        <!-- Left Column: Details -->
+        <div class="lg:col-span-2">
+          <p class="section-kicker mb-4">Hosted Experience</p>
+          <h2 class="font-heading text-3xl lg:text-4xl mb-6">{experience.name}</h2>
+          <div class="flex items-center gap-3 mb-10">
+            <div class="w-12 h-0.5 bg-brass"></div>
+            <div class="w-1.5 h-1.5 bg-brass rotate-45"></div>
+          </div>
+
+          <p class="text-text text-lg leading-relaxed mb-12">{experience.description}</p>
+
+          <!-- Highlights -->
+          <h3 class="font-heading text-2xl mb-6">Tour Highlights</h3>
+          <ul class="space-y-4 mb-12">
+            {experience.highlights.map((highlight) => (
+              <li class="flex items-start gap-3">
+                <span class="w-2 h-2 bg-brass rotate-45 mt-1.5 flex-shrink-0"></span>
+                <span class="text-text">{highlight}</span>
+              </li>
+            ))}
+          </ul>
+
+          <!-- Host Info -->
+          <div class="border-t border-gray-200 pt-8">
+            <h3 class="font-heading text-2xl mb-6">Your Host</h3>
+            <div class="flex items-center gap-5">
+              <div class="w-20 h-20 rounded-full bg-celtic/10 border-2 border-brass/30 flex items-center justify-center flex-shrink-0">
+                <span class="text-celtic font-semibold text-xl">{initials}</span>
+              </div>
+              <div>
+                <p class="font-heading text-xl text-charcoal">{experience.host.name}</p>
+                <p class="text-text-muted text-sm">{experience.host.title}</p>
+                <p class="text-text-muted text-xs mt-1 italic">Your personal guide throughout this experience</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Booking Card -->
+        <div class="lg:col-span-1">
+          <div class="glass-card card-lift p-8 lg:p-10 sticky top-32">
+            <!-- Status Badge -->
+            <div class="mb-6">
+              <span class={`inline-block px-4 py-2 text-xs font-medium tracking-wide ${statusClass[experience.status]}`}>
+                {statusLabel[experience.status]}
+              </span>
+            </div>
+
+            <!-- Dates -->
+            <div class="mb-6">
+              <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Dates</p>
+              <p class="text-text">{experience.dates}</p>
+            </div>
+
+            <!-- Price -->
+            {experience.price && (
+              <div class="mb-6">
+                <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Price</p>
+                <p class="font-heading text-2xl text-charcoal">{experience.price}</p>
+              </div>
+            )}
+
+            <!-- Spots Remaining -->
+            {experience.spotsRemaining && (
+              <div class="mb-8">
+                <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Availability</p>
+                <p class="text-brass font-medium">{experience.spotsRemaining} spots remaining</p>
+              </div>
+            )}
+
+            <!-- CTA -->
+            {experience.status !== 'sold_out' ? (
+              <a
+                href={`/contact?experience=${experience.id}`}
+                class="btn-primary btn-md btn-primary-celtic block w-full text-center"
+              >
+                Enquire Now
+              </a>
+            ) : (
+              <a
+                href="/contact"
+                class="btn-secondary btn-md block w-full text-center"
+              >
+                Join Waitlist
+              </a>
+            )}
+
+            <p class="text-text-muted text-xs text-center mt-4">No commitment required</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- More Experiences -->
+  {otherExperiences.length > 0 && (
+    <section class="section-padding bg-champagne/30">
+      <div class="content-wide px-6 lg:px-12">
+        <SectionHeading
+          kicker="Explore More"
+          title="Other Experiences"
+          centered
+        />
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+          {otherExperiences.map((exp) => (
+            <HostedExperienceCard experience={exp} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>

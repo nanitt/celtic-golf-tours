@@ -1,0 +1,130 @@
+---
+/**
+ * TexturedSection - Wrapper with luxury texture options
+ *
+ * Provides background textures for premium feel:
+ * - pressed-paper: Subtle paper texture
+ * - linen: Fine linen weave
+ * - topo: Topographical lines (golf course inspired)
+ * - noise: CSS-generated subtle noise
+ * - none: No texture (default)
+ */
+
+interface Props {
+  texture?: 'pressed-paper' | 'linen' | 'topo' | 'noise' | 'none';
+  background?: 'white' | 'cream' | 'stone' | 'celtic' | 'charcoal';
+  class?: string;
+  padding?: 'section' | 'small' | 'none';
+}
+
+const {
+  texture = 'none',
+  background = 'white',
+  class: className = '',
+  padding = 'section'
+} = Astro.props;
+
+const bgClasses: Record<string, string> = {
+  white: 'bg-white',
+  cream: 'bg-cream',
+  stone: 'bg-stone',
+  celtic: 'bg-celtic',
+  charcoal: 'bg-charcoal'
+};
+
+const paddingClasses: Record<string, string> = {
+  section: 'section-padding',
+  small: 'py-12 lg:py-16',
+  none: ''
+};
+
+const textureClasses: Record<string, string> = {
+  'pressed-paper': 'texture-pressed-paper',
+  'linen': 'texture-linen',
+  'topo': 'texture-topo',
+  'noise': 'texture-noise',
+  'none': ''
+};
+---
+
+<section
+  class:list={[
+    'relative overflow-hidden',
+    bgClasses[background],
+    paddingClasses[padding],
+    textureClasses[texture],
+    className
+  ]}
+>
+  <!-- Texture overlay layer -->
+  {texture !== 'none' && (
+    <div class="texture-overlay absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+  )}
+
+  <!-- Content -->
+  <div class="relative z-10">
+    <slot />
+  </div>
+</section>
+
+<style>
+  /* Pressed Paper Texture */
+  .texture-pressed-paper .texture-overlay {
+    background-image: url('/textures/pressed-paper.webp');
+    background-repeat: repeat;
+    background-size: 400px 400px;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+  }
+
+  /* Linen Texture */
+  .texture-linen .texture-overlay {
+    background-image: url('/textures/linen-subtle.webp');
+    background-repeat: repeat;
+    background-size: 300px 300px;
+    opacity: 0.3;
+    mix-blend-mode: multiply;
+  }
+
+  /* Topographical Lines */
+  .texture-topo .texture-overlay {
+    background-image: url('/textures/topo-lines.svg');
+    background-repeat: repeat;
+    background-size: 600px 600px;
+    opacity: 0.08;
+  }
+
+  /* CSS Noise Fallback */
+  .texture-noise .texture-overlay {
+    background-image:
+      repeating-radial-gradient(
+        circle at 100% 100%,
+        transparent 0,
+        rgba(0,0,0,0.02) 1px,
+        transparent 2px,
+        transparent 4px
+      ),
+      repeating-radial-gradient(
+        circle at 0% 0%,
+        transparent 0,
+        rgba(0,0,0,0.015) 1px,
+        transparent 2px,
+        transparent 3px
+      );
+    opacity: 1;
+  }
+
+  /* Dark backgrounds need inverted blend */
+  .bg-celtic .texture-overlay,
+  .bg-charcoal .texture-overlay {
+    mix-blend-mode: overlay;
+    opacity: 0.15;
+  }
+
+  /* Reduced motion - disable any animated textures */
+  @media (prefers-reduced-motion: reduce) {
+    .texture-overlay {
+      animation: none;
+    }
+  }
+</style>

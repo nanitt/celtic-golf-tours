@@ -1,0 +1,25 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<!-- British Isles - actual geographic silhouette -->
+<svg
+  viewBox="0 20 300 235"
+  fill="currentColor"
+  class={className}
+  aria-hidden="true"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Ireland -->
+  <path d="M 95,153 L 99,171 L 80,193 L 36,208 L 1,204 L 21,178 L 8,153 L 42,133 L 61,122 L 66,135 L 61,149 L 76,148 L 95,153 Z"/>
+
+  <!-- Great Britain -->
+  <path d="M 175,34 L 148,61 L 174,58 L 201,58 L 195,78 L 172,101 L 198,102 L 200,105 L 222,134 L 239,138 L 255,167 L 262,177 L 292,182 L 289,198 L 276,205 L 286,218 L 264,231 L 230,231 L 188,237 L 176,233 L 160,244 L 136,241 L 119,251 L 106,246 L 142,220 L 165,214 L 164,214 L 125,210 L 118,200 L 144,192 L 131,179 L 136,163 L 173,165 L 173,165 L 176,150 L 160,135 L 159,135 L 129,130 L 123,123 L 132,112 L 124,105 L 110,117 L 109,93 L 96,80 L 105,55 L 125,34 L 145,36 L 175,34 Z"/>
+
+  <!-- Northern Ireland -->
+  <path d="M 108,136 L 95,153 L 76,148 L 61,149 L 66,135 L 61,122 L 82,121 L 108,136 Z"/>
+</svg>

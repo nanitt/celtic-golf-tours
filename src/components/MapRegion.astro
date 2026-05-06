@@ -1,0 +1,106 @@
+---
+/**
+ * MapRegion - Individual clickable SVG region for the interactive map
+ * Handles visual styling and data attributes for interactions
+ */
+
+import type { MapRegion as MapRegionType } from '../data/map-regions';
+
+interface Props {
+  region: MapRegionType;
+  class?: string;
+}
+
+const { region, class: className = '' } = Astro.props;
+---
+
+<g
+  class:list={['map-region', className]}
+  data-region-id={region.id}
+  data-ambient-sound={region.ambientSound}
+  tabindex="0"
+  role="button"
+  aria-label={`${region.name}: ${region.tagline}. ${region.courses.length} featured courses. Click to explore.`}
+>
+  <slot />
+
+  <!-- Region label (shown on smaller screens or as fallback) -->
+  <text
+    x={region.centerX}
+    y={region.centerY}
+    class="region-label"
+    text-anchor="middle"
+    dominant-baseline="middle"
+  >
+    {region.name}
+  </text>
+</g>
+
+<style is:global>
+  .map-region {
+    cursor: pointer;
+    outline: none;
+    transition: opacity 0.3s var(--ease-smooth);
+  }
+
+  /* Region paths */
+  .map-region path,
+  .map-region polygon {
+    fill: var(--color-celtic);
+    fill-opacity: 0.6;
+    stroke: var(--color-brass);
+    stroke-width: 1;
+    transition: all 0.3s var(--ease-smooth);
+  }
+
+  /* Hover state */
+  .map-region:hover path,
+  .map-region:hover polygon,
+  .map-region:focus path,
+  .map-region:focus polygon,
+  .map-region.is-active path,
+  .map-region.is-active polygon {
+    fill-opacity: 0.85;
+    stroke-width: 2;
+    filter: drop-shadow(0 0 12px rgba(139, 115, 85, 0.5));
+  }
+
+  /* Dimmed state (when another region is active) */
+  .map-region.is-dimmed path,
+  .map-region.is-dimmed polygon {
+    fill-opacity: 0.3;
+    stroke-opacity: 0.5;
+  }
+
+  /* Focus ring for accessibility */
+  .map-region:focus-visible path,
+  .map-region:focus-visible polygon {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 4px;
+  }
+
+  /* Region label */
+  .region-label {
+    font-family: var(--font-heading);
+    font-size: 10px;
+    fill: white;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .map-region:hover .region-label,
+  .map-region:focus .region-label,
+  .map-region.is-active .region-label {
+    opacity: 1;
+  }
+
+  /* Show labels on mobile */
+  @media (max-width: 768px) {
+    .region-label {
+      opacity: 0.8;
+      font-size: 8px;
+    }
+  }
+</style>

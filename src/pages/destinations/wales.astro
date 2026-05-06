@@ -1,0 +1,54 @@
+---
+import DestinationPage from '../../components/DestinationPage.astro';
+
+const courses = [
+  {
+    name: 'Royal Porthcawl',
+    description: 'Wales\' finest links, a true championship test along the Glamorgan coast.',
+    image: 'https://images.unsplash.com/photo-1610382987154-e51e9025580a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Celtic Manor - Twenty Ten',
+    description: 'Host of the 2010 Ryder Cup, a modern classic in the Welsh valleys.',
+    image: 'https://images.unsplash.com/photo-1549310705-a5cfd4627c06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Royal St David\'s',
+    description: 'Set against the backdrop of Harlech Castle, one of Britain\'s most scenic courses.',
+    image: 'https://images.unsplash.com/photo-1557316655-8715fdecd2d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Pennard',
+    description: 'The "links in the sky" perched on Gower Peninsula cliffs.',
+    image: 'https://images.unsplash.com/photo-1545244407-25f1617c865b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Tenby',
+    description: 'Wales\' oldest club, a charming links on the Pembrokeshire coast.',
+    image: 'https://images.unsplash.com/photo-1523562457378-685782b382a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Conwy',
+    description: 'A hidden gem on the North Wales coast with stunning mountain views.',
+    image: 'https://images.unsplash.com/photo-1702912092980-05aca31e5243?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  }
+];
+
+const highlights = [
+  'Outstanding value compared to Scotland and Ireland',
+  'Championship courses including Ryder Cup venue',
+  'Dramatic castles and stunning coastal scenery',
+  'Uncrowded fairways and authentic experiences',
+  'Easy access from England and major airports',
+  'Warm Welsh hospitality throughout'
+];
+---
+
+<DestinationPage
+  name="Wales"
+  tagline="Golf's best-kept secret. Discover championship courses amidst castles and coastline."
+  description="Wales is perhaps golf's greatest hidden gem. This small but mighty nation punches well above its weight with world-class courses, dramatic scenery, and exceptional value. From the championship links of Royal Porthcawl to the Ryder Cup venue at Celtic Manor, Wales offers a diverse golfing experience set against a backdrop of medieval castles, rugged coastlines, and the warmth of Welsh hospitality."
+  heroImage="https://images.unsplash.com/photo-1549310705-a5cfd4627c06?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+  courses={courses}
+  highlights={highlights}
+/>

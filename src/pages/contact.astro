@@ -1,0 +1,229 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import { site, hasAddress, formatAddressLines } from '../data/site';
+
+const addressLines = formatAddressLines();
+const showAddress = hasAddress();
+---
+
+<Layout title="Contact Us" description="Get in touch with Celtic Golf Tours to plan your perfect golf tour across Scotland, Ireland, Wales, and England.">
+  <Hero
+    title="Let's Plan Your Tour"
+    subtitle="Tell us about your dream golf trip and we'll make it happen"
+    backgroundImage="https://images.unsplash.com/photo-1700667315345-e0c51587b2fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    size="large"
+    ctaText=""
+  />
+
+  <section class="section-padding bg-white">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-20">
+        <!-- Contact Form -->
+        <div class="lg:col-span-2">
+          <p class="section-kicker mb-4">Start the Conversation</p>
+          <h2 class="font-heading text-3xl lg:text-4xl mb-4">Tell Us Your Vision</h2>
+          <!-- Narrative microcopy -->
+          <p class="text-text leading-relaxed mb-10 max-w-lg">
+            Every tour starts with a conversation. Tell us what excites you and we'll take it from there.
+          </p>
+
+          <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/contact/thank-you" class="space-y-8">
+            <input type="hidden" name="form-name" value="contact" />
+            <input type="hidden" name="bot-field" />
+
+            <!-- 1. Dream trip (story-first) -->
+            <div>
+              <label for="message" class="block text-sm font-medium text-charcoal mb-3">
+                What does your perfect golf trip look like?
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows="5"
+                class="w-full px-5 py-4 input-premium resize-none text-charcoal"
+                placeholder="The courses on your bucket list, the experiences you're after, anything that matters to you..."
+              ></textarea>
+            </div>
+
+            <!-- 2. Destination + Dates -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div>
+                <label for="destination" class="block text-sm font-medium text-charcoal mb-3">
+                  Where would you like to play?
+                </label>
+                <select
+                  id="destination"
+                  name="destination"
+                  class="w-full px-5 py-4 input-premium select-premium text-charcoal appearance-none"
+                >
+                  <option value="">Select a destination</option>
+                  <option value="scotland">Scotland</option>
+                  <option value="ireland">Ireland</option>
+                  <option value="wales">Wales</option>
+                  <option value="england">England</option>
+                  <option value="multiple">Multiple Destinations</option>
+                  <option value="unsure">Not Sure Yet</option>
+                </select>
+              </div>
+              <div>
+                <label for="travelDates" class="block text-sm font-medium text-charcoal mb-3">
+                  When are you thinking?
+                </label>
+                <input
+                  type="text"
+                  id="travelDates"
+                  name="travelDates"
+                  class="w-full px-5 py-4 input-premium text-charcoal"
+                  placeholder="e.g., May 2026, Flexible Summer"
+                />
+              </div>
+            </div>
+
+            <!-- 3. Group size -->
+            <div>
+              <label for="groupSize" class="block text-sm font-medium text-charcoal mb-3">
+                How many in your party?
+              </label>
+              <select
+                id="groupSize"
+                name="groupSize"
+                class="w-full px-5 py-4 input-premium select-premium text-charcoal appearance-none sm:max-w-xs"
+              >
+                <option value="">Select group size</option>
+                <option value="1-2">1-2 golfers</option>
+                <option value="3-4">3-4 golfers</option>
+                <option value="5-8">5-8 golfers</option>
+                <option value="9-12">9-12 golfers</option>
+                <option value="12+">12+ golfers</option>
+              </select>
+            </div>
+
+            <!-- 4. Name -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div>
+                <label for="firstName" class="block text-sm font-medium text-charcoal mb-3">
+                  First name
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  required
+                  class="w-full px-5 py-4 input-premium text-charcoal"
+                  placeholder="John"
+                  autocomplete="given-name"
+                />
+              </div>
+              <div>
+                <label for="lastName" class="block text-sm font-medium text-charcoal mb-3">
+                  Last name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  required
+                  class="w-full px-5 py-4 input-premium text-charcoal"
+                  placeholder="Smith"
+                  autocomplete="family-name"
+                />
+              </div>
+            </div>
+
+            <!-- 5. Email + Phone -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div>
+                <label for="email" class="block text-sm font-medium text-charcoal mb-3">
+                  Best email to reach you
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="w-full px-5 py-4 input-premium text-charcoal"
+                  placeholder="john@example.com"
+                  autocomplete="email"
+                />
+              </div>
+              <div>
+                <label for="phone" class="block text-sm font-medium text-charcoal mb-3">
+                  Phone (optional)
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="w-full px-5 py-4 input-premium text-charcoal"
+                  placeholder="+44 123 456 7890"
+                  autocomplete="tel"
+                />
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                class="btn-primary btn-lg"
+              >
+                Send Enquiry
+              </button>
+            </div>
+
+            <p class="text-xs text-text-muted leading-relaxed">
+              By submitting this form, you agree to our <a href="/privacy" class="text-celtic hover:text-celtic-light transition-colors">privacy policy</a>.
+            </p>
+          </form>
+        </div>
+
+        <!-- Contact Info Sidebar -->
+        <div class="lg:col-span-1">
+          <div class="glass-card card-lift p-10 lg:p-12 sticky top-32">
+            <h3 class="font-heading text-2xl mb-8">Get in Touch</h3>
+
+            <div class="space-y-8">
+              <div>
+                <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Phone</p>
+                {site.phone ? (
+                  <a href={`tel:${site.phone}`} class="text-text hover:text-charcoal transition-colors">
+                    {site.phone}
+                  </a>
+                ) : (
+                  <p class="text-text">Available on request</p>
+                )}
+              </div>
+
+              <div>
+                <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Email</p>
+                <a href={`mailto:${site.email}`} class="text-text hover:text-charcoal transition-colors">
+                  {site.email}
+                </a>
+              </div>
+
+              {showAddress && (
+                <div>
+                  <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Address</p>
+                  <address class="text-text not-italic leading-relaxed">
+                    {addressLines.map((line) => (
+                      <>
+                        {line}
+                        <br />
+                      </>
+                    ))}
+                  </address>
+                </div>
+              )}
+
+              <div class="pt-4 border-t border-brass/30">
+                <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Response Time</p>
+                <p class="text-text">Within 24 hours on weekdays. Usually much sooner.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

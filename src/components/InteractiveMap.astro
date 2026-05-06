@@ -1,0 +1,538 @@
+---
+/**
+ * InteractiveMap - Course discovery map using SimpleMaps data
+ * Geographically accurate SVG map of British Isles
+ */
+
+import { mapRegions } from '../data/map-regions';
+import CoursePopup from './CoursePopup.astro';
+
+interface Props {
+  enableAudio?: boolean;
+  class?: string;
+}
+
+const { enableAudio = false, class: className = '' } = Astro.props;
+
+const regionCourses = mapRegions.map(region => ({
+  ...region,
+  featuredCourse: region.courses[0]
+}));
+---
+
+<div class:list={['interactive-map-container', className]} data-interactive-map>
+  <div class="map-wrapper">
+    <div class="map-container" data-map-container>
+      <object
+        data="/maps/british-isles.svg"
+        type="image/svg+xml"
+        class="map-object"
+        aria-label="Interactive map of golf destinations in the British Isles"
+        loading="lazy"
+      >
+        <p>Your browser does not support SVG</p>
+      </object>
+      <p class="map-hint">
+        <span class="desktop-hint"><kbd>Tab</kbd> to navigate · <kbd>Enter</kbd> to explore</span>
+        <span class="mobile-hint">Tap a region to explore</span>
+      </p>
+    </div>
+
+    <div class="popup-panel" data-popup-panel>
+      <div class="popup-placeholder">
+        <p class="placeholder-text">Hover over a region to discover signature courses</p>
+      </div>
+      {regionCourses.map(region => (
+        <div class="popup-card" data-popup={region.id}>
+          <div class="popup-header">
+            <h3>{region.name}</h3>
+            <p class="tagline">{region.tagline}</p>
+          </div>
+          <CoursePopup course={region.featuredCourse} />
+          <a href={`/destinations/${region.slug}`} class="popup-link">
+            Explore {region.name} →
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .interactive-map-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .map-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .map-container {
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .map-container::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: url('/textures/topo-lines.svg') repeat;
+    background-size: 300px;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .map-container::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: url('/textures/pressed-paper.webp') repeat;
+    background-size: 250px;
+    opacity: 0.25;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .map-object {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Popup panel */
+  .popup-panel {
+    width: 100%;
+    max-width: 320px;
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-placeholder {
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .placeholder-text {
+    color: #999;
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  .popup-placeholder.hidden {
+    display: none;
+  }
+
+  .popup-card {
+    display: none;
+    background: white;
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    /* Static shadow on container - not animated for 60fps */
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+  }
+
+  .popup-card.visible {
+    display: block;
+    animation: photoDropOnTable 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes photoDropOnTable {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px) rotate(-8deg) scale(0.9);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(4px) rotate(0.5deg) scale(1.01);
+    }
+    80% {
+      transform: translateY(-2px) rotate(-0.3deg) scale(1);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .popup-card.visible {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .popup-header {
+    text-align: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .popup-header h3 {
+    font-family: var(--font-heading, Georgia, serif);
+    font-size: 1.25rem;
+    color: #1a1a1a;
+    margin: 0 0 0.25rem;
+  }
+
+  .popup-header .tagline {
+    font-size: 0.875rem;
+    color: #8b7355;
+    margin: 0;
+  }
+
+  .popup-link {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #2d5a3d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+
+  .popup-link:hover {
+    background: #3d7a52;
+  }
+
+  .map-hint {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #666;
+    margin: 0.75rem 0 0;
+    padding: 0;
+  }
+
+  .map-hint kbd {
+    display: inline-block;
+    padding: 0.1rem 0.4rem;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 0.7rem;
+  }
+
+  .map-hint .mobile-hint {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .map-hint .desktop-hint {
+      display: none;
+    }
+    .map-hint .mobile-hint {
+      display: inline;
+    }
+  }
+
+  /* Desktop - side by side layout */
+  @media (min-width: 769px) {
+    .map-wrapper {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      padding: 1rem 2rem;
+    }
+
+    .map-container {
+      max-width: 450px;
+      flex-shrink: 0;
+    }
+
+    .popup-panel {
+      max-width: 320px;
+      flex-shrink: 0;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .map-container {
+      max-width: 300px;
+    }
+
+    .popup-panel {
+      max-width: 300px;
+      min-height: 320px;
+    }
+  }
+</style>
+
+<script>
+  function initMap() {
+    const container = document.querySelector('[data-interactive-map]');
+    if (!container) return;
+
+    const mapObject = container.querySelector('.map-object') as HTMLObjectElement;
+    const popups = container.querySelectorAll('.popup-card');
+    const placeholder = container.querySelector('.popup-placeholder');
+
+    function showPopup(regionId: string) {
+      placeholder?.classList.add('hidden');
+      popups.forEach(p => {
+        const popupId = p.getAttribute('data-popup');
+        if (popupId === regionId) {
+          p.classList.add('visible');
+        } else {
+          p.classList.remove('visible');
+        }
+      });
+    }
+
+    function hidePopups() {
+      popups.forEach(p => p.classList.remove('visible'));
+      placeholder?.classList.remove('hidden');
+    }
+
+    function setupSVGInteractions(svgDoc: Document) {
+      const regions = svgDoc.querySelectorAll('.map-region');
+
+      // Hide custom cursor when hovering over SVG (cursor doesn't work well inside object tag)
+      const svgElement = svgDoc.querySelector('svg');
+      const luxuryCursor = document.getElementById('luxury-cursor');
+      if (svgElement && luxuryCursor) {
+        svgElement.addEventListener('mouseenter', () => {
+          luxuryCursor.style.opacity = '0';
+        });
+        svgElement.addEventListener('mouseleave', () => {
+          luxuryCursor.style.opacity = '1';
+        });
+      }
+
+      // Debounce state for hover interactions
+      let pendingRegion: Element | null = null;
+      let activeRegion: Element | null = null;
+      let enterTimeoutId: number | null = null;
+      let leaveTimeoutId: number | null = null;
+
+      const ENTER_DELAY = 50; // Debounce hover to prevent rapid state changes
+      const LEAVE_DELAY = 100; // Small delay to prevent flicker on complex coastlines
+
+      function activateRegion(region: Element, regionId: string) {
+        activeRegion = region;
+        // Batch classList updates in single rAF to avoid layout thrashing
+        const updates = Array.from(regions).map(r => ({
+          element: r,
+          add: r === region ? 'active' : 'dimmed',
+          remove: r === region ? 'dimmed' : 'active'
+        }));
+        requestAnimationFrame(() => {
+          updates.forEach(({ element, add, remove }) => {
+            element.classList.add(add);
+            element.classList.remove(remove);
+          });
+        });
+        showPopup(regionId);
+      }
+
+      function deactivateAllRegions() {
+        activeRegion = null;
+        pendingRegion = null;
+        regions.forEach(r => r.classList.remove('active', 'dimmed'));
+        hidePopups();
+      }
+
+      // Apply styles to SVG - progressive loading (starts gray, fills to green)
+      const style = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
+      style.textContent = `
+        .map-region { cursor: pointer; outline: none; }
+        .map-region text { pointer-events: none; }
+        .map-region path {
+          fill: #d0d0d0;
+          fill-opacity: 0.3;
+          stroke: none;
+          transition:
+            fill 0.6s ease,
+            fill-opacity 0.4s ease,
+            transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          /* filter applied instantly - animating feGaussianBlur is expensive */
+          transform-origin: center center;
+          transform-box: fill-box;
+        }
+        .map-region.loaded path {
+          fill: #2d5a3d;
+          fill-opacity: 0.5;
+        }
+        .map-region:hover path,
+        .map-region:focus path,
+        .map-region.active path {
+          fill: #1B3022;
+          fill-opacity: 0.85;
+          transform: scale(1.02);
+          filter: url(#glow-enhanced);
+        }
+        .map-region.dimmed path {
+          fill-opacity: 0.12;
+          transform: scale(0.98);
+        }
+      `;
+
+      // Inject enhanced gold glow filter into SVG defs
+      const svg = svgDoc.querySelector('svg');
+      if (svg) {
+        let defs = svg.querySelector('defs');
+        if (!defs) {
+          defs = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'defs');
+          svg.insertBefore(defs, svg.firstChild);
+        }
+        const glowFilter = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'filter');
+        glowFilter.setAttribute('id', 'glow-enhanced');
+        glowFilter.setAttribute('x', '-30%');
+        glowFilter.setAttribute('y', '-30%');
+        glowFilter.setAttribute('width', '160%');
+        glowFilter.setAttribute('height', '160%');
+        glowFilter.innerHTML = `
+          <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/>
+          <feFlood flood-color="#c9a959" flood-opacity="0.6"/>
+          <feComposite in2="blur" operator="in"/>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        `;
+        defs.appendChild(glowFilter);
+      }
+      svgDoc.querySelector('svg')?.insertBefore(style, svgDoc.querySelector('svg')?.firstChild || null);
+
+      // Detect touch device for mobile tap interaction
+      const isTouchDevice = 'ontouchstart' in window;
+
+      regions.forEach(region => {
+        const regionId = region.getAttribute('data-region');
+
+        if (isTouchDevice) {
+          // Mobile: tap to show popup, tap again to navigate
+          region.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (activeRegion === region) {
+              // Tap again to navigate
+              if (regionId) window.location.href = `/destinations/${regionId}`;
+            } else {
+              // First tap shows popup
+              if (regionId) activateRegion(region, regionId);
+            }
+          }, { passive: false });
+        } else {
+          // Desktop: hover interactions
+          region.addEventListener('mouseenter', () => {
+            // Cancel any pending leave
+            if (leaveTimeoutId !== null) {
+              clearTimeout(leaveTimeoutId);
+              leaveTimeoutId = null;
+            }
+
+            // Skip if already active
+            if (activeRegion === region) return;
+
+            // Cancel any pending enter for different region
+            if (enterTimeoutId !== null) {
+              clearTimeout(enterTimeoutId);
+              enterTimeoutId = null;
+            }
+
+            pendingRegion = region;
+
+            enterTimeoutId = window.setTimeout(() => {
+              enterTimeoutId = null;
+              if (pendingRegion === region && regionId) {
+                activateRegion(region, regionId);
+              }
+            }, ENTER_DELAY);
+          });
+
+          region.addEventListener('mouseleave', (e) => {
+            // Check if mouse moved to a child element within the same region
+            const related = (e as MouseEvent).relatedTarget as Element | null;
+            if (related && region.contains(related)) return;
+
+            // If just pending (not yet active), cancel immediately
+            if (pendingRegion === region && activeRegion !== region) {
+              if (enterTimeoutId !== null) {
+                clearTimeout(enterTimeoutId);
+                enterTimeoutId = null;
+              }
+              pendingRegion = null;
+              return;
+            }
+
+            // For active regions, delay before deactivating
+            if (activeRegion === region) {
+              leaveTimeoutId = window.setTimeout(() => {
+                leaveTimeoutId = null;
+                if (activeRegion === region && pendingRegion === null) {
+                  deactivateAllRegions();
+                }
+              }, LEAVE_DELAY);
+            }
+          });
+
+          region.addEventListener('click', () => {
+            if (regionId) window.location.href = `/destinations/${regionId}`;
+          });
+        }
+
+        // Keyboard navigation works on both
+        region.addEventListener('focus', () => {
+          if (enterTimeoutId !== null) clearTimeout(enterTimeoutId);
+          if (leaveTimeoutId !== null) clearTimeout(leaveTimeoutId);
+          if (regionId) activateRegion(region, regionId);
+        });
+
+        region.addEventListener('blur', () => {
+          if (enterTimeoutId !== null) clearTimeout(enterTimeoutId);
+          if (leaveTimeoutId !== null) clearTimeout(leaveTimeoutId);
+          deactivateAllRegions();
+        });
+
+        region.addEventListener('keydown', (e) => {
+          if ((e as KeyboardEvent).key === 'Enter' && regionId) {
+            window.location.href = `/destinations/${regionId}`;
+          }
+        });
+      });
+
+      // Progressive loading: reveal regions with green fill after setup
+      regions.forEach(r => r.classList.add('loaded'));
+    }
+
+    // Wait for SVG to load
+    if (mapObject) {
+      mapObject.addEventListener('load', () => {
+        const svgDoc = mapObject.contentDocument;
+        if (svgDoc) {
+          setupSVGInteractions(svgDoc);
+        }
+      });
+
+      // If already loaded
+      if (mapObject.contentDocument?.querySelector('svg')) {
+        setupSVGInteractions(mapObject.contentDocument);
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMap);
+  } else {
+    initMap();
+  }
+</script>

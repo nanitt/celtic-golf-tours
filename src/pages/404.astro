@@ -1,0 +1,40 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import TexturedSection from '../components/TexturedSection.astro';
+import CelticDivider from '../components/CelticDivider.astro';
+---
+
+<Layout title="Page Not Found" noindex={true}>
+  <Hero
+    title="Page Not Found"
+    subtitle="The page you're looking for seems to have wandered off the fairway."
+    backgroundImage="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    size="medium"
+    ctaText=""
+  />
+
+  <TexturedSection texture="pressed-paper" background="stone">
+    <div class="max-w-2xl mx-auto text-center px-6">
+      <CelticDivider variant="knot" color="brass" width="narrow" class="mb-8" />
+      <h2 class="font-heading-display text-3xl text-charcoal mb-4" style="font-weight: 400;">Lost on the Links?</h2>
+      <p class="text-text text-lg mb-10 leading-relaxed">
+        We couldn't find what you were looking for. Let us help you get back on course.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a
+          href="/"
+          class="btn-primary btn-md btn-primary-celtic"
+        >
+          Back to Home
+        </a>
+        <a
+          href="/contact"
+          class="btn-secondary btn-md"
+        >
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </TexturedSection>
+</Layout>

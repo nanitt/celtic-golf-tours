@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import { site } from '../data/site';
+---
+
+<Layout title="Privacy Policy" description="Celtic Golf Tours privacy policy. Learn how we collect, use, and protect your personal information.">
+  <Hero
+    title="Privacy Policy"
+    backgroundImage="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    size="medium"
+    ctaText=""
+  />
+
+  <!-- TODO: This is placeholder legal content. Have it reviewed by a qualified legal professional before launch. -->
+  <section class="section-padding bg-white">
+    <div class="max-w-3xl mx-auto px-6 lg:px-12">
+      <p class="text-text-muted text-sm mb-12">Last updated: February 2026</p>
+
+      <div class="prose prose-lg max-w-none space-y-10">
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">1. Information We Collect</h2>
+          <p class="text-text leading-relaxed mb-4">
+            When you use our website or enquire about our tours, we may collect the following personal information:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-text">
+            <li>Name and contact details (email address, phone number)</li>
+            <li>Tour preferences and travel dates</li>
+            <li>Group size and special requirements</li>
+            <li>Communication history with our team</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">2. How We Use Your Information</h2>
+          <p class="text-text leading-relaxed mb-4">We use your personal information to:</p>
+          <ul class="list-disc pl-6 space-y-2 text-text">
+            <li>Respond to your enquiries and plan your golf tour</li>
+            <li>Send you relevant information about tours and services you've expressed interest in</li>
+            <li>Improve our website and services</li>
+            <li>Comply with legal obligations</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">3. Cookies</h2>
+          <p class="text-text leading-relaxed">
+            Our website uses essential cookies to ensure proper functionality. We may also use analytics cookies to understand how visitors interact with our site. You can control cookie preferences through your browser settings.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">4. Third Parties</h2>
+          <p class="text-text leading-relaxed">
+            We do not sell or share your personal information with third parties for marketing purposes. We may share information with trusted partners (such as hotels, golf courses, and transport providers) solely for the purpose of arranging your tour.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">5. Your Rights</h2>
+          <p class="text-text leading-relaxed mb-4">You have the right to:</p>
+          <ul class="list-disc pl-6 space-y-2 text-text">
+            <li>Access the personal information we hold about you</li>
+            <li>Request correction of inaccurate information</li>
+            <li>Request deletion of your personal information</li>
+            <li>Withdraw consent for marketing communications at any time</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">6. Data Security</h2>
+          <p class="text-text leading-relaxed">
+            We take appropriate measures to protect your personal information from unauthorised access, alteration, disclosure, or destruction. All data is transmitted securely via HTTPS.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">7. Contact Us</h2>
+          <p class="text-text leading-relaxed">
+            If you have any questions about this privacy policy or wish to exercise your rights, please contact us at{' '}
+            <a href={`mailto:${site.email}`} class="text-celtic hover:text-celtic-light transition-colors">{site.email}</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,232 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CinematicHero from '../components/CinematicHero.astro';
+import HostedExperienceCard from '../components/HostedExperienceCard.astro';
+import TestimonialFeature from '../components/TestimonialFeature.astro';
+import { getFeaturedExperiences } from '../data/sanity-experiences';
+import { destinations as sharedDestinations, unsplashUrl } from '../data/destinations';
+
+const destinations = sharedDestinations.map(d => ({
+  ...d,
+  image: unsplashUrl(d.photoId, 2000, 85),
+}));
+
+const featuredTestimonial = {
+  quote: "Celtic Golf Tours didn't just plan a trip—they created an experience that will stay with me forever. Every course, every meal, every moment was perfect.",
+  name: "James Richardson",
+  location: "London, UK",
+  trip: "The St Andrews Pilgrimage, 2024"
+};
+
+const featuredExperiences = await getFeaturedExperiences(3);
+---
+
+<Layout title="Home">
+
+  <!-- Hero -->
+  <CinematicHero
+    title="St Andrews. Royal Portrush. Turnberry. Played the way they were meant to be."
+    subtitle="Expert-led golf tours to Scotland, Ireland, Wales and England — built on real relationships with the courses and the people who run them."
+    ctaText="Plan Your Trip"
+    ctaLink="/contact"
+    backgroundImage="https://images.unsplash.com/photo-1672871583040-42826d4e9ca4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=90"
+    showScrollProgress={false}
+    showTrustBar={true}
+  />
+
+  <!-- Course Name Showcase -->
+  <section class="py-20 lg:py-28 bg-celtic-dark relative overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.04]" style="background-image: url('/textures/topo-lines.svg'); background-size: 400px;"></div>
+    <div class="content-wide px-6 lg:px-12 relative text-center" data-reveal="fade-up">
+      <p class="font-heading-display text-3xl md:text-4xl lg:text-5xl text-champagne leading-relaxed" style="font-weight: 300; letter-spacing: 0.01em;">
+        St&nbsp;Andrews&ensp;&middot;&ensp;Royal&nbsp;Portrush&ensp;&middot;&ensp;Turnberry&ensp;&middot;&ensp;Muirfield
+      </p>
+      <p class="font-heading-display text-3xl md:text-4xl lg:text-5xl leading-relaxed mt-1" style="font-weight: 300; letter-spacing: 0.01em; color: rgba(245,245,241,0.5);">
+        Lahinch&ensp;&middot;&ensp;Royal&nbsp;Dornoch&ensp;&middot;&ensp;Ballybunion&ensp;&middot;&ensp;Carnoustie
+      </p>
+      <div class="flex items-center justify-center gap-4 mt-10 mb-6">
+        <div class="w-16 h-px bg-brass/30"></div>
+        <div class="w-1.5 h-1.5 bg-brass rotate-45 flex-shrink-0"></div>
+        <div class="w-16 h-px bg-brass/30"></div>
+      </div>
+      <p class="section-kicker-light">
+        If it matters to golfers, we know how to get you on it
+      </p>
+    </div>
+  </section>
+
+  <!-- About intro — asymmetric 2-column -->
+  <section class="section-padding bg-cream">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+
+        <!-- Left: large pull quote + stats -->
+        <div data-reveal="fade-up">
+          <blockquote class="font-heading-display text-3xl lg:text-4xl xl:text-[2.75rem] text-charcoal leading-snug" style="font-weight: 300;">
+            "No filler, no padding. Just the right courses, in the right order, at the right pace."
+          </blockquote>
+          <div class="grid grid-cols-3 gap-6 mt-14 pt-10 border-t border-charcoal/10">
+            <div>
+              <p class="font-heading text-3xl text-charcoal">150+</p>
+              <p class="text-text-muted text-xs tracking-[0.15em] uppercase mt-1">Tours Delivered</p>
+            </div>
+            <div>
+              <p class="font-heading text-3xl text-charcoal">20+</p>
+              <p class="text-text-muted text-xs tracking-[0.15em] uppercase mt-1">Years' Experience</p>
+            </div>
+            <div>
+              <p class="font-heading text-3xl text-charcoal">4</p>
+              <p class="text-text-muted text-xs tracking-[0.15em] uppercase mt-1">Countries</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: body copy + CTA -->
+        <div data-reveal="fade-up" data-reveal-delay="2">
+          <p class="text-text leading-relaxed mb-6">
+            Celtic Golf Tours is a boutique golf travel company specialising in the courses of the British Isles. We plan the trips serious golfers can't easily plan themselves — the ones that require years of on-the-ground knowledge, real relationships with the clubs, and the kind of access that only comes from decades of showing up.
+          </p>
+          <p class="text-text leading-relaxed mb-10">
+            When you call us, you speak to someone who has walked the 18th at St Andrews, who knows the head pro at Lahinch, and who has scouted every hotel within striking distance of Royal Portrush. No call centres, no scripts. Just people who genuinely love this game.
+          </p>
+          <a href="/about" class="btn-ghost btn-md">
+            Our Story
+            <span class="arrow ml-2">→</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Destinations -->
+  <section class="section-padding bg-white">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="mb-12" data-reveal="fade-up">
+        <h2 class="font-heading text-charcoal" style="font-size: clamp(2rem, 4vw, var(--text-section));">Four countries. One obsession.</h2>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        {destinations.map((dest, index) => (
+          <a
+            href={dest.href}
+            class="group relative aspect-[3/4] overflow-hidden card-lift"
+            data-reveal="fade-up"
+            data-reveal-delay={index + 1}
+          >
+            <div
+              class="absolute inset-0 bg-cover bg-center scale-on-hover"
+              style={`background-image: url('${dest.image}')`}
+            />
+            <div class="absolute inset-0 overlay-default overlay-hover transition-premium" />
+            <div class="absolute inset-0 flex flex-col justify-end p-5">
+              <h3 class="font-heading text-2xl lg:text-3xl text-white">{dest.name}</h3>
+              <p class="text-white/50 text-[0.65rem] tracking-wider mt-2 leading-relaxed hidden sm:block">{dest.courses}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-10" data-reveal="fade-up">
+        <a href="/destinations" class="btn-ghost btn-md">
+          Explore destinations
+          <span class="arrow ml-2">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="py-16 bg-charcoal">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+        <div data-reveal="fade-up" data-reveal-delay="1">
+          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">500+</p>
+          <p class="section-kicker-light mt-2">Happy Golfers</p>
+        </div>
+        <div data-reveal="fade-up" data-reveal-delay="2">
+          <p class="font-heading-display text-4xl lg:text-5xl text-brass" style="font-weight: 300;">4.9</p>
+          <p class="section-kicker-light mt-2">Average Rating</p>
+        </div>
+        <div data-reveal="fade-up" data-reveal-delay="3">
+          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">150+</p>
+          <p class="section-kicker-light mt-2">Tours Completed</p>
+        </div>
+        <div data-reveal="fade-up" data-reveal-delay="4">
+          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">4</p>
+          <p class="section-kicker-light mt-2">Countries</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experiences -->
+  <section class="section-padding bg-stone">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="mb-12" data-reveal="fade-up">
+        <p class="section-kicker mb-4">Upcoming Departures</p>
+        <h2 class="font-heading text-charcoal" style="font-size: clamp(2rem, 4vw, var(--text-section));">Hosted Experiences</h2>
+        <p class="text-text mt-4 max-w-xl">Join an expert-led group departure to the world's greatest links courses. We keep groups deliberately small.</p>
+      </div>
+
+      {featuredExperiences[0] && (
+        <div class="mb-8" data-reveal="slide-left">
+          <HostedExperienceCard experience={featuredExperiences[0]} featured={true} />
+        </div>
+      )}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
+        {featuredExperiences.slice(1).map((exp, index) => (
+          <div data-reveal="slide-right" data-reveal-delay={index + 1}>
+            <HostedExperienceCard experience={exp} />
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-12" data-reveal="fade-up">
+        <a href="/experiences" class="btn-secondary btn-md">
+          View All Experiences
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section class="section-padding bg-white">
+    <div class="px-6 lg:px-12">
+      <TestimonialFeature
+        quote={featuredTestimonial.quote}
+        name={featuredTestimonial.name}
+        location={featuredTestimonial.location}
+        trip={featuredTestimonial.trip}
+      />
+      <div class="text-center mt-12">
+        <a href="/testimonials" class="btn-ghost btn-md">
+          Read More Reviews
+          <span class="arrow ml-2">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="group relative py-40 lg:py-48 overflow-hidden">
+    <div
+      class="absolute inset-0 bg-cover bg-center scale-on-hover"
+      style="background-image: url('https://images.unsplash.com/photo-1616939472071-a69e775e4d8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=85')"
+    />
+    <div class="absolute inset-0 overlay-default overlay-hover transition-premium" />
+    <div class="relative z-10 max-w-2xl mx-auto px-6 lg:px-12 text-center">
+      <h2 class="font-heading-display text-4xl md:text-5xl lg:text-6xl text-white mb-6" style="font-weight: 300;">
+        Your round at St Andrews<br class="hidden md:block" /> starts with a conversation.
+      </h2>
+      <p class="text-white/75 text-lg mb-10 max-w-lg mx-auto">
+        Tell us which courses are on your list. We'll handle the rest.
+      </p>
+      <a href="/contact" class="btn-primary btn-lg btn-primary-inverted">
+        Start Planning
+      </a>
+    </div>
+  </section>
+
+</Layout>

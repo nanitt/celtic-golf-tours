@@ -1,0 +1,54 @@
+---
+import DestinationPage from '../../components/DestinationPage.astro';
+
+const courses = [
+  {
+    name: 'Ballybunion - Old Course',
+    description: 'Consistently ranked among the world\'s best, this Kerry links is pure golf heaven.',
+    image: 'https://images.unsplash.com/photo-1693113448288-015fb6eed7c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Royal County Down',
+    description: 'Set beneath the Mountains of Mourne, often called the most beautiful course on Earth.',
+    image: 'https://images.unsplash.com/photo-1593167963207-fbc91640c60f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Royal Portrush',
+    description: 'Host of The Open Championship, featuring the dramatic Dunluce links.',
+    image: 'https://images.unsplash.com/photo-1616939472071-a69e775e4d8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Lahinch',
+    description: 'The St Andrews of Ireland, located on the Wild Atlantic Way in County Clare.',
+    image: 'https://images.unsplash.com/photo-1693113448333-0123750f17f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Waterville',
+    description: 'A remote links paradise on the Ring of Kerry, beloved by touring pros.',
+    image: 'https://images.unsplash.com/photo-1505216128104-44f34619861f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Portmarnock',
+    description: 'A classic links on a peninsula north of Dublin, hosting many Irish Opens.',
+    image: 'https://images.unsplash.com/photo-1760294752180-50102c9334ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  }
+];
+
+const highlights = [
+  'World-renowned links courses along the Wild Atlantic Way',
+  'The warmest welcome and famous Irish hospitality',
+  'Stunning coastal scenery and dramatic landscapes',
+  'Traditional pubs and exceptional local cuisine',
+  'Rich cultural heritage and historic sites',
+  'Flexible touring routes north and south'
+];
+---
+
+<DestinationPage
+  name="Ireland"
+  tagline="Where dramatic coastlines meet legendary links. Experience Irish golf at its finest."
+  description="Ireland offers some of the most spectacular and authentic links golf anywhere in the world. From the wild Atlantic coast of the west to the dramatic shores of Northern Ireland, the Emerald Isle is home to courses that consistently rank among the planet's best. Beyond the golf, Ireland captivates with its legendary hospitality, ancient history, and stunning natural beauty. Our Irish tours showcase the very best of this golfing paradise."
+  heroImage="https://images.unsplash.com/photo-1760294752180-50102c9334ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+  courses={courses}
+  highlights={highlights}
+/>

@@ -1,0 +1,170 @@
+---
+import type { HostedExperience } from '../data/hosted-experiences';
+
+interface Props {
+  experience: HostedExperience;
+  featured?: boolean;
+}
+
+const { experience, featured = false } = Astro.props;
+
+const statusText: Record<string, string> = {
+  open: 'Spots Available',
+  limited: experience.spotsRemaining ? `Only ${experience.spotsRemaining} Left` : 'Limited',
+  sold_out: 'Sold Out'
+};
+
+const isSoldOut = experience.status === 'sold_out';
+const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
+---
+
+{featured ? (
+  <!-- Featured Card: Split layout -->
+  <article class="group relative overflow-hidden">
+    <a href={linkHref} class="block lg:flex">
+      <!-- Image (60% on desktop) -->
+      <div class="relative overflow-hidden aspect-[3/4] lg:aspect-auto lg:w-[60%] lg:min-h-[500px]">
+        <div
+          class="absolute inset-0 bg-cover bg-center scale-on-hover duration-700"
+          style={`background-image: url('${experience.image}')`}
+        ></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-black/30"></div>
+
+        <!-- Status (mobile only — shown on image) -->
+        <div class="absolute top-5 left-5 lg:hidden">
+          {experience.status === 'limited' && (
+            <span class="text-brass text-xs font-medium tracking-widest uppercase italic">{statusText[experience.status]}</span>
+          )}
+          {isSoldOut && (
+            <span class="text-white/50 text-xs font-medium tracking-widest uppercase">{statusText[experience.status]}</span>
+          )}
+        </div>
+      </div>
+
+      <!-- Editorial Panel (40% on desktop) -->
+      <div class="relative lg:w-[40%] bg-stone p-8 lg:p-12 flex flex-col justify-center">
+        <!-- Texture overlay -->
+        <div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image: url('/textures/topo-lines.svg'); background-size: 400px;"></div>
+
+        <div class="relative z-10">
+          <!-- Kicker: dates -->
+          <p class="text-brass text-xs font-medium tracking-[0.25em] uppercase mb-4">{experience.dates}</p>
+
+          <!-- Title -->
+          <h3 class="font-heading-display text-3xl lg:text-4xl text-charcoal mb-4 leading-tight">
+            {experience.name}
+          </h3>
+
+          <!-- Destination -->
+          <p class="text-text-muted text-sm tracking-wide mb-6">{experience.destination}</p>
+
+          <!-- Description as pull-quote style -->
+          <p class="text-text leading-relaxed mb-8 text-base">{experience.description}</p>
+
+          <!-- Highlights with brass diamonds -->
+          <ul class="mb-8 space-y-3">
+            {experience.highlights.slice(0, 4).map((highlight) => (
+              <li class="flex items-center text-sm text-text">
+                <span class="w-1.5 h-1.5 bg-brass rotate-45 mr-3 flex-shrink-0"></span>
+                {highlight}
+              </li>
+            ))}
+          </ul>
+
+          <!-- Host & Price -->
+          <div class="flex items-center justify-between pt-6 border-t border-charcoal/10">
+            <div>
+              <p class="text-charcoal text-sm font-medium">{experience.host.name}</p>
+              <p class="text-text-muted text-xs">{experience.host.title}</p>
+            </div>
+            {experience.price && (
+              <p class="text-charcoal/60 text-sm">{experience.price}</p>
+            )}
+          </div>
+
+          <!-- Status (desktop) -->
+          <div class="hidden lg:block mt-6">
+            {experience.status === 'limited' && (
+              <span class="text-brass text-xs font-medium tracking-widest uppercase italic">{statusText[experience.status]}</span>
+            )}
+            {isSoldOut && (
+              <span class="text-charcoal/40 text-xs font-medium tracking-widest uppercase">{statusText[experience.status]}</span>
+            )}
+          </div>
+        </div>
+      </div>
+    </a>
+  </article>
+) : (
+  <!-- Regular Card: Image-as-atmosphere with gradient overlay -->
+  <article class="group relative overflow-hidden">
+    <a href={linkHref} class="block relative aspect-[3/4]">
+      <!-- Background Image -->
+      <div
+        class="absolute inset-0 bg-cover bg-center scale-on-hover duration-700"
+        style={`background-image: url('${experience.image}')`}
+      ></div>
+
+      <!-- Gradient overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+
+      <!-- Sold out overlay -->
+      {isSoldOut && (
+        <div class="absolute inset-0 bg-black/30"></div>
+      )}
+
+      <!-- Status badge (top) -->
+      <div class="absolute top-5 left-5">
+        {experience.status === 'limited' && (
+          <span class="text-brass text-xs font-medium tracking-widest uppercase italic">{statusText[experience.status]}</span>
+        )}
+        {isSoldOut && (
+          <span class="text-white/50 text-xs font-medium tracking-widest uppercase">{statusText[experience.status]}</span>
+        )}
+      </div>
+
+      <!-- Content overlay (bottom) -->
+      <div class="absolute inset-x-0 bottom-0 p-6 lg:p-8">
+        <!-- Destination -->
+        <p class="text-white/60 text-xs tracking-[0.2em] uppercase mb-2">{experience.destination}</p>
+
+        <!-- Dates as kicker -->
+        <p class="text-brass/80 text-xs font-medium tracking-wide mb-3">{experience.dates}</p>
+
+        <!-- Title with hover underline -->
+        <h3 class="font-heading text-xl lg:text-2xl text-white mb-3 leading-snug">
+          <span class="card-title-underline">{experience.name}</span>
+        </h3>
+
+        <!-- Host -->
+        <p class="text-white/50 text-xs mb-3">Hosted by {experience.host.name}</p>
+
+        <!-- Price (understated) -->
+        {experience.price && (
+          <p class="text-white/70 text-sm">{experience.price}</p>
+        )}
+      </div>
+    </a>
+  </article>
+)}
+
+<style>
+  /* Brass underline on title hover */
+  .card-title-underline {
+    background-image: linear-gradient(var(--color-brass), var(--color-brass));
+    background-size: 0% 1px;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s var(--ease-smooth);
+    padding-bottom: 2px;
+  }
+
+  .group:hover .card-title-underline {
+    background-size: 100% 1px;
+  }
+
+  /* Slow scale on images — 700ms for luxury feel */
+  .duration-700 {
+    transition-duration: 700ms;
+  }
+</style>

@@ -1,0 +1,154 @@
+---
+import '../styles/global.css';
+import CelticDivider from '../components/CelticDivider.astro';
+import CelticKnot from '../components/icons/CelticKnot.astro';
+
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Celtic Golf Tours — Coming Soon. Luxury golf tours across Scotland, Ireland, Wales and England." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <title>Coming Soon | Celtic Golf Tours</title>
+  </head>
+  <body class="m-0 p-0">
+    <div class="relative min-h-screen flex flex-col">
+      <!-- Background image -->
+      <div class="fixed inset-0">
+        <img
+          src="/images/turnberry.jpg"
+          alt=""
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
+      </div>
+
+
+      <!-- Celtic knot accents -->
+      <CelticKnot
+        position="top-left"
+        class="fixed top-6 left-6 w-16 md:w-20 text-brass/30 celtic-knot-animate hidden md:block z-10"
+      />
+      <CelticKnot
+        position="bottom-right"
+        class="fixed bottom-6 right-6 w-16 md:w-20 text-brass/30 celtic-knot-animate hidden md:block z-10"
+      />
+
+      <!-- Hero content -->
+      <div class="relative z-10 flex-1 flex items-center justify-center min-h-screen">
+        <div class="text-center px-6 max-w-2xl">
+          <!-- Logo -->
+          <img
+            src="/CELTIC GHOST LOGO-01-01.png"
+            alt="Celtic Golf Tours"
+            class="w-24 md:w-32 mx-auto mb-6 animate-fade-in-up drop-shadow-[0_4px_30px_rgba(0,0,0,0.6)]"
+          />
+
+          <!-- Ornate Celtic divider -->
+          <CelticDivider variant="ornate" color="brass" width="medium" class="mb-6 animate-fade-in-up animation-delay-100" />
+
+          <!-- Coming Soon -->
+          <p class="font-heading-display text-champagne/90 text-2xl md:text-3xl lg:text-4xl font-light tracking-wide mb-10 animate-fade-in-up animation-delay-200 text-glow-brass">
+            Coming Soon
+          </p>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in-up animation-delay-400">
+          <div class="scroll-indicator flex flex-col items-center gap-2 text-champagne/50 cursor-pointer" onclick="window.scrollBy({top: window.innerHeight * 0.8, behavior: 'smooth'})">
+            <span class="font-body text-[10px] tracking-[0.3em] uppercase">Discover</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="animate-bounce-slow">
+              <path d="M4 8L10 14L16 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Value props section -->
+      <div class="relative z-10 py-16 md:py-24">
+        <div class="value-props-backdrop max-w-4xl mx-auto px-8 py-10 md:px-12 md:py-14 rounded-sm">
+          <p class="font-body text-brass text-xs tracking-[0.3em] uppercase text-center mb-10 animate-fade-in-up animation-delay-300">
+            Why Celtic Golf Tours
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center border-t border-brass/30 pt-6 animate-fade-in-up animation-delay-300">
+              <h3 class="font-heading text-brass text-lg tracking-wide mb-3">Priority Access</h3>
+              <p class="text-champagne/90 text-sm leading-relaxed">
+                Our relationships with premier courses mean guaranteed tee times at even the most exclusive venues.
+              </p>
+            </div>
+            <div class="text-center border-t border-brass/30 pt-6 animate-fade-in-up animation-delay-400">
+              <h3 class="font-heading text-brass text-lg tracking-wide mb-3">Local Expertise</h3>
+              <p class="text-champagne/90 text-sm leading-relaxed">
+                We've played every course we recommend and know the hidden gems off the beaten path.
+              </p>
+            </div>
+            <div class="text-center border-t border-brass/30 pt-6 animate-fade-in-up animation-delay-500">
+              <h3 class="font-heading text-brass text-lg tracking-wide mb-3">White Glove Service</h3>
+              <p class="text-champagne/90 text-sm leading-relaxed">
+                From your first enquiry to your return home, every detail is handled with meticulous care.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact section with glass treatment -->
+      <div class="relative z-10 pb-16">
+        <div class="max-w-2xl mx-auto px-6">
+          <div class="coming-soon-contact pt-5 pb-1 px-6 text-center animate-fade-in-up animation-delay-400">
+            <p class="font-body text-champagne/70 text-sm md:text-base tracking-wider uppercase mb-3">
+              Enquiries
+            </p>
+            <a
+              href="mailto:celticgolftours@centreholidays.com"
+              class="font-body text-brass hover:text-brass-light text-base md:text-lg tracking-wide transition-colors"
+            >
+              celticgolftours@centreholidays.com
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<style>
+  .animate-bounce-slow {
+    animation: bounce-slow 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  .scroll-indicator {
+    transition: opacity 0.3s;
+  }
+  .scroll-indicator:hover {
+    opacity: 1;
+  }
+
+  .value-props-backdrop {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(139, 115, 85, 0.15);
+  }
+
+  .coming-soon-contact {
+    border-top: 1px solid rgba(139, 115, 85, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.15);
+  }
+</style>

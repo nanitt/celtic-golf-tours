@@ -1,0 +1,148 @@
+---
+/**
+ * CoursePopup - Polaroid-style popup showing signature hole
+ * Used in the interactive map on hover/focus
+ */
+
+import { Image } from 'astro:assets';
+import type { Course } from '../data/map-regions';
+
+interface Props {
+  course: Course;
+  class?: string;
+}
+
+const { course, class: className = '' } = Astro.props;
+---
+
+<div class:list={['course-popup', className]}>
+  <!-- Polaroid frame -->
+  <div class="polaroid">
+    <!-- Image container with slight tilt -->
+    <div class="polaroid-image">
+      <Image
+        src={course.signatureHoleImage}
+        alt={`${course.name} - ${course.signatureHole}`}
+        width={400}
+        height={320}
+        format="webp"
+        quality={80}
+        loading="lazy"
+        decoding="async"
+      />
+      <!-- Subtle vignette overlay -->
+      <div class="polaroid-vignette"></div>
+    </div>
+
+    <!-- Caption area -->
+    <div class="polaroid-caption">
+      <h4 class="course-name">{course.name}</h4>
+      <p class="signature-hole">{course.signatureHole}</p>
+      {course.established && (
+        <p class="established">Est. {course.established}</p>
+      )}
+    </div>
+  </div>
+
+  <!-- Decorative tape/pin -->
+  <div class="polaroid-pin" aria-hidden="true"></div>
+</div>
+
+<style>
+  .course-popup {
+    position: relative;
+    display: inline-block;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+    transform: rotate(-2deg);
+    transition: transform 0.3s var(--ease-smooth);
+  }
+
+  .course-popup:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+
+  .polaroid {
+    background: #fdfcfa;
+    padding: 12px 12px 0 12px;
+    border-radius: 2px;
+  }
+
+  .polaroid-image {
+    position: relative;
+    width: 200px;
+    height: 160px;
+    overflow: hidden;
+    background: #e5e5e5;
+  }
+
+  .polaroid-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.95) contrast(1.02);
+  }
+
+  .polaroid-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.15) 100%);
+    pointer-events: none;
+  }
+
+  .polaroid-caption {
+    padding: 16px 4px 20px;
+    text-align: center;
+  }
+
+  .course-name {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-charcoal);
+    margin-bottom: 2px;
+    line-height: 1.2;
+  }
+
+  .signature-hole {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: #C5A059;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+  }
+
+  .established {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    color: #C5A059;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* Decorative pin/tape at top */
+  .polaroid-pin {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 12px;
+    background: linear-gradient(to right, rgba(139, 115, 85, 0.6), rgba(139, 115, 85, 0.8), rgba(139, 115, 85, 0.6));
+    border-radius: 1px;
+    opacity: 0.8;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .polaroid-image {
+      width: 160px;
+      height: 130px;
+    }
+
+    .course-name {
+      font-size: 0.85rem;
+    }
+  }
+</style>

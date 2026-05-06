@@ -1,0 +1,224 @@
+---
+/**
+ * HeritagePhoto - Individual photo with B&W to color transition
+ * Starts grayscale, reveals color on hover/scroll
+ */
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  year?: string;
+  colorOnHover?: boolean;  // Color reveals on hover (default)
+  colorOnScroll?: boolean; // Color reveals as you scroll past
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  caption,
+  year,
+  colorOnHover = true,
+  colorOnScroll = false,
+  class: className = ''
+} = Astro.props;
+---
+
+<figure
+  class:list={[
+    'heritage-photo',
+    { 'color-on-hover': colorOnHover, 'color-on-scroll': colorOnScroll },
+    className
+  ]}
+  data-heritage-photo={colorOnScroll ? 'scroll' : 'hover'}
+>
+  <div class="photo-frame">
+    <!-- Photo container with filter -->
+    <div class="photo-container">
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        class="photo-image"
+      />
+      <!-- Sepia/grain overlay for vintage feel -->
+      <div class="photo-overlay" aria-hidden="true"></div>
+    </div>
+
+    <!-- Corner tape decorations -->
+    <div class="photo-tape tape-tl" aria-hidden="true"></div>
+    <div class="photo-tape tape-tr" aria-hidden="true"></div>
+  </div>
+
+  <!-- Caption -->
+  {(caption || year) && (
+    <figcaption class="photo-caption">
+      {caption && <span class="caption-text">{caption}</span>}
+      {year && <span class="caption-year">{year}</span>}
+    </figcaption>
+  )}
+</figure>
+
+<style>
+  .heritage-photo {
+    position: relative;
+    display: inline-block;
+  }
+
+  .photo-frame {
+    position: relative;
+    background: #f5f3f0;
+    padding: 12px;
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.1),
+      0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: rotate(var(--photo-rotation, 0deg));
+    transition: transform 0.4s var(--ease-smooth), box-shadow 0.4s var(--ease-smooth);
+  }
+
+  .heritage-photo:hover .photo-frame {
+    transform: rotate(0deg) scale(1.02);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.12),
+      0 16px 48px rgba(0, 0, 0, 0.1);
+  }
+
+  .photo-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .photo-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: grayscale(100%) sepia(20%) contrast(1.1);
+    transition: filter 0.8s var(--ease-smooth);
+  }
+
+  /* Color on hover */
+  .color-on-hover:hover .photo-image,
+  .color-on-hover:focus-within .photo-image {
+    filter: grayscale(0%) sepia(0%) contrast(1);
+  }
+
+  /* Color on scroll (controlled via JS) */
+  .color-on-scroll.is-colorized .photo-image {
+    filter: grayscale(0%) sepia(0%) contrast(1);
+  }
+
+  /* Vintage overlay */
+  .photo-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.15) 100%),
+      linear-gradient(to bottom, rgba(255, 248, 240, 0.1), transparent 30%);
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    transition: opacity 0.5s ease;
+  }
+
+  .heritage-photo:hover .photo-overlay {
+    opacity: 0.5;
+  }
+
+  /* Corner tape */
+  .photo-tape {
+    position: absolute;
+    width: 30px;
+    height: 12px;
+    background: linear-gradient(
+      to right,
+      rgba(200, 180, 150, 0.5),
+      rgba(200, 180, 150, 0.7),
+      rgba(200, 180, 150, 0.5)
+    );
+    opacity: 0.7;
+  }
+
+  .tape-tl {
+    top: 4px;
+    left: 4px;
+    transform: rotate(-45deg);
+    transform-origin: top left;
+  }
+
+  .tape-tr {
+    top: 4px;
+    right: 4px;
+    transform: rotate(45deg);
+    transform-origin: top right;
+  }
+
+  /* Caption */
+  .photo-caption {
+    text-align: center;
+    padding-top: 1rem;
+    font-family: var(--font-body);
+  }
+
+  .caption-text {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-charcoal);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .caption-year {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-brass);
+    font-style: italic;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .photo-frame {
+      transition: none;
+    }
+
+    .photo-image {
+      transition: none;
+    }
+
+    /* Show color immediately for reduced motion */
+    .heritage-photo .photo-image {
+      filter: grayscale(0%) sepia(0%) contrast(1);
+    }
+  }
+</style>
+
+<script>
+  // Handle scroll-based colorization
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrollPhotos = document.querySelectorAll('[data-heritage-photo="scroll"]');
+
+    if (scrollPhotos.length === 0) return;
+
+    // Check for reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      scrollPhotos.forEach(photo => photo.classList.add('is-colorized'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            entry.target.classList.add('is-colorized');
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+        rootMargin: '-10% 0px'
+      }
+    );
+
+    scrollPhotos.forEach(photo => observer.observe(photo));
+  });
+</script>

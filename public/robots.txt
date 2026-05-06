@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /api/
+Sitemap: https://www.celticgolftours.com/sitemap-index.xml

@@ -1,0 +1,54 @@
+---
+import DestinationPage from '../../components/DestinationPage.astro';
+
+const courses = [
+  {
+    name: 'Royal Birkdale',
+    description: 'One of the finest links in England, host to numerous Open Championships.',
+    image: 'https://images.unsplash.com/photo-1523982765444-622af25647b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Royal Lytham & St Annes',
+    description: 'A classic links that has crowned many Open champions including Seve Ballesteros.',
+    image: 'https://images.unsplash.com/photo-1672871583062-7613925d0734?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Sunningdale - Old Course',
+    description: 'The quintessential English heathland course, consistently rated world top 50.',
+    image: 'https://images.unsplash.com/photo-1672871583040-42826d4e9ca4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Wentworth - West Course',
+    description: 'The "Burma Road" hosts the BMW PGA Championship and is home to European Tour HQ.',
+    image: 'https://images.unsplash.com/photo-1697846461121-201fde5a4fad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Royal St George\'s',
+    description: 'The only Open Championship venue in southern England, a true links test.',
+    image: 'https://images.unsplash.com/photo-1639156353290-4dda45b9281a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'The Belfry - Brabazon',
+    description: 'Iconic Ryder Cup venue in the heart of England.',
+    image: 'https://images.unsplash.com/photo-1655658786619-b50dafb92701?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  }
+];
+
+const highlights = [
+  'Open Championship and Ryder Cup venues',
+  'World-famous heathland courses near London',
+  'Lancashire coast links corridor',
+  'Easy London access for international guests',
+  'Rich golfing history and traditions',
+  'Combine with city breaks and cultural tours'
+];
+---
+
+<DestinationPage
+  name="England"
+  tagline="From legendary links to iconic heathland. Experience the diversity of English golf."
+  description="England offers remarkable golfing diversity, from the windswept links of Lancashire's 'Golf Coast' to the heather-lined fairways of Surrey's heathland masterpieces. Home to Open Championship venues and Ryder Cup hosts, England's courses have witnessed countless moments in golf history. Our English tours can be perfectly combined with visits to London, historic cities, and the beautiful English countryside."
+  heroImage="https://images.unsplash.com/photo-1459548069978-7c1e521d3d22?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+  courses={courses}
+  highlights={highlights}
+/>

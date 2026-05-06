@@ -1,0 +1,154 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import TestimonialFeature from '../components/TestimonialFeature.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+
+const featuredTestimonial = {
+  quote: "Celtic Golf Tours didn't just plan a trip—they created an experience that will stay with me forever. Every course was immaculate, every meal was memorable, and every moment was perfect. This wasn't just a golf trip; it was the journey of a lifetime.",
+  name: "James Richardson",
+  location: "London, UK",
+  trip: "The St Andrews Pilgrimage, 2024"
+};
+
+const testimonials = [
+  {
+    quote: "As a group of 12, we had concerns about coordination, but the team handled everything flawlessly. The courses were spectacular and the service was first-class throughout.",
+    name: "Michael O'Brien",
+    location: "Boston, USA",
+    tour: "Wild Atlantic Links, Ireland · 2024"
+  },
+  {
+    quote: "I've been on many golf trips, but this was on another level. The attention to detail, the exclusive access, and the genuine passion of the team made it truly special.",
+    name: "David Thompson",
+    location: "Manchester",
+    tour: "Royal Championship Circuit, Scotland · 2024"
+  },
+  {
+    quote: "The corporate golf day exceeded all expectations. Our clients were thoroughly impressed, and the organisation was impeccable.",
+    name: "Sarah Mitchell",
+    location: "Edinburgh",
+    tour: "Corporate Event, St Andrews · 2023"
+  },
+  {
+    quote: "Playing Royal County Down and Portrush in the same week was a dream come true. Celtic Golf Tours made it happen seamlessly.",
+    name: "Robert Chen",
+    location: "Toronto, Canada",
+    tour: "Ireland Grand Tour · 2024"
+  },
+  {
+    quote: "First time visiting the UK for golf, and I couldn't have asked for a better experience. Already planning my return trip.",
+    name: "William Hayes",
+    location: "Melbourne, Australia",
+    tour: "Custom Scotland & England · 2023"
+  },
+  {
+    quote: "The hosted trip to Scotland was incredible. Having the team with us made it feel like travelling with friends who happen to know everyone.",
+    name: "Elizabeth Murray",
+    location: "New York, USA",
+    tour: "St Andrews Pilgrimage · 2024"
+  },
+  {
+    quote: "We've used Celtic Golf Tours for three consecutive years now. The consistency is remarkable - every trip has been perfectly executed.",
+    name: "Andrew Campbell",
+    location: "Glasgow",
+    tour: "Repeat Client · Scotland 2022, 2023, 2024"
+  },
+  {
+    quote: "As a single traveller, I was nervous about joining a group tour. I needn't have worried - I made friends for life and played some incredible courses.",
+    name: "Patricia Walsh",
+    location: "Dublin",
+    tour: "Wild Atlantic Links · 2023"
+  }
+];
+---
+
+<Layout title="Testimonials" description="Read what our guests say about their Celtic Golf Tours experiences.">
+  <Hero
+    title="Guest Testimonials"
+    subtitle="Hear from golfers who've experienced the Celtic Golf Tours difference"
+    backgroundImage="https://images.unsplash.com/photo-1693163537665-b7c5a5f01f75?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    size="large"
+    ctaText=""
+  />
+
+  <!-- Featured Testimonial Section -->
+  <section class="section-padding bg-white">
+    <div class="px-6 lg:px-12">
+      <TestimonialFeature
+        quote={featuredTestimonial.quote}
+        name={featuredTestimonial.name}
+        location={featuredTestimonial.location}
+        trip={featuredTestimonial.trip}
+      />
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-16 bg-charcoal">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+        <div>
+          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">500+</p>
+          <p class="section-kicker-light mt-2">Happy Golfers</p>
+        </div>
+        <div>
+          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">98%</p>
+          <p class="section-kicker-light mt-2">Would Recommend</p>
+        </div>
+        <div>
+          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">150+</p>
+          <p class="section-kicker-light mt-2">Tours Delivered</p>
+        </div>
+        <div>
+          <p class="font-heading-display text-4xl lg:text-5xl text-brass" style="font-weight: 300;">4.9</p>
+          <p class="section-kicker-light mt-2">Average Rating</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Grid -->
+  <section class="section-padding bg-stone">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="text-center mb-16">
+        <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">More Reviews</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        {testimonials.map((testimonial, index) => {
+          const isFeaturedCard = index === 0 || index === 4;
+          return (
+            <div class={isFeaturedCard ? 'md:col-span-2' : ''} data-reveal="fade-up" data-reveal-delay={(index % 4) + 1}>
+              <TestimonialCard
+                quote={testimonial.quote}
+                name={testimonial.name}
+                location={testimonial.location}
+                tour={testimonial.tour}
+                variant={isFeaturedCard ? 'featured' : 'default'}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section-padding bg-white">
+    <div class="max-w-3xl mx-auto px-6 lg:px-12 text-center">
+      <h2 class="font-heading text-section mb-6" style="font-size: clamp(2rem, 4vw, var(--text-section));">
+        Ready to Create Your Own Story?
+      </h2>
+      <p class="text-text text-lg mb-10 max-w-xl mx-auto">
+        Join the hundreds of golfers who've experienced the Celtic Golf Tours difference.
+      </p>
+      <a
+        href="/contact"
+        class="btn-primary btn-lg"
+      >
+        Start Planning Your Tour
+      </a>
+    </div>
+  </section>
+</Layout>

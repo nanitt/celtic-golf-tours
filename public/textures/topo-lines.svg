@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <style>
+      .topo-line {
+        fill: none;
+        stroke: #1a3d2e;
+        stroke-width: 0.5;
+        opacity: 0.3;
+      }
+    </style>
+  </defs>
+  <!-- Topographical contour lines inspired by golf course elevation maps -->
+  <g class="topo-line">
+    <!-- Outer rings -->
+    <ellipse cx="300" cy="300" rx="280" ry="260" />
+    <ellipse cx="300" cy="300" rx="250" ry="230" />
+    <ellipse cx="300" cy="300" rx="220" ry="200" />
+    <ellipse cx="300" cy="300" rx="190" ry="170" />
+    <ellipse cx="300" cy="300" rx="160" ry="140" />
+    <ellipse cx="300" cy="300" rx="130" ry="110" />
+    <ellipse cx="300" cy="300" rx="100" ry="80" />
+    <ellipse cx="300" cy="300" rx="70" ry="50" />
+    <ellipse cx="300" cy="300" rx="40" ry="25" />
+
+    <!-- Secondary elevation cluster -->
+    <ellipse cx="150" cy="450" rx="120" ry="100" />
+    <ellipse cx="150" cy="450" rx="90" ry="70" />
+    <ellipse cx="150" cy="450" rx="60" ry="45" />
+    <ellipse cx="150" cy="450" rx="30" ry="20" />
+
+    <!-- Third elevation cluster -->
+    <ellipse cx="480" cy="150" rx="100" ry="80" />
+    <ellipse cx="480" cy="150" rx="70" ry="55" />
+    <ellipse cx="480" cy="150" rx="40" ry="30" />
+
+    <!-- Connecting contours -->
+    <path d="M 50 200 Q 150 180 250 220 Q 350 260 450 200 Q 550 140 600 180" />
+    <path d="M 0 350 Q 100 320 200 380 Q 300 440 400 380 Q 500 320 600 360" />
+    <path d="M 0 500 Q 150 480 300 520 Q 450 560 600 500" />
+  </g>
+</svg>

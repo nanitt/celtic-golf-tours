@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import { site } from '../data/site';
+---
+
+<Layout title="Terms & Conditions" description="Celtic Golf Tours terms and conditions for booking and participating in our golf tours.">
+  <Hero
+    title="Terms & Conditions"
+    backgroundImage="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    size="medium"
+    ctaText=""
+  />
+
+  <!-- TODO: This is placeholder legal content. Have it reviewed by a qualified legal professional before launch. -->
+  <section class="section-padding bg-white">
+    <div class="max-w-3xl mx-auto px-6 lg:px-12">
+      <p class="text-text-muted text-sm mb-12">Last updated: February 2026</p>
+
+      <div class="prose prose-lg max-w-none space-y-10">
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">1. Booking & Confirmation</h2>
+          <p class="text-text leading-relaxed">
+            All tour bookings are subject to availability. A booking is confirmed once we have received the required deposit and issued a written confirmation. Prices quoted are in Canadian Dollars (CAD) unless otherwise stated.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">2. Payment Terms</h2>
+          <p class="text-text leading-relaxed">
+            A deposit is required at the time of booking to secure your place. The remaining balance is due 60 days prior to the tour departure date. Late payments may result in cancellation of your booking.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">3. Cancellation Policy</h2>
+          <ul class="list-disc pl-6 space-y-2 text-text">
+            <li>More than 90 days before departure: full refund less administrative fee</li>
+            <li>60-90 days before departure: 50% refund</li>
+            <li>Less than 60 days before departure: no refund</li>
+          </ul>
+          <p class="text-text leading-relaxed mt-4">
+            We strongly recommend purchasing travel insurance to protect against unforeseen cancellations.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">4. Tour Inclusions</h2>
+          <p class="text-text leading-relaxed">
+            Unless otherwise stated, tour packages include green fees, accommodation, ground transportation, and hosted experiences as described. Flights, travel insurance, personal expenses, and gratuities are not included unless explicitly listed.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">5. Changes & Itinerary Modifications</h2>
+          <p class="text-text leading-relaxed">
+            We reserve the right to make changes to tour itineraries due to circumstances beyond our control, including weather, course closures, or other unforeseen events. We will endeavour to provide suitable alternatives of equal or greater value.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">6. Liability</h2>
+          <p class="text-text leading-relaxed">
+            Celtic Golf Tours acts as an intermediary between you and the service providers (hotels, golf courses, transport companies). While we take every care in selecting our partners, we cannot accept liability for any loss, damage, injury, or expense arising from services provided by third parties.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">7. Governing Law</h2>
+          <p class="text-text leading-relaxed">
+            These terms and conditions are governed by the laws of the applicable jurisdiction. Any disputes shall be subject to the exclusive jurisdiction of the relevant courts.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-charcoal mb-4">8. Contact</h2>
+          <p class="text-text leading-relaxed">
+            For questions about these terms, please contact us at{' '}
+            <a href={`mailto:${site.email}`} class="text-celtic hover:text-celtic-light transition-colors">{site.email}</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

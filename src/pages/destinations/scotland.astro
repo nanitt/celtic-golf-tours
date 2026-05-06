@@ -1,0 +1,54 @@
+---
+import DestinationPage from '../../components/DestinationPage.astro';
+
+const courses = [
+  {
+    name: 'St Andrews - Old Course',
+    description: 'The home of golf. This iconic links course has hosted The Open Championship 30 times.',
+    image: 'https://images.unsplash.com/photo-1687291133565-767706032bed?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Turnberry - Ailsa Course',
+    description: 'Stunning Ayrshire coastal links with views of Ailsa Craig and the Isle of Arran.',
+    image: 'https://images.unsplash.com/photo-1642550918683-0196bda8be7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Royal Troon',
+    description: 'Host of The Open Championship, known for the famous Postage Stamp 8th hole.',
+    image: 'https://images.unsplash.com/photo-1655658786619-b50dafb92701?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Carnoustie',
+    description: 'One of the toughest tests in golf, dubbed "Carnasty" by the pros.',
+    image: 'https://images.unsplash.com/photo-1672871583040-42826d4e9ca4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Muirfield',
+    description: 'Home to The Honourable Company of Edinburgh Golfers, the oldest golf club in the world.',
+    image: 'https://images.unsplash.com/photo-1672871583062-7613925d0734?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    name: 'Royal Dornoch',
+    description: 'Tom Watson\'s favourite course, located in the Scottish Highlands.',
+    image: 'https://images.unsplash.com/photo-1639156353290-4dda45b9281a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  }
+];
+
+const highlights = [
+  'Play the Old Course at St Andrews - the home of golf',
+  'Access to exclusive Open Championship venues',
+  'Stunning coastal links and highland courses',
+  'World-class whisky distillery experiences',
+  'Historic castles and breathtaking scenery',
+  'Luxury accommodation throughout'
+];
+---
+
+<DestinationPage
+  name="Scotland"
+  tagline="The birthplace of golf awaits. Experience legendary links courses and centuries of golfing heritage."
+  description="Scotland is where golf began over 600 years ago, and today it remains the ultimate pilgrimage for golfers worldwide. From the hallowed fairways of St Andrews to the rugged beauty of Royal Dornoch in the Highlands, Scotland offers an unparalleled collection of links courses that have shaped the game. Our Scottish tours combine world-class golf with luxury accommodation, exceptional dining, and authentic cultural experiences."
+  heroImage="https://images.unsplash.com/photo-1581265064945-737852e55a53?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+  courses={courses}
+  highlights={highlights}
+/>

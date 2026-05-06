@@ -1,0 +1,218 @@
+---
+/**
+ * HeritageWall - Gallery of historical golf photos
+ * B&W photos that colorize on hover/scroll
+ */
+
+import HeritagePhoto from './HeritagePhoto.astro';
+import CelticDivider from './CelticDivider.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+// Heritage photos - mix of historical and modern golf imagery
+const photos = [
+  {
+    src: 'https://images.unsplash.com/photo-1687291133565-767706032bed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    alt: 'St Andrews Old Course',
+    caption: 'The Old Course at Dawn',
+    year: 'St Andrews, Scotland',
+    rotation: -2
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1693113448288-015fb6eed7c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    alt: 'Irish coastal links',
+    caption: 'Walking the Links',
+    year: 'Ballybunion, Ireland',
+    rotation: 1.5
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1600011689032-8b628b8a8747?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    alt: 'Scottish links course',
+    caption: 'The Clubhouse',
+    year: 'Royal Dornoch',
+    rotation: -1
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    alt: 'Links golf course',
+    caption: 'Highland Glory',
+    year: 'The Highlands',
+    rotation: 2
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1693113448333-0123750f17f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    alt: 'Golfer at Lahinch',
+    caption: 'Wild Atlantic Way',
+    year: 'County Clare, Ireland',
+    rotation: -1.5
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1594750197419-829e3bc11d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    alt: 'Traditional golf scene',
+    caption: 'Timeless Tradition',
+    year: 'The British Isles',
+    rotation: 1
+  }
+];
+---
+
+<section class:list={['heritage-wall', className]}>
+  <div class="heritage-content">
+    <!-- Header -->
+    <div class="heritage-header">
+      <p class="heritage-kicker">Our Heritage</p>
+      <h2 class="heritage-title">A Century of Links Golf</h2>
+      <CelticDivider variant="ornate" color="brass" width="medium" class="my-6" />
+      <p class="heritage-intro">
+        From the windswept dunes of Ballybunion to the hallowed grounds of St Andrews,
+        these courses have witnessed over a century of golf's greatest moments.
+      </p>
+    </div>
+
+    <!-- Photo gallery -->
+    <div class="heritage-gallery">
+      {photos.map((photo, index) => (
+        <div
+          class="gallery-item"
+          style={`--photo-rotation: ${photo.rotation}deg;`}
+          data-reveal="fade-up"
+          data-reveal-delay={(index % 3) + 1}
+        >
+          <HeritagePhoto
+            src={photo.src}
+            alt={photo.alt}
+            caption={photo.caption}
+            year={photo.year}
+            colorOnHover={true}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Quote -->
+    <blockquote class="heritage-quote" data-reveal="fade-up">
+      <p>"Golf is deceptively simple and endlessly complicated; it satisfies the soul and frustrates the intellect."</p>
+      <cite>— Arnold Palmer</cite>
+    </blockquote>
+  </div>
+</section>
+
+<style>
+  .heritage-wall {
+    position: relative;
+    padding: 6rem 1.5rem;
+    background: linear-gradient(to bottom, var(--color-cream), var(--color-stone));
+    overflow: hidden;
+  }
+
+  /* Decorative background texture */
+  .heritage-wall::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/textures/topo-lines.svg');
+    background-repeat: repeat;
+    background-size: 800px;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  .heritage-content {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .heritage-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+  }
+
+  .heritage-kicker {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-celtic);
+    margin-bottom: 0.75rem;
+  }
+
+  .heritage-title {
+    font-family: var(--font-heading-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 500;
+    font-style: italic;
+    color: var(--color-charcoal);
+    margin-bottom: 0.5rem;
+  }
+
+  .heritage-intro {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  /* Gallery grid */
+  .heritage-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem 2rem;
+    padding: 2rem 0;
+  }
+
+  .gallery-item {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Quote */
+  .heritage-quote {
+    text-align: center;
+    max-width: 600px;
+    margin: 4rem auto 0;
+    padding: 2rem;
+    border-top: 1px solid rgba(139, 115, 85, 0.3);
+    border-bottom: 1px solid rgba(139, 115, 85, 0.3);
+  }
+
+  .heritage-quote p {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--color-charcoal);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .heritage-quote cite {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-style: normal;
+    color: var(--color-brass);
+    font-weight: 500;
+  }
+
+  /* Responsive */
+  @media (min-width: 768px) {
+    .heritage-gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .heritage-gallery {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .heritage-wall {
+      padding: 8rem 2rem;
+    }
+  }
+</style>

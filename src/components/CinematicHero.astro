@@ -1,0 +1,253 @@
+---
+import HeroContent from './HeroContent';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  kicker?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  backgroundImage: string;       // Required poster/fallback image
+  backgroundVideo?: string;      // MP4 video URL (optional)
+  backgroundVideoWebm?: string;  // WebM video URL (optional, better compression)
+  enableScrub?: boolean;         // Enable scroll-linked playback
+  showScrollProgress?: boolean;  // Show scroll progress indicator
+  showTrustBar?: boolean;        // Show trust signals below CTA
+}
+
+const {
+  title,
+  subtitle,
+  kicker,
+  ctaText = "Begin Your Journey",
+  ctaLink = "/contact",
+  backgroundImage,
+  backgroundVideo,
+  backgroundVideoWebm,
+  enableScrub = true,
+  showScrollProgress = true,
+  showTrustBar = false
+} = Astro.props;
+
+const hasVideo = !!backgroundVideo || !!backgroundVideoWebm;
+---
+
+<section
+  class="cinematic-hero group relative flex flex-col min-h-screen overflow-hidden"
+  data-cinematic-hero
+>
+  <!-- Video Background (with scrub support) -->
+  {hasVideo ? (
+    <video
+      class="cinematic-hero-video absolute inset-0 w-full h-full object-cover"
+      muted
+      playsinline
+      autoplay={!enableScrub}
+      loop={!enableScrub}
+      data-scrub-video={enableScrub}
+    >
+      {backgroundVideoWebm && <source src={backgroundVideoWebm} type="video/webm" />}
+      {backgroundVideo && <source src={backgroundVideo} type="video/mp4" />}
+    </video>
+  ) : (
+    <!-- Ken Burns effect fallback when no video -->
+    <div
+      class="cinematic-hero-bg absolute inset-0 bg-cover bg-center ken-burns-zoom"
+      style={`background-image: url('${backgroundImage}')`}
+    >
+    </div>
+  )}
+
+  <!-- Cinematic Gradient Overlay -->
+  <div class="absolute inset-0 cinematic-overlay"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 flex-1 flex items-center justify-center">
+    <HeroContent
+      client:load
+      kicker={kicker}
+      title={title}
+      subtitle={subtitle}
+      ctaText={ctaText}
+      ctaLink={ctaLink}
+      showTrustBar={showTrustBar}
+    />
+  </div>
+
+  <!-- Scroll Progress Indicator -->
+  {showScrollProgress && (
+    <div
+      class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 animate-fade-in-up animation-delay-500"
+      data-scroll-indicator
+    >
+      <span class="text-white/80 text-xs tracking-[0.2em] uppercase">Scroll</span>
+      <div class="scroll-progress-track">
+        <div class="scroll-progress-fill" data-scroll-progress></div>
+      </div>
+    </div>
+  )}
+</section>
+
+<style>
+  /* Single gradient overlay - light at top, stronger where text lives */
+  .cinematic-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.20) 35%,
+      rgba(0, 0, 0, 0.40) 65%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+  }
+
+  /* Ken Burns zoom animation for static images - slower, subtler */
+  .ken-burns-zoom {
+    animation: ken-burns 30s ease-in-out infinite alternate;
+    transform-origin: center center;
+  }
+
+  @keyframes ken-burns {
+    0% {
+      transform: scale(1) translate(0, 0);
+    }
+    100% {
+      transform: scale(1.08) translate(-0.5%, -0.5%);
+    }
+  }
+
+  /* Title styling - dramatic shadow for maximum contrast */
+  .cinematic-title {
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.8),
+      0 2px 4px rgba(0, 0, 0, 0.7),
+      0 4px 16px rgba(0, 0, 0, 0.5),
+      0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Subtitle/kicker - enhanced shadow */
+  .cinematic-text-shadow {
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.7),
+      0 2px 8px rgba(0, 0, 0, 0.4),
+      0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  /* CTA button glow */
+  .cinematic-cta {
+    box-shadow: 0 4px 30px rgba(26, 61, 46, 0.4);
+  }
+
+  .cinematic-cta:hover {
+    box-shadow: 0 6px 40px rgba(26, 61, 46, 0.6);
+  }
+
+  /* Scroll progress track */
+  .scroll-progress-track {
+    width: 2px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .scroll-progress-fill {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    transform: scaleY(var(--scroll-progress, 0));
+    transform-origin: top;
+    transition: transform 0.1s ease-out;
+  }
+
+  /* Video fade-in */
+  .cinematic-hero-video {
+    transition: opacity 0.5s ease-out;
+  }
+
+  .cinematic-hero-video.video-ready {
+    opacity: 1;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .ken-burns-zoom {
+      animation: none;
+      transform: none;
+    }
+
+    .scroll-progress-fill {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initVideoScrub, initScrollProgress } from '../scripts/video-scrub';
+
+  // Initialize video scrub if video element exists
+  const heroSection = document.querySelector('[data-cinematic-hero]');
+  const video = document.querySelector<HTMLVideoElement>('.cinematic-hero-video');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (video && heroSection) {
+    if (prefersReducedMotion) {
+      video.pause();
+      video.autoplay = false;
+      video.loop = false;
+      video.removeAttribute('autoplay');
+      video.removeAttribute('loop');
+    }
+
+    // Fade in video once it has loaded data
+    const showVideo = () => video.classList.add('video-ready');
+
+    if (video.readyState >= 2) {
+      // Video already has metadata/data
+      showVideo();
+    } else {
+      video.addEventListener('loadeddata', showVideo, { once: true });
+    }
+
+    // Initialize scrub if enabled
+    if (!prefersReducedMotion && video.dataset.scrubVideo === 'true') {
+      initVideoScrub({
+        videoSelector: '.cinematic-hero-video',
+        containerSelector: '[data-cinematic-hero]',
+        scrollMultiplier: 1.2
+      });
+    }
+  }
+
+  // Initialize scroll progress indicator
+  const progressIndicator = document.querySelector('[data-scroll-progress]');
+  if (progressIndicator && heroSection) {
+    let ticking = false;
+
+    const updateProgress = () => {
+      const rect = heroSection.getBoundingClientRect();
+      const progress = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
+      (progressIndicator as HTMLElement).style.setProperty('--scroll-progress', progress.toString());
+
+      // Fade out indicator as we scroll
+      const indicator = document.querySelector('[data-scroll-indicator]') as HTMLElement;
+      if (indicator) {
+        indicator.style.opacity = progress < 0.9 ? String(1 - progress * 0.5) : '0';
+      }
+
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateProgress);
+        ticking = true;
+      }
+    };
+
+    // Check for reduced motion preference
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      updateProgress();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+  }
+</script>
