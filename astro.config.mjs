@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import node from '@astrojs/node';
+import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
@@ -36,9 +36,7 @@ export default defineConfig({
   site: 'https://www.celticgolftours.com',
   output: 'server',
 
-  adapter: node({
-    mode: 'standalone'
-  }),
+  adapter: vercel(),
 
   image: {
     remotePatterns: [{ protocol: "https" }],
