@@ -24,6 +24,7 @@ export interface MapRegion {
   centerY: number;
   // Optional ambient sound for hover
   ambientSound?: string;
+  hidden?: boolean;
 }
 
 // Scotland courses
@@ -206,7 +207,8 @@ export const mapRegions: MapRegion[] = [
     courses: walesCourses,
     centerX: 188,
     centerY: 318,
-    ambientSound: '/audio/wind-over-dunes.mp3'
+    ambientSound: '/audio/wind-over-dunes.mp3',
+    hidden: true,
   },
   {
     id: 'england',
@@ -216,9 +218,12 @@ export const mapRegions: MapRegion[] = [
     courses: englandCourses,
     centerX: 248,
     centerY: 310,
-    ambientSound: '/audio/ocean-waves.mp3'
+    ambientSound: '/audio/ocean-waves.mp3',
+    hidden: true,
   }
 ];
+
+export const activeMapRegions = mapRegions.filter(r => !r.hidden);
 
 // Helper functions
 export function getRegionBySlug(slug: string): MapRegion | undefined {

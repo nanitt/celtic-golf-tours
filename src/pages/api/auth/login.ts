@@ -1,8 +1,9 @@
 import type { APIRoute } from 'astro';
+import { timingSafeEqual } from 'crypto';
 
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   const formData = await request.formData();
-  const password = formData.get('password');
+  const password = String(formData.get('password') ?? '');
 
   const sitePassword = import.meta.env.SITE_PASSWORD;
 
@@ -13,12 +14,16 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     });
   }
 
-  if (password === sitePassword) {
+  const passwordMatch =
+    password.length === sitePassword.length &&
+    timingSafeEqual(Buffer.from(password), Buffer.from(sitePassword));
+
+  if (passwordMatch) {
     cookies.set('auth', 'authenticated', {
       path: '/',
       httpOnly: true,
-      secure: import.meta.env.PROD,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'strict',
       maxAge: 60 * 60 * 24 * 7 // 7 days
     });
 

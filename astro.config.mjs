@@ -26,7 +26,11 @@ integrations.push(
   react(),
   sitemap({
     filter: (page) =>
-      !page.includes('/login') && !page.includes('/api/') && !page.includes('/studio'),
+      !page.includes('/login') &&
+      !page.includes('/api/') &&
+      !page.includes('/studio') &&
+      !page.includes('/destinations/england') &&
+      !page.includes('/destinations/wales'),
   })
 );
 

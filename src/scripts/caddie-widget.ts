@@ -57,8 +57,7 @@ const CONVERSATION_STEPS = [
     options: [
       { label: 'Scotland - Home of Golf', value: 'scotland', icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
       { label: 'Ireland - Wild Atlantic', value: 'ireland', icon: '🇮🇪' },
-      { label: 'Wales - Hidden Gems', value: 'wales', icon: '🏴󠁧󠁢󠁷󠁬󠁳󠁿' },
-      { label: 'Show me everything', value: 'all', icon: '🌍' }
+      { label: 'Help me decide', value: 'all', icon: '🌍' }
     ]
   },
   {
@@ -91,10 +90,8 @@ const getRecommendation = (prefs: CaddieState['userPreferences']): string => {
     if (whiskey === 'neat') {
       rec += "We'll arrange a private tasting at Dingle Distillery. ";
     }
-  } else if (destination === 'wales') {
-    rec += "the **Welsh Discovery** itinerary. Royal Porthcawl is a hidden masterpiece. ";
   } else {
-    rec += "our **Grand British Isles Tour**—hit the highlights of all four nations. ";
+    rec += "our **Celtic Classic**—Scotland and Ireland back to back. The ultimate links pilgrimage. ";
   }
 
   // Travel style
@@ -150,6 +147,7 @@ export function toggleWidget(): void {
   if (widget) {
     widget.classList.toggle('is-open', state.isOpen);
     toggleButton?.setAttribute('aria-expanded', String(state.isOpen));
+    toggleButton?.setAttribute('aria-label', state.isOpen ? 'Close digital caddie chat' : 'Open digital caddie chat');
   }
 
   // Start conversation on first open
@@ -281,42 +279,57 @@ function renderMessage(message: CaddieMessage): void {
   el.setAttribute('data-message-id', message.id);
 
   if (message.type === 'options' && message.options) {
-    el.innerHTML = `
-      <div class="options-container">
-        ${message.options.map(opt => `
-          <button
-            class="option-btn"
-            data-option-value="${opt.value}"
-            type="button"
-          >
-            ${opt.icon ? `<span class="option-icon">${opt.icon}</span>` : ''}
-            <span class="option-label">${opt.label}</span>
-          </button>
-        `).join('')}
-      </div>
-    `;
+    const container = document.createElement('div');
+    container.className = 'options-container';
 
-    // Attach click handlers
-    el.querySelectorAll('.option-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const value = (e.currentTarget as HTMLElement).dataset.optionValue;
-        if (value === 'contact') {
+    message.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.dataset.optionValue = opt.value;
+      btn.type = 'button';
+
+      if (opt.icon) {
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'option-icon';
+        iconSpan.textContent = opt.icon;
+        btn.appendChild(iconSpan);
+      }
+
+      const labelSpan = document.createElement('span');
+      labelSpan.className = 'option-label';
+      labelSpan.textContent = opt.label;
+      btn.appendChild(labelSpan);
+
+      btn.addEventListener('click', () => {
+        if (opt.value === 'contact') {
           window.location.href = '/contact';
-        } else if (value === 'restart') {
+        } else if (opt.value === 'restart') {
           resetConversation();
-        } else if (value) {
-          selectOption(value);
+        } else {
+          selectOption(opt.value);
         }
       });
+
+      container.appendChild(btn);
     });
+
+    el.appendChild(container);
   } else {
-    // Parse markdown-style bold
-    const content = message.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    el.innerHTML = `
-      <div class="message-bubble">
-        ${content.split('\n').map(line => `<p>${line}</p>`).join('')}
-      </div>
-    `;
+    const bubble = document.createElement('div');
+    bubble.className = 'message-bubble';
+
+    message.content.split('\n').forEach(line => {
+      const p = document.createElement('p');
+      // Escape HTML entities, then apply markdown bold
+      const escaped = line
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      p.innerHTML = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      bubble.appendChild(p);
+    });
+
+    el.appendChild(bubble);
   }
 
   messagesContainer.appendChild(el);

@@ -1,5 +1,7 @@
 ---
-import { destinations } from '../data/destinations';
+import { activeDestinations } from '../data/destinations';
+
+const currentPath = Astro.url.pathname;
 
 const navLinks = [
   { href: '/experiences', label: 'Experiences' },
@@ -33,8 +35,11 @@ const navLinks = [
         <div class="relative group" id="destinations-menu">
           <a
             href="/destinations"
+            id="destinations-trigger"
             class="nav-link text-white text-[11px] font-medium tracking-[0.2em] uppercase flex items-center gap-1 py-2"
-            aria-haspopup="true"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-current={currentPath.startsWith('/destinations') ? 'page' : undefined}
           >
             Destinations
             <svg
@@ -54,7 +59,7 @@ const navLinks = [
               <span class="text-[10px] tracking-[0.3em] uppercase text-stone-400 font-semibold">Our Territories</span>
             </div>
             <div>
-              {destinations.map((dest) => (
+              {activeDestinations.map((dest) => (
                 <a
                   href={dest.href}
                   class="dropdown-item block px-6 py-3 hover:bg-stone-50 transition-colors duration-150"
@@ -71,6 +76,7 @@ const navLinks = [
           <a
             href={link.href}
             class="nav-link text-white text-[11px] font-medium tracking-[0.2em] uppercase"
+            aria-current={currentPath === link.href ? 'page' : undefined}
           >
             {link.label}
           </a>
@@ -90,7 +96,7 @@ const navLinks = [
       <!-- Mobile Hamburger -->
       <button
         id="hamburger-btn"
-        class="lg:hidden text-white p-2 z-50 relative transition-colors duration-200 ease-smooth"
+        class="lg:hidden text-white p-3 z-50 relative transition-colors duration-200 ease-smooth"
         aria-label="Open navigation menu"
         aria-expanded="false"
         aria-controls="mobile-drawer"
@@ -137,13 +143,18 @@ const navLinks = [
 
   <!-- Drawer Links -->
   <div class="flex-1 overflow-y-auto px-8 py-10 flex flex-col gap-8">
-    <a href="/destinations" class="text-charcoal font-heading text-3xl hover:text-brass transition-colors duration-200">
+    <a
+      href="/destinations"
+      class="text-charcoal font-heading text-3xl hover:text-brass transition-colors duration-200"
+      aria-current={currentPath.startsWith('/destinations') ? 'page' : undefined}
+    >
       Destinations
     </a>
     {navLinks.map((link) => (
       <a
         href={link.href}
         class="text-charcoal font-heading text-3xl hover:text-brass transition-colors duration-200"
+        aria-current={currentPath === link.href ? 'page' : undefined}
       >
         {link.label}
       </a>
@@ -231,7 +242,8 @@ const navLinks = [
   }
 
   #destinations-menu:hover .dropdown-panel,
-  #destinations-menu:focus-within .dropdown-panel {
+  #destinations-menu:focus-within .dropdown-panel,
+  #destinations-menu.touch-open .dropdown-panel {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -244,10 +256,6 @@ const navLinks = [
   /* ========================================
      MOBILE DRAWER OPEN STATE
      ======================================== */
-
-  #mobile-drawer.is-open {
-    transform: translateX(0);
-  }
 
   #drawer-overlay.is-open {
     opacity: 1;
@@ -299,7 +307,7 @@ const navLinks = [
   // Open drawer
   function openDrawer() {
     isOpen = true;
-    drawer.classList.add('is-open');
+    drawer.classList.remove('translate-x-full');
     overlay.classList.add('is-open');
     drawer.removeAttribute('inert');
     drawer.setAttribute('aria-hidden', 'false');
@@ -315,7 +323,7 @@ const navLinks = [
   // Close drawer
   function closeDrawer() {
     isOpen = false;
-    drawer.classList.remove('is-open');
+    drawer.classList.add('translate-x-full');
     overlay.classList.remove('is-open');
     drawer.setAttribute('inert', '');
     drawer.setAttribute('aria-hidden', 'true');
@@ -323,6 +331,33 @@ const navLinks = [
     hamburgerBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
     hamburgerBtn.focus();
+  }
+
+  // Touch toggle for destinations dropdown (tablets without hover)
+  const destMenu = document.getElementById('destinations-menu') as HTMLElement | null;
+  const destLink = destMenu?.querySelector('a') as HTMLAnchorElement | null;
+
+  if (destMenu && destLink) {
+    destLink.addEventListener('touchstart', (e) => {
+      if (!destMenu.classList.contains('touch-open')) {
+        e.preventDefault();
+        destMenu.classList.add('touch-open');
+      }
+    }, { passive: false });
+
+    document.addEventListener('touchstart', (e) => {
+      if (!destMenu.contains(e.target as Node)) {
+        destMenu.classList.remove('touch-open');
+      }
+    }, { passive: true });
+  }
+
+  const destTrigger = document.getElementById('destinations-trigger');
+  if (destMenu && destTrigger) {
+    destMenu.addEventListener('mouseenter', () => destTrigger.setAttribute('aria-expanded', 'true'));
+    destMenu.addEventListener('mouseleave', () => destTrigger.setAttribute('aria-expanded', 'false'));
+    destMenu.addEventListener('focusin', () => destTrigger.setAttribute('aria-expanded', 'true'));
+    destMenu.addEventListener('focusout', (e) => { if (!destMenu.contains(e.relatedTarget as Node)) destTrigger.setAttribute('aria-expanded', 'false'); });
   }
 
   hamburgerBtn.addEventListener('click', openDrawer);

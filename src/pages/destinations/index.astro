@@ -4,18 +4,18 @@ import Hero from '../../components/Hero.astro';
 import InteractiveMap from '../../components/InteractiveMap.astro';
 import TexturedSection from '../../components/TexturedSection.astro';
 import CelticDivider from '../../components/CelticDivider.astro';
-import { destinations as sharedDestinations, unsplashUrl } from '../../data/destinations';
+import { activeDestinations, unsplashUrl } from '../../data/destinations';
 
-const destinations = sharedDestinations.map(d => ({
+const destinations = activeDestinations.map(d => ({
   ...d,
   image: unsplashUrl(d.photoId, 800),
 }));
 ---
 
-<Layout title="Destinations" description="Explore our luxury golf tour destinations across Scotland, Ireland, Wales, and England.">
+<Layout title="Destinations" description="Explore our luxury golf tour destinations across Scotland and Ireland.">
   <Hero
     title="Destinations"
-    subtitle="Four nations. Countless legendary courses. One unforgettable journey."
+    subtitle="Two nations. Countless legendary courses. One unforgettable journey."
     backgroundImage="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
     size="large"
     ctaText=""

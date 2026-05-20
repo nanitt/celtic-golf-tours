@@ -4,7 +4,7 @@
  * Geographically accurate SVG map of British Isles
  */
 
-import { mapRegions } from '../data/map-regions';
+import { activeMapRegions } from '../data/map-regions';
 import CoursePopup from './CoursePopup.astro';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 
 const { enableAudio = false, class: className = '' } = Astro.props;
 
-const regionCourses = mapRegions.map(region => ({
+const regionCourses = activeMapRegions.map(region => ({
   ...region,
   featuredCourse: region.courses[0]
 }));

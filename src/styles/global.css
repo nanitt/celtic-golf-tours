@@ -338,7 +338,8 @@
               box-shadow var(--duration-normal) var(--ease-smooth);
 }
 
-.card-lift:hover {
+.card-lift:hover,
+.card-lift:active {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
 }
@@ -461,7 +462,8 @@
   transition: width var(--duration-normal) var(--ease-smooth);
 }
 
-.footer-link:hover::after {
+.footer-link:hover::after,
+.footer-link:active::after {
   width: 100%;
 }
 

@@ -4,9 +4,9 @@ import CinematicHero from '../components/CinematicHero.astro';
 import HostedExperienceCard from '../components/HostedExperienceCard.astro';
 import TestimonialFeature from '../components/TestimonialFeature.astro';
 import { getFeaturedExperiences } from '../data/sanity-experiences';
-import { destinations as sharedDestinations, unsplashUrl } from '../data/destinations';
+import { activeDestinations, unsplashUrl } from '../data/destinations';
 
-const destinations = sharedDestinations.map(d => ({
+const destinations = activeDestinations.map(d => ({
   ...d,
   image: unsplashUrl(d.photoId, 2000, 85),
 }));
@@ -26,7 +26,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
   <!-- Hero -->
   <CinematicHero
     title="St Andrews. Royal Portrush. Turnberry. Played the way they were meant to be."
-    subtitle="Expert-led golf tours to Scotland, Ireland, Wales and England — built on real relationships with the courses and the people who run them."
+    subtitle="Expert-led golf tours to Scotland and Ireland — built on real relationships with the courses and the people who run them."
     ctaText="Plan Your Trip"
     ctaLink="/contact"
     backgroundImage="https://images.unsplash.com/photo-1672871583040-42826d4e9ca4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=90"
@@ -75,7 +75,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
               <p class="text-text-muted text-xs tracking-[0.15em] uppercase mt-1">Years' Experience</p>
             </div>
             <div>
-              <p class="font-heading text-3xl text-charcoal">4</p>
+              <p class="font-heading text-3xl text-charcoal">2</p>
               <p class="text-text-muted text-xs tracking-[0.15em] uppercase mt-1">Countries</p>
             </div>
           </div>
@@ -103,7 +103,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
   <section class="section-padding bg-white">
     <div class="content-wide px-6 lg:px-12">
       <div class="mb-12" data-reveal="fade-up">
-        <h2 class="font-heading text-charcoal" style="font-size: clamp(2rem, 4vw, var(--text-section));">Four countries. One obsession.</h2>
+        <h2 class="font-heading text-charcoal" style="font-size: clamp(2rem, 4vw, var(--text-section));">Two countries. One obsession.</h2>
       </div>
 
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
@@ -153,7 +153,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
           <p class="section-kicker-light mt-2">Tours Completed</p>
         </div>
         <div data-reveal="fade-up" data-reveal-delay="4">
-          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">4</p>
+          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">2</p>
           <p class="section-kicker-light mt-2">Countries</p>
         </div>
       </div>
