@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import CinematicHero from '../components/CinematicHero.astro';
 import HostedExperienceCard from '../components/HostedExperienceCard.astro';
-import TestimonialFeature from '../components/TestimonialFeature.astro';
 import { getFeaturedExperiences } from '../data/sanity-experiences';
 import { activeDestinations, unsplashUrl } from '../data/destinations';
 
@@ -10,13 +9,6 @@ const destinations = activeDestinations.map(d => ({
   ...d,
   image: unsplashUrl(d.photoId, 2000, 85),
 }));
-
-const featuredTestimonial = {
-  quote: "Celtic Golf Tours didn't just plan a trip—they created an experience that will stay with me forever. Every course, every meal, every moment was perfect.",
-  name: "James Richardson",
-  location: "London, UK",
-  trip: "The St Andrews Pilgrimage, 2024"
-};
 
 const featuredExperiences = await getFeaturedExperiences(3);
 ---
@@ -186,24 +178,6 @@ const featuredExperiences = await getFeaturedExperiences(3);
       <div class="mt-12" data-reveal="fade-up">
         <a href="/experiences" class="btn-secondary btn-md">
           View All Experiences
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonial -->
-  <section class="section-padding bg-white">
-    <div class="px-6 lg:px-12">
-      <TestimonialFeature
-        quote={featuredTestimonial.quote}
-        name={featuredTestimonial.name}
-        location={featuredTestimonial.location}
-        trip={featuredTestimonial.trip}
-      />
-      <div class="text-center mt-12">
-        <a href="/testimonials" class="btn-ghost btn-md">
-          Read More Reviews
-          <span class="arrow ml-2">→</span>
         </a>
       </div>
     </div>
