@@ -1,3 +1,117 @@
+# Content Audit - Placeholder Copy and Imagery
+
+Audit date: 2026-05-21
+
+Scope checked: 43 source files under `src/pages/` and `src/components/`.
+
+## Owner Content Tasks
+
+### `src/pages/index.astro`
+- Hero: replace Unsplash background with licensed CGT trip/course photography, ideally a recognizable links course from an actual offering.
+- Course showcase: verify the claim that CGT can get golfers onto St Andrews, Royal Portrush, Turnberry, Muirfield, Lahinch, Royal Dornoch, Ballybunion, and Carnoustie; replace with actual bookable course list/access language.
+- About intro: replace generic boutique/access copy with accurate CGT story, Canadian-market positioning, and real relationship/service details.
+- About stats: verify or replace `150+ Tours Delivered`, `20+ Years' Experience`, and `2 Countries`.
+- Destination grid: replace Unsplash-generated images from `src/data/destinations.ts` with real Scotland/Ireland/England/Wales destination photos once those offerings are active.
+- Stats bar: verify or replace `500+ Happy Golfers`, `4.9 Average Rating`, `150+ Tours Completed`, and `2 Countries`.
+- Hosted experiences: confirm Sanity is populated; otherwise replace fallback sample trips, hosts, dates, pricing, availability, and images from `src/data/hosted-experiences.ts`.
+- Final CTA: replace Unsplash background with a real CGT course/trip photo.
+
+### `src/pages/about.astro`
+- Hero: replace Unsplash background with real CGT team, Celtic Golf Centre, or tour photography.
+- Our Story: replace generic origin story and first-hand course claims with accurate company history and founder/team details.
+- Our Story image: replace Unsplash supporting image with a real CGT/team/course image.
+- Values: verify claims that every recommended course has been played, that CGT knows course staff, and that every group is capped at twelve.
+- By the Numbers: verify or replace `500+`, `4.9`, `150+`, and `20+`.
+- Heritage Wall embed: replace stock images/captions with licensed historical/course/CGT assets.
+- Celtic Golf Centre connection: provide real relationship details and approved imagery.
+
+### `src/pages/experiences.astro`
+- Hero: replace Unsplash hero and broad "extraordinary experiences" copy with accurate CGT offering copy.
+- Hosted experiences: confirm real hosted trip inventory, dates, status, spots remaining, hosts, highlights, and prices.
+- Ways to Travel: replace generic Custom Tours, Small Group Tours, and Corporate Events descriptions/features with actual CGT services.
+- Ways to Travel images: replace Unsplash images with real package/destination photography.
+- What's Included: verify accommodation level, tee-time access, transfer inclusion, and support terms.
+- FAQ: replace operational, booking, accommodation, handicap, customization, and cancellation answers with approved CGT policy language.
+
+### `src/pages/experiences/[id].astro`
+- Experience detail pages: real content depends on Sanity or fallback data; verify every displayed experience name, description, date, destination, image, status, price, spots remaining, host, and highlight before publishing.
+- Host block: replace initials-only placeholder with real host bio/headshot if host-led experiences are real.
+
+### `src/pages/destinations/index.astro`
+- Hero: replace Unsplash image with real destination/course photography.
+- Interactive map: verify all course callouts and popup assets against actual CGT destination inventory.
+- Destination cards: replace Unsplash-generated images with real destination photography.
+- Why Travel With Us: verify priority access, local knowledge, and logistics claims.
+- CTA: replace Unsplash background and generic recommendation copy with real planning guidance for Canadian golfers.
+
+### `src/pages/destinations/scotland.astro`
+- Course list: verify each course is part of real CGT Scotland offerings and update blurbs to actual itinerary/course notes.
+- Images: replace all Unsplash course/hero URLs with real Scotland course photos.
+- Highlights and overview: replace generic luxury/cultural bullets with confirmed Scotland itinerary inclusions and Canadian traveler details.
+
+### `src/pages/destinations/ireland.astro`
+- Course list: verify each course is part of real CGT Ireland offerings and update blurbs to actual itinerary/course notes.
+- Images: replace all Unsplash course/hero URLs with real Ireland/Northern Ireland course photos.
+- Highlights and overview: replace generic hospitality/scenery copy with confirmed Ireland itinerary inclusions and Canadian traveler details.
+
+### `src/pages/destinations/england.astro`
+- Redirected page still contains placeholder content; if England is reactivated, replace all sample course blurbs, highlights, overview copy, and Unsplash images with real England offering content.
+
+### `src/pages/destinations/wales.astro`
+- Redirected page still contains placeholder content; if Wales is reactivated, replace all sample course blurbs, highlights, overview copy, and Unsplash images with real Wales offering content.
+
+### `src/pages/testimonials.astro`
+- Hero: replace Unsplash background with real guest/tour photography.
+- Testimonials body: add real testimonials, names/permissions, locations, and trip context when available, or keep the page hidden.
+- CTA: remove or verify "hundreds of golfers" because it conflicts with the "first tours" placeholder message.
+
+### `src/pages/contact.astro`
+- Hero: replace Unsplash background with real CGT trip-planning/destination image.
+- Form options: add England and Wales if CGT wants all four countries represented; update sample date/name/phone placeholders for Canadian golfers.
+
+### `src/pages/contact/thank-you.astro`
+- Hero: replace Unsplash background with approved CGT/destination photography.
+- Response copy: verify the 24-hour response-time promise.
+
+### `src/pages/404.astro`, `src/pages/privacy.astro`, `src/pages/terms.astro`
+- Hero images: replace repeated Unsplash fallback backgrounds with approved CGT imagery.
+- Legal pages: existing legal TODO remains; get privacy/terms reviewed before launch without changing pricing/contact/legal terms ad hoc.
+
+### `src/pages/coming-soon.astro`
+- Value propositions: verify priority access, played-course/local-expertise claims, and white-glove service language.
+- Background image: verify `/images/turnberry.jpg` is licensed and accurately depicts an intended CGT course/region.
+
+### `src/components/Hero.astro`
+- Default background: replace Unsplash fallback with an approved local CGT image or require all callers to pass a real image.
+
+### `src/components/DestinationPage.astro`
+- Generic itinerary: replace the seven-day sample timeline with destination-specific real sample itineraries or clearly label it as illustrative.
+
+### `src/components/HorizontalTimeline.astro`
+- Timeline: replace invented "day in the life" stops, Lahinch/Doonbeg details, meal descriptions, Redbreast/Michelin copy, and Unsplash images with a real sample day.
+
+### `src/components/HeritageWall.astro`
+- Gallery: replace Unsplash images, captions, and location labels with licensed historical/course/CGT assets.
+- Quote: verify brand fit and permission/context for the Arnold Palmer quote.
+
+### `src/components/DigitalCaddie.astro`
+- Chat persona: approve or replace the fictional "Seamus" digital caddie identity with real CGT support branding.
+
+### Data Dependencies Surfacing Through Audited Pages
+- `src/data/hosted-experiences.ts`: fallback contains likely invented hosts (`Colin MacLeod`, `Sean O'Connor`, `James Whitfield`, `David Evans`), 2025 dates, prices, availability, trip names, highlights, and Unsplash images. Replace with real data or remove fallback before launch.
+- `src/data/destinations.ts`: active destinations currently filter to Scotland/Ireland only, while the business context includes Scotland, Ireland, England, and Wales. Decide whether England/Wales are coming soon or active, then update copy/images accordingly.
+- `public/textures/pressed-paper.webp`, `public/textures/linen-subtle.webp`, `public/audio/wind-over-dunes.mp3`, and `public/audio/ocean-waves.mp3` were previously documented as placeholders; prepare real approved assets or remove unused sensory features.
+
+## Recommended Asset Prep
+- Real hero photos for home, about, experiences, destinations, contact, testimonials, legal/utility pages, and CTA sections.
+- Destination/course photo sets for Scotland, Ireland, England, and Wales, with licensing and course/location captions.
+- Real CGT service proof: courses offered, tee-time/access wording, group-size policy, inclusions, support hours, and cancellation/payment terms.
+- Real testimonials with permission, customer location, trip destination, and date.
+- Real hosted-experience inventory: names, dates, hosts, prices, availability, inclusions, itinerary highlights, and photos.
+- Canadian golfer specifics: CAD pricing policy, flight guidance, travel insurance notes, departure planning window, and Canadian contact/phone examples.
+
+---
+
 # Superdesign Exploration - COMPLETED
 
 ## Summary
