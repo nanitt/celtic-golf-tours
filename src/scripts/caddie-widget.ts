@@ -72,38 +72,50 @@ const CONVERSATION_STEPS = [
 ];
 
 // Response templates based on preferences
+//
+// These must not name products or partners. An earlier version recommended
+// "The St Andrews Pilgrimage" and "Wild Atlantic Links" (both departed in 2025
+// and since removed from the site), a "Celtic Classic" that never existed in
+// any data, a private tasting at a named distillery, and courses that appear
+// nowhere else on the site. The widget renders on every page, so it was
+// offering trips the rest of the site had stopped selling.
+//
+// Rule: reference destinations and courses the site already names, describe
+// what a trip could include rather than promising specifics, and hand off to
+// a human. Nothing here should be a commitment only Terry can make.
 const getRecommendation = (prefs: CaddieState['userPreferences']): string => {
   const { handicap, whiskey, destination, travelStyle } = prefs;
 
-  let rec = "Right then! Based on what you've told me, I'd recommend ";
+  let rec = "Right then! Based on what you've told me, ";
 
-  // Destination specific
   if (destination === 'scotland') {
-    rec += "starting with **The St Andrews Pilgrimage**. ";
+    rec += "I'd build your trip around Scotland's links. ";
     if (handicap === 'low') {
-      rec += "With your game, you'll want to tackle the Old Course and Kingsbarns. ";
+      rec += "With your game, the Old Course at St Andrews and Carnoustie are the ones to aim for. ";
     } else if (handicap === 'casual') {
-      rec += "The Castle Course offers stunning views without the pressure. ";
+      rec += "Royal Dornoch and Turnberry give you the scenery and the history without punishing every loose drive. ";
+    } else {
+      rec += "St Andrews, Turnberry and Royal Dornoch would be the backbone of it. ";
     }
   } else if (destination === 'ireland') {
-    rec += "our **Wild Atlantic Links** tour. Ballybunion and Lahinch are calling! ";
+    rec += "Ireland's west coast is where I'd point you. ";
+    rec += "Ballybunion and Lahinch are the heart of it, with Royal County Down and Royal Portrush further north. ";
     if (whiskey === 'neat') {
-      rec += "We'll arrange a private tasting at Dingle Distillery. ";
+      rec += "We can look at working a distillery visit into a rest day. ";
     }
   } else {
-    rec += "our **Celtic Classic**—Scotland and Ireland back to back. The ultimate links pilgrimage. ";
+    rec += "I'd look at Scotland and Ireland together — a longer trip, but you only cross once. ";
   }
 
-  // Travel style
   if (travelStyle === 'luxury') {
-    rec += "We'll book you into the finest manor houses and arrange chauffeur transfers.";
+    rec += "We'd focus on the best accommodation near each course.";
   } else if (travelStyle === 'authentic') {
-    rec += "You'll stay in characterful B&Bs and dine where the locals do.";
+    rec += "We'd keep it characterful — the kind of places that know the local game.";
   } else {
-    rec += "We'll find the perfect balance of comfort and character.";
+    rec += "We'd find the balance between comfort and character.";
   }
 
-  rec += "\n\nShall I connect you with our team to start planning?";
+  rec += "\n\nNothing's fixed yet — tell us your dates and we'll put a real itinerary together. Shall I point you to the enquiry form?";
 
   return rec;
 };
