@@ -23,7 +23,11 @@ const regionCourses = activeMapRegions.map(region => ({
 }));
 ---
 
-<div class:list={['interactive-map-container', className]} data-interactive-map>
+<div
+  class:list={['interactive-map-container', className]}
+  data-interactive-map
+  data-active-regions={activeMapRegions.map(r => r.id).join(',')}
+>
   <div class="map-wrapper">
     <div class="map-container" data-map-container>
       <object
@@ -350,6 +354,14 @@ const regionCourses = activeMapRegions.map(region => ({
     const container = document.querySelector('[data-interactive-map]');
     if (!container) return;
 
+    // Regions we actually sell. The SVG ships paths for all four home nations,
+    // but Wales and England are hidden in map-regions.ts and their destination
+    // pages 301-redirect — so hovering them used to look interactive and then
+    // do nothing, and tapping them on mobile navigated to a redirect loop.
+    const activeRegionIds = (container.getAttribute('data-active-regions') || '')
+      .split(',')
+      .filter(Boolean);
+
     const mapObject = container.querySelector('.map-object') as HTMLObjectElement;
     const popups = container.querySelectorAll('.popup-card');
     const placeholder = container.querySelector('.popup-placeholder');
@@ -452,6 +464,22 @@ const regionCourses = activeMapRegions.map(region => ({
           fill-opacity: 0.12;
           transform: scale(0.98);
         }
+        /* Destinations we don't currently sell: present as context, not as a
+           control. No pointer, no hover response, no focus ring. */
+        .map-region.inactive { cursor: default; pointer-events: none; }
+        .map-region.inactive path {
+          fill: #8a8f8c;
+          fill-opacity: 0.14;
+          filter: none;
+          transform: none;
+        }
+        .map-region.inactive:hover path,
+        .map-region.inactive:focus path {
+          fill: #8a8f8c;
+          fill-opacity: 0.14;
+          transform: none;
+          filter: none;
+        }
       `;
 
       // Inject enhanced gold glow filter into SVG defs
@@ -486,6 +514,15 @@ const regionCourses = activeMapRegions.map(region => ({
 
       regions.forEach(region => {
         const regionId = region.getAttribute('data-region');
+
+        // Not on offer: make it visibly inert and bind nothing.
+        if (!regionId || !activeRegionIds.includes(regionId)) {
+          region.classList.add('inactive');
+          region.removeAttribute('tabindex');
+          region.removeAttribute('role');
+          region.setAttribute('aria-hidden', 'true');
+          return;
+        }
 
         if (isTouchDevice) {
           // Mobile: tap to show popup, tap again to navigate
