@@ -7,7 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "seed": "node scripts/seed-sanity.mjs"
+    "seed": "node scripts/seed-sanity.mjs",
+    "images:audit": "node scripts/images-audit.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

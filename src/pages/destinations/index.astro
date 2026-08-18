@@ -1,4 +1,5 @@
 ---
+import { images, imageUrl } from '../../data/images';
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 import InteractiveMap from '../../components/InteractiveMap.astro';
@@ -17,7 +18,7 @@ const destinations = activeDestinations.map(d => ({
   <Hero
     title="Destinations"
     subtitle="Two nations. Countless legendary courses. One unforgettable journey."
-    backgroundImage="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    backgroundImage={imageUrl(images.destinationsHero, 1800, 80)}
     size="large"
     ctaText=""
   />
@@ -106,7 +107,7 @@ const destinations = activeDestinations.map(d => ({
   <section class="group relative py-40 lg:py-48 overflow-hidden">
     <div
       class="absolute inset-0 bg-cover bg-center scale-on-hover"
-      style="background-image: url('https://images.unsplash.com/photo-1687291133565-767706032bed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80')"
+      style={`background-image: url('${imageUrl(images.destinationsCta, 1800, 80)}')`}
     >
     </div>
     <div class="absolute inset-0 overlay-default overlay-hover transition-premium"></div>

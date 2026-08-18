@@ -1,4 +1,5 @@
 ---
+import { images, imageUrl } from '../data/images';
 /**
  * HeritageWall - Gallery of historical golf photos
  * B&W photos that colorize on hover/scroll
@@ -16,42 +17,42 @@ const { class: className = '' } = Astro.props;
 // Heritage photos - mix of historical and modern golf imagery
 const photos = [
   {
-    src: 'https://images.unsplash.com/photo-1687291133565-767706032bed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    src: imageUrl(images.heritageOldCourseDawn, 600, 80),
     alt: 'St Andrews Old Course',
     caption: 'The Old Course at Dawn',
     year: 'St Andrews, Scotland',
     rotation: -2
   },
   {
-    src: 'https://images.unsplash.com/photo-1693113448288-015fb6eed7c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    src: imageUrl(images.heritageWalkingLinks, 600, 80),
     alt: 'Irish coastal links',
     caption: 'Walking the Links',
     year: 'Ballybunion, Ireland',
     rotation: 1.5
   },
   {
-    src: 'https://images.unsplash.com/photo-1600011689032-8b628b8a8747?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    src: imageUrl(images.heritageClubhouse, 600, 80),
     alt: 'Scottish links course',
     caption: 'The Clubhouse',
     year: 'Royal Dornoch',
     rotation: -1
   },
   {
-    src: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    src: imageUrl(images.heritageHighland, 600, 80),
     alt: 'Links golf course',
     caption: 'Highland Glory',
     year: 'The Highlands',
     rotation: 2
   },
   {
-    src: 'https://images.unsplash.com/photo-1693113448333-0123750f17f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    src: imageUrl(images.heritageWildAtlantic, 600, 80),
     alt: 'Golfer at Lahinch',
     caption: 'Wild Atlantic Way',
     year: 'County Clare, Ireland',
     rotation: -1.5
   },
   {
-    src: 'https://images.unsplash.com/photo-1594750197419-829e3bc11d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    src: imageUrl(images.heritageTradition, 600, 80),
     alt: 'Traditional golf scene',
     caption: 'Timeless Tradition',
     year: 'The British Isles',

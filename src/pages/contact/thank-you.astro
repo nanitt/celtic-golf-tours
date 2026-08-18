@@ -1,4 +1,5 @@
 ---
+import { images, imageUrl } from '../../data/images';
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 ---
@@ -8,7 +9,7 @@ import Hero from '../../components/Hero.astro';
   <Hero
     title="Thank You"
     subtitle="Your enquiry has been received"
-    backgroundImage="https://images.unsplash.com/photo-1693113448288-015fb6eed7c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    backgroundImage={imageUrl(images.thankYouHero, 1800, 80)}
     size="medium"
     ctaText=""
   />

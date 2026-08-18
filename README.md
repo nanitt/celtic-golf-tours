@@ -75,6 +75,23 @@ Fill in real figures, then flip the flag. See `tasks/content-needed.md`.
 
 ---
 
+## Photography
+
+Every photograph is declared in **`src/data/images.ts`** — one slot per image,
+each with a plain-English note describing what it needs.
+
+```bash
+npm run images:audit   # what's still stock, and what each slot needs
+```
+
+To replace one: drop the file in `public/images/`, point the slot's `src` at it
+(`/images/st-andrews-18th.jpg`), and set `placeholder: false`. Every page using
+that slot updates. `imageUrl()` passes local paths straight through and only
+applies Unsplash sizing to `photo-…` ids.
+
+The site currently runs entirely on stock imagery. Real photography is the
+largest outstanding item — see `tasks/content-needed.md`.
+
 ## Content management
 
 ### Turning Sanity on

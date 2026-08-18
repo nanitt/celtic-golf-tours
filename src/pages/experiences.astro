@@ -1,4 +1,5 @@
 ---
+import { images, imageUrl } from '../data/images';
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import HostedExperienceCard from '../components/HostedExperienceCard.astro';
@@ -16,7 +17,7 @@ const experienceTypes = [
       'Private transfers throughout',
       'Dedicated tour coordinator'
     ],
-    image: 'https://images.unsplash.com/photo-1685880841774-d3cd18c3207a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    image: imageUrl(images.wayCustomTours, 800, 80)
   },
   {
     title: 'Small Group Tours',
@@ -29,7 +30,7 @@ const experienceTypes = [
       'Meet like-minded golfers',
       'Best value for money'
     ],
-    image: 'https://images.unsplash.com/photo-1694636507260-8b2428e3b738?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    image: imageUrl(images.waySmallGroup, 800, 80)
   },
   {
     title: 'Corporate Events',
@@ -42,7 +43,7 @@ const experienceTypes = [
       'Full event management',
       'Flexible budgets and formats'
     ],
-    image: 'https://images.unsplash.com/photo-1635328800844-0e68e80ab258?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    image: imageUrl(images.wayCorporate, 800, 80)
   }
 ];
 
@@ -96,7 +97,7 @@ const faqs = [
   <Hero
     title="Extraordinary Golf Experiences"
     subtitle="From intimate custom tours to our signature hosted journeys, discover the perfect way to experience the world's finest courses"
-    backgroundImage="https://images.unsplash.com/photo-1683169285928-eb93b0169793?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=80"
+    backgroundImage={imageUrl(images.experiencesHero, 1800, 80)}
     size="large"
     ctaText=""
   />
