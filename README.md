@@ -164,8 +164,12 @@ See `tasks/handoff.md` for the full ownership and launch checklist.
   `src/scripts/scroll-reveal.ts` (imported as an ES module from the layout — do
   **not** switch it to `<script src="/src/...">`, which Astro will not bundle).
   Above-the-fold content uses `.animate-fade-in-up`, which needs no JS at all.
-- **CSP is strict**, set in `vercel.json`, with a separate relaxed policy scoped
-  to `/studio`. Adding analytics, a chat widget, or an embedded video will be
+- **CSP is strict**, set in `vercel.json`. Two header rules: the public site
+  uses a negative lookahead (`/((?!studio).*)`) to stay strict, while `/studio`
+  gets its own relaxed policy because Sanity Studio needs `blob:` workers,
+  `unsafe-eval`, websockets and same-origin iframes — all four blocked by the
+  site policy. Note `vercel.json` is strict JSON: **no comment keys**, not even
+  `"//"`, or the deploy fails schema verification before it builds. Adding analytics, a chat widget, or an embedded video will be
   **silently blocked** until you amend `script-src`/`connect-src`/`frame-src`.
 
 ## Known gaps
