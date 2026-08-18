@@ -23,7 +23,7 @@ const { class: className = '' } = Astro.props;
     <div class="toggle-content">
       <!-- Caddie icon / avatar -->
       <div class="caddie-avatar">
-        <svg class="avatar-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg aria-hidden="true" class="avatar-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <!-- Golf flag icon -->
           <path d="M4 21V5a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H8l-2-2H4z"/>
           <path d="M4 21l8-8"/>
@@ -36,7 +36,7 @@ const { class: className = '' } = Astro.props;
     </div>
 
     <!-- Close icon (shown when open) -->
-    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <svg aria-hidden="true" class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M18 6L6 18M6 6l12 12"/>
     </svg>
   </button>
@@ -164,8 +164,10 @@ const { class: className = '' } = Astro.props;
     position: absolute;
     bottom: calc(100% + 1rem);
     right: 0;
-    width: 360px;
-    max-height: 500px;
+    /* Was a flat 360px with no media query — on a 320-360px viewport that
+       overflows horizontally, and the page sets 100vw with no overflow-x guard. */
+    width: min(360px, calc(100vw - 2rem));
+    max-height: min(500px, calc(100vh - 8rem));
     background: white;
     border-radius: 16px;
     box-shadow:

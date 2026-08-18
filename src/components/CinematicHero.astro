@@ -1,5 +1,5 @@
 ---
-import HeroContent from './HeroContent';
+import { stats, showStat } from '../data/site';
 
 interface Props {
   title: string;
@@ -30,6 +30,13 @@ const {
 } = Astro.props;
 
 const hasVideo = !!backgroundVideo || !!backgroundVideoWebm;
+
+// Above-the-fold social proof — each figure appears only once Terry has confirmed it.
+const trustPoints = [
+  showStat(stats.averageRating) ? `${stats.averageRating}★` : '',
+  showStat(stats.happyGolfers) ? `${stats.happyGolfers} Golfers` : '',
+  showStat(stats.toursDelivered) ? `${stats.toursDelivered} Tours` : ''
+].filter(Boolean);
 ---
 
 <section
@@ -63,15 +70,70 @@ const hasVideo = !!backgroundVideo || !!backgroundVideoWebm;
 
   <!-- Content -->
   <div class="relative z-10 flex-1 flex items-center justify-center">
-    <HeroContent
-      client:load
-      kicker={kicker}
-      title={title}
-      subtitle={subtitle}
-      ctaText={ctaText}
-      ctaLink={ctaLink}
-      showTrustBar={showTrustBar}
-    />
+    {/*
+      Rendered server-side with CSS entrance animations rather than a Framer Motion
+      island. The island server-rendered the h1 at opacity:0 and only revealed it
+      after React hydrated, so the headline was invisible until ~300KB of JS landed
+      (and stayed invisible if it failed). .animate-fade-in-up is pure CSS, plays on
+      paint, and is neutralised under prefers-reduced-motion.
+    */}
+    <div class="text-center px-6 max-w-5xl mx-auto">
+      {kicker && (
+        <div class="mb-8 animate-fade-in-up">
+          <p
+            class="text-sm font-medium tracking-[0.4em] uppercase cinematic-text-shadow"
+            style="color: rgba(245, 245, 241, 0.7);"
+          >
+            {kicker}
+          </p>
+        </div>
+      )}
+
+      <h1
+        class="mb-8 leading-[1.1] tracking-tight cinematic-title animate-fade-in-up animation-delay-100"
+        style="font-family: var(--font-heading-display); font-size: clamp(2.75rem, 7vw, 5rem); color: #F5F5F1;"
+      >
+        {title}
+      </h1>
+
+      {subtitle && (
+        <p
+          class="text-lg md:text-xl lg:text-2xl mb-14 max-w-3xl mx-auto font-light tracking-wide leading-relaxed cinematic-text-shadow animate-fade-in-up animation-delay-200"
+          style="color: rgba(245, 245, 241, 0.8);"
+        >
+          {subtitle}
+        </p>
+      )}
+
+      {ctaText && (
+        <div class="animate-fade-in-up animation-delay-300">
+          <a
+            href={ctaLink}
+            data-cursor-hover="cta"
+            class="luxury-cta inline-flex items-center gap-3 px-12 py-5 text-base font-medium tracking-wide rounded-sm"
+          >
+            <span>{ctaText}</span>
+            <svg
+              class="luxury-cta-arrow w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      )}
+
+      {showTrustBar && trustPoints.length > 0 && (
+        <div class="mt-8 animate-fade-in-up animation-delay-400">
+          <p class="text-xs tracking-[0.2em] uppercase" style="color: rgba(245, 245, 241, 0.45);">
+            {trustPoints.join('\u00A0\u00B7\u00A0')}
+          </p>
+        </div>
+      )}
+    </div>
   </div>
 
   <!-- Scroll Progress Indicator -->

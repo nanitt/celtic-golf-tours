@@ -109,7 +109,12 @@ const includeAddress = hasAddress();
       // Remove no-js class immediately
       document.documentElement.classList.remove('no-js');
     </script>
-    <script src="/src/scripts/scroll-reveal.ts"></script>
+    <script>
+      // Must be an ESM import, not src="/src/...": a root-absolute path is treated
+      // as a public asset and never bundled, so it 404s in production and every
+      // [data-reveal] element stays at opacity:0 forever.
+      import '../scripts/scroll-reveal';
+    </script>
     <script>
       // Custom cursor functionality
       (function initCustomCursor() {
@@ -194,35 +199,5 @@ const includeAddress = hasAddress();
       })();
     </script>
 
-    <!-- Card image parallax on mouse move (desktop only) -->
-    <script>
-      (function() {
-        if (!window.matchMedia('(hover: hover)').matches) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-        document.addEventListener('mousemove', function(e) {
-          const card = (e.target as HTMLElement).closest('[data-parallax-card]');
-          if (!card) return;
-
-          const rect = card.getBoundingClientRect();
-          const x = (e.clientX - rect.left) / rect.width - 0.5;
-          const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-          const bg = card.querySelector('.scale-on-hover') as HTMLElement;
-          if (bg) {
-            bg.style.transform = `scale(var(--scale-hover, 1)) translate(${x * -4}px, ${y * -4}px)`;
-          }
-        });
-
-        document.addEventListener('mouseleave', function(e) {
-          const card = (e.target as HTMLElement).closest('[data-parallax-card]');
-          if (!card) return;
-          const bg = card.querySelector('.scale-on-hover') as HTMLElement;
-          if (bg) {
-            bg.style.transform = '';
-          }
-        }, true);
-      })();
-    </script>
   </body>
 </html>
