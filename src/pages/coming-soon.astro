@@ -51,6 +51,10 @@ import CelticKnot from '../components/icons/CelticKnot.astro';
             class="w-24 md:w-32 mx-auto mb-6 animate-fade-in-up drop-shadow-[0_4px_30px_rgba(0,0,0,0.6)]"
           />
 
+          {/* The logo carries the page title visually; screen readers and crawlers
+              still need a real h1. This page previously had no h1 at all. */}
+          <h1 class="sr-only">Celtic Golf Tours — coming soon</h1>
+
           <!-- Ornate Celtic divider -->
           <CelticDivider variant="ornate" color="brass" width="medium" class="mb-6 animate-fade-in-up animation-delay-100" />
 
@@ -64,7 +68,7 @@ import CelticKnot from '../components/icons/CelticKnot.astro';
         <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in-up animation-delay-400">
           <div class="scroll-indicator flex flex-col items-center gap-2 text-champagne/50 cursor-pointer" onclick="window.scrollBy({top: window.innerHeight * 0.8, behavior: 'smooth'})">
             <span class="font-body text-[10px] tracking-[0.3em] uppercase">Discover</span>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="animate-bounce-slow">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" class="animate-bounce-slow">
               <path d="M4 8L10 14L16 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>

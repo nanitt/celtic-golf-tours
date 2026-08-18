@@ -17,6 +17,8 @@
 
   /* Warm accent */
   --color-brass: #c9a959;
+  /* Text-safe brass: ~4.6:1 on cream, keeps the metallic hue for small copy. */
+  --color-brass-text: #8a6d1f;
   --color-brass-light: #d9bc72;
 
   /* Backgrounds - Clean whites and creams */
@@ -31,8 +33,6 @@
   /* Fonts — two-font system: Cormorant for display moments, DM Sans for everything systematic */
   --font-heading: 'DM Sans', sans-serif;
   --font-heading-display: 'Cormorant Garamond', serif;
-  --font-celtic: 'Celtic Garamond the 2nd', 'Cormorant Garamond', serif;
-  --font-celtic-uncial: 'IrishUncialFabeta', 'Cormorant Garamond', serif;
   --font-body: 'DM Sans', sans-serif;
 
   /* Spacing - Premium section padding */
@@ -132,18 +132,22 @@
   letter-spacing: -0.01em;
 }
 
-/* Section kicker label — brass uppercase label used above section headings */
+/* Section kicker label — brass uppercase label used above section headings.
+   Uses --color-brass-text, not --color-brass: at 12px the decorative brass
+   (#c9a959) is 2.26:1 on cream and fails WCAG AA. This label names the section,
+   so it has to be legible — the audience skews 50+. */
 .section-kicker {
-  color: var(--color-brass);
+  color: var(--color-brass-text);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
-/* Section kicker on dark backgrounds — muted champagne variant */
+/* Section kicker on dark backgrounds — muted champagne variant.
+   0.4 alpha measured 3.37:1; 0.72 clears AA while staying visibly secondary. */
 .section-kicker-light {
-  color: rgba(245, 245, 241, 0.4);
+  color: rgba(245, 245, 241, 0.72);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -432,8 +436,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  /* 44px is the WCAG 2.2 minimum target size; was 40px. */
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid transparent;
   transition: all var(--duration-normal) var(--ease-spring);
@@ -902,4 +907,26 @@
     background: linear-gradient(to right,
       var(--color-stone) 0%, white 10%, white 90%, var(--color-stone) 100%);
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Target size (WCAG 2.2 Level AA, 2.5.8)
+   Small navigation and legal links were 15-32px tall. These rules grow the hit
+   area with padding and a negative margin, so the target reaches 44px without
+   moving anything visually.
+   --------------------------------------------------------------------------- */
+.tap-target {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Inline links in dense rows (footer legal, nav) — pad vertically, pull the
+   layout back so spacing is unchanged. */
+.tap-target-inline {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-block: 0.75rem;
+  margin-block: -0.75rem;
 }

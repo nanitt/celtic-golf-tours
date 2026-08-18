@@ -25,3 +25,5 @@ pnpm-debug.log*
 .idea/
 .superdesign
 public/videos/hero.mp4
+.vercel/
+.impeccable/

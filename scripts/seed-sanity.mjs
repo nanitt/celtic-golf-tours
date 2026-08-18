@@ -11,7 +11,7 @@
  */
 
 import { createClient } from '@sanity/client';
-import { config } from 'dotenv';
+// (no dotenv import: it isn't a dependency, and .env.local is hand-parsed below)
 import { readFileSync } from 'fs';
 
 // Load .env.local
