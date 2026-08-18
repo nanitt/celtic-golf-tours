@@ -1,6 +1,6 @@
 import { defineMiddleware } from 'astro:middleware';
 
-const PUBLIC_PATHS = ['/login', '/api/auth/login', '/api/auth/logout'];
+const PUBLIC_PATHS = ['/login', '/api/auth/login', '/api/auth/logout', '/api/contact'];
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
@@ -11,6 +11,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     // Allow static assets and Sanity Studio through
     if (
       pathname === '/coming-soon' ||
+      pathname.startsWith('/api/') ||
       pathname.startsWith('/_astro/') ||
       pathname.startsWith('/studio') ||
       pathname.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2)$/)
