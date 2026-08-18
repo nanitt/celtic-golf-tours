@@ -27,7 +27,7 @@ const isFeatured = variant === 'featured';
   <!-- Author -->
   <div class="flex items-center">
     {image ? (
-      <img src={image} alt={name} class="w-12 h-12 object-cover mr-4" />
+      <img src={image} alt={name} class="w-12 h-12 object-cover mr-4" loading="lazy" decoding="async" />
     ) : (
       <div class="w-12 h-12 bg-celtic/10 flex items-center justify-center mr-4">
         <span class="text-celtic font-semibold text-lg">{name.charAt(0)}</span>

@@ -41,7 +41,7 @@ const trustPoints = [
 ---
 
 <section
-  class="cinematic-hero group relative flex flex-col min-h-screen overflow-hidden"
+  class="cinematic-hero group relative flex flex-col overflow-hidden"
   data-cinematic-hero
 >
   <!-- Video Background (with scrub support) -->
@@ -102,7 +102,7 @@ const trustPoints = [
 
       <h1
         class="mb-8 leading-[1.1] tracking-tight cinematic-title animate-fade-in-up animation-delay-100"
-        style="font-family: var(--font-heading-display); font-size: clamp(2.75rem, 7vw, 5rem); color: #F5F5F1;"
+        style="font-family: var(--font-heading-display); font-size: clamp(2rem, 6.5vw, 5rem); color: #F5F5F1;"
       >
         {title}
       </h1>
@@ -189,6 +189,13 @@ const trustPoints = [
   }
 
   /* Title styling - dramatic shadow for maximum contrast */
+  .cinematic-hero {
+    /* Not min-h-screen: iOS Safari includes the browser chrome in 100vh, which
+       pushed "Plan Your Trip" below the fold on phones. svh excludes it. */
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
   .celtic-knot-corner {
     position: absolute;
     z-index: 5;

@@ -24,7 +24,7 @@ const navLinks = [
           src="/CELTIC GHOST LOGO-01-01.png"
           alt="Celtic Golf Tours"
           class="h-14 lg:h-20 w-auto transition-all duration-300 ease-smooth"
-          id="logo-img"
+          id="logo-img" loading="eager" decoding="async"
         />
       </a>
 
@@ -145,7 +145,7 @@ const navLinks = [
   <div class="flex-1 overflow-y-auto px-8 py-10 flex flex-col gap-8">
     <a
       href="/destinations"
-      class="text-charcoal font-heading text-3xl hover:text-brass transition-colors duration-200"
+      class="tap-target text-charcoal font-heading text-3xl hover:text-brass transition-colors duration-200"
       aria-current={currentPath.startsWith('/destinations') ? 'page' : undefined}
     >
       Destinations
@@ -153,7 +153,7 @@ const navLinks = [
     {navLinks.map((link) => (
       <a
         href={link.href}
-        class="text-charcoal font-heading text-3xl hover:text-brass transition-colors duration-200"
+        class="tap-target text-charcoal font-heading text-3xl hover:text-brass transition-colors duration-200"
         aria-current={currentPath === link.href ? 'page' : undefined}
       >
         {link.label}
