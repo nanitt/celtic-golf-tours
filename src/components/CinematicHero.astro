@@ -1,5 +1,6 @@
 ---
 import { stats, showStat } from '../data/site';
+import CelticKnot from './icons/CelticKnot.astro';
 
 interface Props {
   title: string;
@@ -67,6 +68,16 @@ const trustPoints = [
 
   <!-- Cinematic Gradient Overlay -->
   <div class="absolute inset-0 cinematic-overlay"></div>
+
+  {/* Celtic knot corners. The homepage hero previously carried no Celtic
+      ornament at all, and the legacy Hero's version was 15% opacity and
+      desktop-only — i.e. engineered to be unnoticeable. */}
+  <div class="celtic-knot-corner celtic-knot-corner--tl celtic-knot-animate" aria-hidden="true">
+    <CelticKnot class="w-full h-full" position="top-left" />
+  </div>
+  <div class="celtic-knot-corner celtic-knot-corner--br celtic-knot-animate" aria-hidden="true">
+    <CelticKnot class="w-full h-full" position="bottom-right" />
+  </div>
 
   <!-- Content -->
   <div class="relative z-10 flex-1 flex items-center justify-center">
@@ -178,6 +189,27 @@ const trustPoints = [
   }
 
   /* Title styling - dramatic shadow for maximum contrast */
+  .celtic-knot-corner {
+    position: absolute;
+    z-index: 5;
+    width: 4rem;
+    height: 4rem;
+    color: rgba(201, 169, 89, 0.38);
+    pointer-events: none;
+  }
+
+  @media (min-width: 1024px) {
+    .celtic-knot-corner { width: 6.5rem; height: 6.5rem; }
+  }
+
+  .celtic-knot-corner--tl { top: 1.25rem; left: 1.25rem; }
+  .celtic-knot-corner--br { bottom: 1.25rem; right: 1.25rem; }
+
+  @media (min-width: 1024px) {
+    .celtic-knot-corner--tl { top: 2rem; left: 2rem; }
+    .celtic-knot-corner--br { bottom: 2rem; right: 2rem; }
+  }
+
   .cinematic-title {
     text-shadow:
       0 1px 2px rgba(0, 0, 0, 0.8),
