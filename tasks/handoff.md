@@ -78,6 +78,30 @@ See `tasks/content-needed.md` for the full content list.
 
 ---
 
+## 2b. Current production state (as of 18 Aug)
+
+The site is **already public** at `celtic-golf-tours.vercel.app` — there are no
+environment variables set for `COMING_SOON` or `SITE_PASSWORD`, so neither gate
+is active. It was serving the pre-fix code until today's deploy, which means
+**enquiries were silently lost for months**, not just pending launch.
+
+Now deployed and verified live: contact form delivers (tested end-to-end, email
+received), hero renders, no stale dates.
+
+**Enquiries currently go to `nate.maclennan@gmail.com`, not Terry.** The Resend
+sending domain is unverified, so the shared `onboarding@resend.dev` sender only
+delivers to the Resend account owner. Pointing `NOTIFICATION_EMAIL` at Terry
+would make enquiries fail outright. Forward manually until a domain is verified,
+then switch it.
+
+Two notes for whoever maintains this:
+- `vercel.json` is validated against a strict schema. **No comment keys**, not
+  even `"//"` — the deploy fails verification before it builds, with a 0ms build
+  and no logs.
+- Astro 5 blocks cross-origin POSTs by default, so `/api/contact` rejects
+  submissions without a matching `Origin` header. Browsers always send one; a
+  bare `curl` test will get a 403 and that is correct behaviour, not a fault.
+
 ## 3. Launch switches
 
 - [ ] `COMING_SOON` → `false` (or delete) in Vercel Production
