@@ -4,6 +4,21 @@ import CinematicHero from '../components/CinematicHero.astro';
 import HostedExperienceCard from '../components/HostedExperienceCard.astro';
 import { getFeaturedExperiences } from '../data/sanity-experiences';
 import { activeDestinations, unsplashUrl } from '../data/destinations';
+import { stats, showStat, hasStats } from '../data/site';
+
+// Public claims about the business — nothing renders until Terry signs the numbers off.
+const inlineStats = [
+  { value: stats.toursDelivered, label: 'Tours Delivered' },
+  { value: stats.yearsExperience, label: "Years' Experience" },
+  { value: stats.countries, label: 'Countries' }
+].filter(s => showStat(s.value));
+
+const statsBar = [
+  { value: stats.happyGolfers, label: 'Happy Golfers', accent: 'text-champagne' },
+  { value: stats.averageRating, label: 'Average Rating', accent: 'text-brass' },
+  { value: stats.toursDelivered, label: 'Tours Completed', accent: 'text-champagne' },
+  { value: stats.countries, label: 'Countries', accent: 'text-champagne' }
+].filter(s => showStat(s.value));
 
 const destinations = activeDestinations.map(d => ({
   ...d,
@@ -60,20 +75,16 @@ const featuredExperiences = await getFeaturedExperiences(3);
           <blockquote class="font-heading-display text-3xl lg:text-4xl xl:text-[2.75rem] text-charcoal leading-snug" style="font-weight: 300;">
             "No filler, no padding. Just the right courses, in the right order, at the right pace."
           </blockquote>
-          <div class="grid grid-cols-3 gap-6 mt-14 pt-10 border-t border-charcoal/10">
-            <div>
-              <p class="font-heading text-3xl text-charcoal">150+</p>
-              <p class="text-text-muted text-xs tracking-[0.15em] uppercase mt-1">Tours Delivered</p>
+          {inlineStats.length > 0 && (
+            <div class="grid grid-cols-3 gap-6 mt-14 pt-10 border-t border-charcoal/10">
+              {inlineStats.map(stat => (
+                <div>
+                  <p class="font-heading text-3xl text-charcoal">{stat.value}</p>
+                  <p class="text-text-muted text-xs tracking-[0.15em] uppercase mt-1">{stat.label}</p>
+                </div>
+              ))}
             </div>
-            <div>
-              <p class="font-heading text-3xl text-charcoal">20+</p>
-              <p class="text-text-muted text-xs tracking-[0.15em] uppercase mt-1">Years' Experience</p>
-            </div>
-            <div>
-              <p class="font-heading text-3xl text-charcoal">2</p>
-              <p class="text-text-muted text-xs tracking-[0.15em] uppercase mt-1">Countries</p>
-            </div>
-          </div>
+          )}
         </div>
 
         <!-- Right: body copy + CTA -->
@@ -132,30 +143,21 @@ const featuredExperiences = await getFeaturedExperiences(3);
     </div>
   </section>
 
-  <!-- Stats bar -->
-  <!-- TODO: Replace placeholder - hardcoded golfer count, rating, tours completed, and country count need verified CGT numbers. -->
+  <!-- Stats bar — hidden until Terry confirms the figures (see tasks/content-needed.md) -->
+  {hasStats() && (
   <section class="py-16 bg-charcoal">
     <div class="content-wide px-6 lg:px-12">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-        <div data-reveal="fade-up" data-reveal-delay="1">
-          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">500+</p>
-          <p class="section-kicker-light mt-2">Happy Golfers</p>
-        </div>
-        <div data-reveal="fade-up" data-reveal-delay="2">
-          <p class="font-heading-display text-4xl lg:text-5xl text-brass" style="font-weight: 300;">4.9</p>
-          <p class="section-kicker-light mt-2">Average Rating</p>
-        </div>
-        <div data-reveal="fade-up" data-reveal-delay="3">
-          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">150+</p>
-          <p class="section-kicker-light mt-2">Tours Completed</p>
-        </div>
-        <div data-reveal="fade-up" data-reveal-delay="4">
-          <p class="font-heading-display text-4xl lg:text-5xl text-champagne" style="font-weight: 300;">2</p>
-          <p class="section-kicker-light mt-2">Countries</p>
-        </div>
+        {statsBar.map((stat, i) => (
+          <div data-reveal="fade-up" data-reveal-delay={i + 1}>
+            <p class={`font-heading-display text-4xl lg:text-5xl ${stat.accent}`} style="font-weight: 300;">{stat.value}</p>
+            <p class="section-kicker-light mt-2">{stat.label}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
+  )}
 
   <!-- Experiences -->
   <!-- TODO: Replace placeholder - hosted experience cards may render fallback sample trips, dates, prices, hosts, and Unsplash imagery if Sanity is not configured. -->
@@ -167,25 +169,42 @@ const featuredExperiences = await getFeaturedExperiences(3);
         <p class="text-text mt-4 max-w-xl">Join an expert-led group departure to the world's greatest links courses. We keep groups deliberately small.</p>
       </div>
 
-      {featuredExperiences[0] && (
-        <div class="mb-8" data-reveal="slide-left">
-          <HostedExperienceCard experience={featuredExperiences[0]} featured={true} />
+      {featuredExperiences.length > 0 ? (
+        <>
+          {featuredExperiences[0] && (
+            <div class="mb-8" data-reveal="slide-left">
+              <HostedExperienceCard experience={featuredExperiences[0]} featured={true} />
+            </div>
+          )}
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
+            {featuredExperiences.slice(1).map((exp, index) => (
+              <div data-reveal="slide-right" data-reveal-delay={index + 1}>
+                <HostedExperienceCard experience={exp} />
+              </div>
+            ))}
+          </div>
+
+          <div class="mt-12" data-reveal="fade-up">
+            <a href="/experiences" class="btn-secondary btn-md">
+              View All Experiences
+            </a>
+          </div>
+        </>
+      ) : (
+        <div class="border-t border-charcoal/10 pt-12" data-reveal="fade-up">
+          <p class="font-heading-display text-2xl lg:text-3xl text-charcoal max-w-2xl" style="font-weight: 300;">
+            Our next season of hosted departures is being finalised.
+          </p>
+          <p class="text-text mt-4 max-w-xl">
+            Tell us the dates you have in mind and we'll hold you a place as soon as
+            the itineraries are confirmed.
+          </p>
+          <div class="mt-8">
+            <a href="/contact" class="btn-primary btn-md">Register your interest</a>
+          </div>
         </div>
       )}
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
-        {featuredExperiences.slice(1).map((exp, index) => (
-          <div data-reveal="slide-right" data-reveal-delay={index + 1}>
-            <HostedExperienceCard experience={exp} />
-          </div>
-        ))}
-      </div>
-
-      <div class="mt-12" data-reveal="fade-up">
-        <a href="/experiences" class="btn-secondary btn-md">
-          View All Experiences
-        </a>
-      </div>
     </div>
   </section>
 

@@ -7,6 +7,7 @@ import {
   getUpcomingExperiences as fallbackGetUpcoming,
   getFeaturedExperiences as fallbackGetFeatured,
   getExperiencesByDestination as fallbackGetByDest,
+  isUpcoming,
 } from './hosted-experiences';
 
 export type { HostedExperience, Host } from './hosted-experiences';
@@ -35,6 +36,7 @@ interface SanityExperienceDoc {
     title?: string;
     photo?: any;
   };
+  startDate?: string;
   dates?: string;
   destination?: string;
   description?: string;
@@ -56,6 +58,9 @@ function mapToExperience(doc: SanityExperienceDoc): HostedExperience {
       title: doc.host?.title ?? '',
       photo: urlFor(doc.host?.photo),
     },
+    // Empty startDate sorts as invalid and is treated as not-upcoming, so a
+    // CMS trip missing a departure date fails closed rather than showing forever.
+    startDate: doc.startDate ?? '',
     dates: doc.dates ?? '',
     destination: doc.destination ?? '',
     description: doc.description ?? '',
@@ -68,11 +73,13 @@ function mapToExperience(doc: SanityExperienceDoc): HostedExperience {
 }
 
 export async function getAllExperiences(): Promise<HostedExperience[]> {
-  if (!sanityClient) return fallbackExperiences;
+  // Past departures are filtered out even in fallback mode — a date the visitor can
+  // check and find stale costs more trust than an empty section.
+  if (!sanityClient) return fallbackExperiences.filter(exp => isUpcoming(exp));
   const docs = await sanityClient.fetch<SanityExperienceDoc[]>(
     `*[_type == "experience"] | order(sortOrder asc)`
   );
-  return docs.map(mapToExperience);
+  return docs.map(mapToExperience).filter(exp => isUpcoming(exp));
 }
 
 export async function getExperienceBySlug(slug: string): Promise<HostedExperience | undefined> {
@@ -89,16 +96,16 @@ export async function getUpcomingExperiences(): Promise<HostedExperience[]> {
   const docs = await sanityClient.fetch<SanityExperienceDoc[]>(
     `*[_type == "experience" && status != "sold_out"] | order(sortOrder asc)`
   );
-  return docs.map(mapToExperience);
+  return docs.map(mapToExperience).filter(exp => isUpcoming(exp));
 }
 
 export async function getFeaturedExperiences(count: number = 3): Promise<HostedExperience[]> {
   if (!sanityClient) return fallbackGetFeatured(count);
   const docs = await sanityClient.fetch<SanityExperienceDoc[]>(
-    `*[_type == "experience" && featured == true] | order(sortOrder asc) [0...$count]`,
-    { count }
+    `*[_type == "experience" && featured == true] | order(sortOrder asc)`
   );
-  return docs.map(mapToExperience);
+  // Slice after fetching: GROQ slice bounds must be literals, so [0...$count] errors.
+  return docs.map(mapToExperience).filter(exp => isUpcoming(exp)).slice(0, count);
 }
 
 export async function getExperiencesByDestination(destination: string): Promise<HostedExperience[]> {

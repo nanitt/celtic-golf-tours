@@ -83,7 +83,10 @@ const faqs = [
   },
   {
     q: "What is your cancellation policy?",
-    a: "Each experience has specific terms detailed in your booking confirmation. In general, deposits are non-refundable but full payments are transferable to a future departure in most cases. We'll walk you through everything before you commit."
+    // Deliberately defers to /terms rather than restating the policy. The previous
+    // answer ("deposits are non-refundable") directly contradicted the Terms page,
+    // which promises a full refund at 90+ days. Keep one source of truth.
+    a: "Our full cancellation terms are set out on our <a href='/terms' class='underline hover:text-charcoal'>Terms &amp; Conditions</a> page, and we'll walk you through exactly how they apply to your trip before you commit. We also strongly recommend travel insurance."
   }
 ];
 ---
@@ -103,18 +106,33 @@ const faqs = [
   <section class="section-padding bg-white">
     <div class="content-wide px-6 lg:px-12">
       <div class="text-center mb-16">
-        <p class="section-kicker mb-4">Limited Availability</p>
+        {hostedExperiences.length > 0 && <p class="section-kicker mb-4">Limited Availability</p>}
         <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">Hosted Experiences</h2>
         <p class="text-text max-w-2xl mx-auto">
           Our signature bucket-list trips led by the Celtic Golf Tours team. Carefully crafted journeys to extraordinary destinations with exclusive access and unforgettable moments.
         </p>
       </div>
 
-      <div class="space-y-8">
-        {hostedExperiences.map((experience, index) => (
-          <HostedExperienceCard experience={experience} featured={index === 0} />
-        ))}
-      </div>
+      {hostedExperiences.length > 0 ? (
+        <div class="space-y-8">
+          {hostedExperiences.map((experience, index) => (
+            <HostedExperienceCard experience={experience} featured={index === 0} />
+          ))}
+        </div>
+      ) : (
+        <div class="max-w-2xl mx-auto text-center border-t border-charcoal/10 pt-12">
+          <p class="font-heading-display text-2xl lg:text-3xl text-charcoal" style="font-weight: 300;">
+            Our next season of hosted departures is being finalised.
+          </p>
+          <p class="text-text mt-4">
+            Tell us the dates you have in mind and we'll hold you a place as soon as
+            the itineraries are confirmed.
+          </p>
+          <div class="mt-8">
+            <a href="/contact" class="btn-primary btn-md">Register your interest</a>
+          </div>
+        </div>
+      )}
     </div>
   </section>
 
@@ -142,7 +160,7 @@ const faqs = [
               <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                 {exp.features.map((feature) => (
                   <li class="flex items-center text-sm text-text">
-                    <svg class="w-4 h-4 text-celtic mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg aria-hidden="true" class="w-4 h-4 text-celtic mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                     </svg>
                     {feature}
@@ -208,12 +226,14 @@ const faqs = [
             <summary class="flex items-center justify-between gap-4 list-none cursor-pointer">
               <h3 class="font-heading text-lg text-charcoal group-open:text-celtic transition-colors">{item.q}</h3>
               <span class="flex-shrink-0 w-5 h-5 text-brass">
-                <svg class="group-open:rotate-45 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg aria-hidden="true" class="group-open:rotate-45 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                 </svg>
               </span>
             </summary>
-            <p class="text-text leading-relaxed mt-4 max-w-2xl">{item.a}</p>
+            {/* set:html because answers may contain links (e.g. to /terms). Content is
+                authored in this file only — never user input. */}
+            <p class="text-text leading-relaxed mt-4 max-w-2xl" set:html={item.a} />
           </details>
         ))}
       </div>

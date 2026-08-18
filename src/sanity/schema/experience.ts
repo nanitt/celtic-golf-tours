@@ -34,10 +34,23 @@ export const experience = defineType({
       ],
     }),
     defineField({
+      name: 'startDate',
+      title: 'Departure date',
+      type: 'date',
+      options: { dateFormat: 'YYYY-MM-DD' },
+      description:
+        'The day the trip departs. Drives everything — a trip disappears from the ' +
+        'site automatically once this date has passed, so stale departures can never ' +
+        'be shown. Required.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'dates',
-      title: 'Dates',
+      title: 'Dates (display text)',
       type: 'string',
-      description: 'Display text, e.g. "May 15-22, 2025"',
+      description:
+        'How the dates are shown to visitors, e.g. "May 15-22, 2027". This is just ' +
+        'a label — keep it consistent with the departure date above.',
     }),
     defineField({
       name: 'destination',
