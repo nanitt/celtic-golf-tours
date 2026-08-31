@@ -37,14 +37,24 @@ integrations.push(
       !page.includes('/api/') &&
       !page.includes('/studio') &&
       !page.includes('/destinations/england') &&
-      !page.includes('/destinations/wales'),
+      !page.includes('/destinations/wales') &&
+      // Holding page, and it already carries a noindex meta tag.
+      !page.includes('/coming-soon') &&
+      // Post-submit confirmation; nothing to land on from search.
+      !page.includes('/contact/thank-you') &&
+      // Still a placeholder. Restore when Terry supplies real quotes.
+      !page.includes('/testimonials'),
   })
 );
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: Replace with production domain
-  site: 'https://www.celticgolftours.com',
+    // Single source of truth for the canonical origin. The site answers on both
+  // celticgolftours.com and .ca; .com is primary and .ca redirects to it at the
+  // Vercel domain level, so switching primary is this one variable plus the
+  // dashboard setting. Must come from loadEnv — process.env is empty here,
+  // because this file runs before Astro reads .env.
+  site: env.PUBLIC_SITE_URL || 'https://www.celticgolftours.com',
   output: 'server',
 
   adapter: vercel(),

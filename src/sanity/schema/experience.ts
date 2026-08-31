@@ -60,8 +60,6 @@ export const experience = defineType({
         list: [
           { title: 'Scotland', value: 'Scotland' },
           { title: 'Ireland', value: 'Ireland' },
-          { title: 'Wales', value: 'Wales' },
-          { title: 'England', value: 'England' },
         ],
       },
     }),
@@ -113,6 +111,22 @@ export const experience = defineType({
       title: 'Featured',
       type: 'boolean',
       description: 'Show on the homepage',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'teaser',
+      title: 'Teaser',
+      type: 'boolean',
+      description:
+        'A trip promoted before the details exist. The card links to the contact page instead of a detail page, because there is nothing to detail yet.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'datesTbc',
+      title: 'Dates To Be Confirmed',
+      type: 'boolean',
+      description:
+        'Tick when Start Date is only a sort key and not a real departure. Cards then show the Dates label and never a specific date.',
       initialValue: false,
     }),
     defineField({

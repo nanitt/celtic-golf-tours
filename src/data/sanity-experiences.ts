@@ -47,6 +47,8 @@ interface SanityExperienceDoc {
   spotsRemaining?: number;
   featured?: boolean;
   sortOrder?: number;
+  teaser?: boolean;
+  datesTbc?: boolean;
 }
 
 function mapToExperience(doc: SanityExperienceDoc): HostedExperience {
@@ -69,6 +71,8 @@ function mapToExperience(doc: SanityExperienceDoc): HostedExperience {
     status: doc.status ?? 'open',
     price: doc.price,
     spotsRemaining: doc.spotsRemaining,
+    teaser: doc.teaser ?? false,
+    datesTbc: doc.datesTbc ?? false,
   };
 }
 

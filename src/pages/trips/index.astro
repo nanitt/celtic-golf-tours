@@ -1,0 +1,83 @@
+---
+/**
+ * The fork: Buddy or Concierge.
+ *
+ * Deliberately short. Two images, two promises, two links. The decision this
+ * page asks for is "which one am I", not "what does it cost".
+ */
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import { images, imageUrl } from '../../data/images';
+import { tripTypes, tripTypeHref, PLANNING_NOTE } from '../../data/trip-types';
+
+const cards = tripTypes.map((t) => ({
+  ...t,
+  href: tripTypeHref(t),
+  imageSrc: imageUrl(images[t.image], 1400, 80),
+}));
+---
+
+<Layout
+  title="Golf Trips for Groups"
+  description="Choose a Scotland or Ireland golf trip that fits your group: Buddy Trips with friends or a Concierge Trip planned end to end."
+>
+  <!-- TODO: Replace placeholder - hero is stock; slot is experiencesHero in src/data/images.ts. -->
+  <Hero
+    title="Two ways to travel"
+    subtitle="One of these is probably you."
+    backgroundImage={imageUrl(images.experiencesHero, 1800, 80)}
+    size="medium"
+    ctaText=""
+  />
+
+  <section class="section-padding bg-cream">
+    <div class="content-wide px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        {cards.map((trip, index) => (
+          <a
+            href={trip.href}
+            class="group block"
+            data-reveal="fade-up"
+            data-reveal-delay={index + 1}
+          >
+            <div class="relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden">
+              <div
+                class="absolute inset-0 bg-cover bg-center scale-on-hover"
+                style={`background-image: url('${trip.imageSrc}')`}
+              />
+              <div class="absolute inset-0 overlay-default overlay-hover transition-premium" />
+              <div class="absolute inset-0 flex flex-col justify-end p-8 lg:p-10">
+                <p class="text-white/60 text-[0.65rem] tracking-[0.25em] uppercase mb-3">{trip.kicker}</p>
+                <h2 class="font-heading-display text-white text-3xl lg:text-4xl leading-tight" style="font-weight: 300;">
+                  {trip.name}
+                </h2>
+                <p class="text-white/80 leading-relaxed mt-4 max-w-md">{trip.promise}</p>
+                <span class="text-brass-light text-xs tracking-[0.2em] uppercase mt-6 inline-flex items-center gap-2">
+                  Read more <span class="arrow">&#8594;</span>
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="text-text-muted text-sm leading-relaxed mt-12 max-w-2xl" data-reveal="fade-up">
+        {PLANNING_NOTE}
+      </p>
+    </div>
+  </section>
+
+  <section class="section-padding bg-celtic-dark">
+    <div class="content-narrow px-6 lg:px-12 text-center">
+      <h2 class="font-heading-display text-3xl md:text-4xl text-white mb-4" style="font-weight: 300;">
+        Not sure which one you are?
+      </h2>
+      <p class="text-white/60 text-lg mb-10 max-w-xl mx-auto">
+        Most people aren't, at first. Tell us who's coming and roughly when, and we'll tell you what fits.
+      </p>
+      <a href="/contact" class="btn-primary btn-lg btn-primary-inverted">
+        Start the conversation
+      </a>
+    </div>
+  </section>
+</Layout>

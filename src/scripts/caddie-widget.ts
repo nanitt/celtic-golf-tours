@@ -61,12 +61,11 @@ const CONVERSATION_STEPS = [
     ]
   },
   {
-    message: "Last question—what's your travel style?",
+    message: "Last one—who's coming, and how much do you want to organise?",
     options: [
-      { label: 'Luxury all the way', value: 'luxury', icon: '👑' },
-      { label: 'Authentic & local', value: 'authentic', icon: '🏠' },
-      { label: 'Best value', value: 'value', icon: '💎' },
-      { label: 'Mix it up', value: 'mixed', icon: '🎲' }
+      { label: 'A group of mates', value: 'buddy', icon: '⛳' },
+      { label: "Just don't make me plan it", value: 'concierge', icon: '🗝️' },
+      { label: 'Still working that out', value: 'mixed', icon: '🎲' }
     ]
   }
 ];
@@ -88,18 +87,24 @@ const getRecommendation = (prefs: CaddieState['userPreferences']): string => {
 
   let rec = "Right then! Based on what you've told me, ";
 
+  // Regions, not courses. Which regions we sell is settled; which tee times we
+  // can secure is not, so the widget names places and leaves the rest to Terry.
   if (destination === 'scotland') {
-    rec += "I'd build your trip around Scotland's links. ";
+    rec += "I'd build your trip around Scotland. ";
     if (handicap === 'low') {
-      rec += "With your game, the Old Course at St Andrews and Carnoustie are the ones to aim for. ";
+      rec += "East Lothian would test you properly — Muirfield, North Berwick and Gullane sit within a few miles of each other. ";
     } else if (handicap === 'casual') {
-      rec += "Royal Dornoch and Turnberry give you the scenery and the history without punishing every loose drive. ";
+      rec += "Northern Scotland is the one for the scenery: Dornoch, Cruden Bay and Machrihanish Dunes, with room to enjoy the walk. ";
     } else {
-      rec += "St Andrews, Turnberry and Royal Dornoch would be the backbone of it. ";
+      rec += "Northern Scotland and East Lothian together make a good week — the empty north, then the run of links east of Edinburgh. ";
     }
   } else if (destination === 'ireland') {
-    rec += "Ireland's west coast is where I'd point you. ";
-    rec += "Ballybunion and Lahinch are the heart of it, with Royal County Down and Royal Portrush further north. ";
+    rec += "Ireland it is. ";
+    if (handicap === 'casual') {
+      rec += "I'd start around Dublin, where the links are twenty minutes out and the evenings are in the city. ";
+    } else {
+      rec += "Northern Ireland for the big dunes, and the northwest — Sligo and Mayo — if you want courses you'll have largely to yourselves. ";
+    }
     if (whiskey === 'neat') {
       rec += "We can look at working a distillery visit into a rest day. ";
     }
@@ -107,13 +112,18 @@ const getRecommendation = (prefs: CaddieState['userPreferences']): string => {
     rec += "I'd look at Scotland and Ireland together — a longer trip, but you only cross once. ";
   }
 
-  if (travelStyle === 'luxury') {
-    rec += "We'd focus on the best accommodation near each course.";
-  } else if (travelStyle === 'authentic') {
-    rec += "We'd keep it characterful — the kind of places that know the local game.";
+  // Route to the right product page rather than describing a "travel style".
+  if (travelStyle === 'buddy') {
+    rec += "That sounds like a Buddy Trip: you pick who's coming, we take the organising off you.";
+  } else if (travelStyle === 'concierge') {
+    rec += "That's a Concierge Trip — we plan everything, and you don't have to do a thing.";
   } else {
-    rec += "We'd find the balance between comfort and character.";
+    rec += "Whether that's a Buddy Trip or a fully managed Concierge Trip is worth a conversation.";
   }
+
+  // Terry's planning window. The single most useful thing to say to someone
+  // who is only thinking about it.
+  rec += "\n\nOne thing worth knowing: the popular weeks are held around 18 months ahead, so if a particular season matters, the call wants to happen early.";
 
   rec += "\n\nNothing's fixed yet — tell us your dates and we'll put a real itinerary together. Shall I point you to the enquiry form?";
 

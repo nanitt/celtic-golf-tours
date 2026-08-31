@@ -15,14 +15,17 @@ const statusText: Record<string, string> = {
 };
 
 const isSoldOut = experience.status === 'sold_out';
-const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
+// Teasers have no itinerary to show yet, so they funnel to a conversation
+// rather than a detail page that would render mostly empty.
+const linkHref = isSoldOut || experience.teaser ? '/contact' : `/experiences/${experience.id}`;
 ---
 
 {featured ? (
-  <!-- Featured Card: Split layout -->
+  <>
+  {/* Featured Card: Split layout */}
   <article class="group relative overflow-hidden">
     <a href={linkHref} class="block lg:flex">
-      <!-- Image (60% on desktop) -->
+      {/* Image (60% on desktop) */}
       <div class="relative overflow-hidden aspect-[3/4] lg:aspect-auto lg:w-[60%] lg:min-h-[500px]">
         <div
           class="absolute inset-0 bg-cover bg-center scale-on-hover duration-700"
@@ -30,7 +33,7 @@ const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
         ></div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-black/30"></div>
 
-        <!-- Status (mobile only — shown on image) -->
+        {/* Status (mobile only — shown on image) */}
         <div class="absolute top-5 left-5 lg:hidden">
           {experience.status === 'limited' && (
             <span class="text-brass text-xs font-medium tracking-widest uppercase italic">{statusText[experience.status]}</span>
@@ -41,27 +44,27 @@ const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
         </div>
       </div>
 
-      <!-- Editorial Panel (40% on desktop) -->
+      {/* Editorial Panel (40% on desktop) */}
       <div class="relative lg:w-[40%] bg-stone p-8 lg:p-12 flex flex-col justify-center">
-        <!-- Texture overlay -->
+        {/* Texture overlay */}
         <div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image: url('/textures/topo-lines.svg'); background-size: 400px;"></div>
 
         <div class="relative z-10">
-          <!-- Kicker: dates -->
+          {/* Kicker: dates */}
           <p class="text-brass text-xs font-medium tracking-[0.25em] uppercase mb-4">{experience.dates}</p>
 
-          <!-- Title -->
+          {/* Title */}
           <h3 class="font-heading-display text-3xl lg:text-4xl text-charcoal mb-4 leading-tight">
             {experience.name}
           </h3>
 
-          <!-- Destination -->
+          {/* Destination */}
           <p class="text-text-muted text-sm tracking-wide mb-6">{experience.destination}</p>
 
-          <!-- Description as pull-quote style -->
+          {/* Description as pull-quote style */}
           <p class="text-text leading-relaxed mb-8 text-base">{experience.description}</p>
 
-          <!-- Highlights with brass diamonds -->
+          {/* Highlights with brass diamonds */}
           <ul class="mb-8 space-y-3">
             {experience.highlights.slice(0, 4).map((highlight) => (
               <li class="flex items-center text-sm text-text">
@@ -71,7 +74,7 @@ const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
             ))}
           </ul>
 
-          <!-- Host & Price -->
+          {/* Host & Price */}
           <div class="flex items-center justify-between pt-6 border-t border-charcoal/10">
             <div>
               <p class="text-charcoal text-sm font-medium">{experience.host.name}</p>
@@ -82,7 +85,7 @@ const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
             )}
           </div>
 
-          <!-- Status (desktop) -->
+          {/* Status (desktop) */}
           <div class="hidden lg:block mt-6">
             {experience.status === 'limited' && (
               <span class="text-brass text-xs font-medium tracking-widest uppercase italic">{statusText[experience.status]}</span>
@@ -95,25 +98,27 @@ const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
       </div>
     </a>
   </article>
+  </>
 ) : (
-  <!-- Regular Card: Image-as-atmosphere with gradient overlay -->
+  <>
+  {/* Regular Card: Image-as-atmosphere with gradient overlay */}
   <article class="group relative overflow-hidden">
     <a href={linkHref} class="block relative aspect-[3/4]">
-      <!-- Background Image -->
+      {/* Background Image */}
       <div
         class="absolute inset-0 bg-cover bg-center scale-on-hover duration-700"
         style={`background-image: url('${experience.image}')`}
       ></div>
 
-      <!-- Gradient overlay -->
+      {/* Gradient overlay */}
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
-      <!-- Sold out overlay -->
+      {/* Sold out overlay */}
       {isSoldOut && (
         <div class="absolute inset-0 bg-black/30"></div>
       )}
 
-      <!-- Status badge (top) -->
+      {/* Status badge (top) */}
       <div class="absolute top-5 left-5">
         {experience.status === 'limited' && (
           <span class="text-brass text-xs font-medium tracking-widest uppercase italic">{statusText[experience.status]}</span>
@@ -123,29 +128,30 @@ const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
         )}
       </div>
 
-      <!-- Content overlay (bottom) -->
+      {/* Content overlay (bottom) */}
       <div class="absolute inset-x-0 bottom-0 p-6 lg:p-8">
-        <!-- Destination -->
+        {/* Destination */}
         <p class="text-white/60 text-xs tracking-[0.2em] uppercase mb-2">{experience.destination}</p>
 
-        <!-- Dates as kicker -->
+        {/* Dates as kicker */}
         <p class="text-brass/80 text-xs font-medium tracking-wide mb-3">{experience.dates}</p>
 
-        <!-- Title with hover underline -->
+        {/* Title with hover underline */}
         <h3 class="font-heading text-xl lg:text-2xl text-white mb-3 leading-snug">
           <span class="card-title-underline">{experience.name}</span>
         </h3>
 
-        <!-- Host -->
+        {/* Host */}
         <p class="text-white/50 text-xs mb-3">Hosted by {experience.host.name}</p>
 
-        <!-- Price (understated) -->
+        {/* Price (understated) */}
         {experience.price && (
           <p class="text-white/70 text-sm">{experience.price}</p>
         )}
       </div>
     </a>
   </article>
+  </>
 )}
 
 <style>

@@ -4,7 +4,17 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 ---
 
-<Layout title="Testimonials" description="Guest stories from Celtic Golf Tours — our first tours are underway and testimonials are on the way.">
+<!--
+  noindex while this is a placeholder. The page still exists so old links and
+  the previous sitemap resolve, but it should not be an entry point from search
+  and it is no longer in the nav. Remove noindex when Terry supplies real
+  quotes with permission to publish — see tasks/content-needed.md.
+-->
+<Layout
+  title="Testimonials"
+  description="Guest stories from Celtic Golf Tours — our first tours are underway and testimonials are on the way."
+  noindex
+>
   <!-- TODO: Replace placeholder - Unsplash hero image with real guest/tour photography. -->
   <Hero
     title="Guest Testimonials"

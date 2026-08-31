@@ -1,3 +1,5 @@
+import { images, imageUrl } from './images';
+
 export interface Host {
   name: string;
   title: string;
@@ -19,102 +21,50 @@ export interface HostedExperience {
   status: 'open' | 'limited' | 'sold_out';
   price?: string;
   spotsRemaining?: number;
+  /**
+   * A trip we are promoting before the details exist. Teasers link to /contact
+   * rather than a detail page, because there is nothing to detail yet.
+   */
+  teaser?: boolean;
+  /**
+   * True when `startDate` is a sort key rather than a real departure date.
+   * Cards must not print a specific date for these — only the `dates` label.
+   */
+  datesTbc?: boolean;
 }
 
+/**
+ * Fallback trips, used whenever Sanity is unconfigured — which it is in
+ * production today.
+ *
+ * The four 2025 departures that used to live here were all in the past, and one
+ * carried "Only 4 Left" against a $14,500 price. That combination is the
+ * incident recorded in tasks/codex-handoff.md; do not recreate its shape.
+ *
+ * The Highlands entry is a teaser Terry asked to feature. It deliberately has
+ * no price and no spotsRemaining, so no pricing or scarcity claim renders, and
+ * `status: 'open'` produces no badge at all.
+ */
 export const hostedExperiences: HostedExperience[] = [
   {
-    id: 'st-andrews-pilgrimage-2025',
-    name: 'The St Andrews Pilgrimage',
-    host: {
-      name: 'Colin MacLeod',
-      title: 'Head Golf Professional',
-      photo: '' // TODO: Replace with real host headshot
-    },
-    dates: 'May 15-22, 2025',
-    startDate: '2025-05-15',
+    id: 'highlands-2028',
+    name: 'The Highlands, 2028',
+    // No host named until Terry confirms who is leading it.
+    host: { name: '', title: '', photo: '' },
+    dates: 'Scotland · 2028',
+    // Sort/filter key only — never rendered. `datesTbc` says so out loud.
+    // Dated to the start of the year so it sorts ahead of anything added later
+    // in 2028 without implying a January departure.
+    startDate: '2028-01-01',
+    datesTbc: true,
+    teaser: true,
     destination: 'Scotland',
-    description: 'Walk in the footsteps of legends on this bucket-list journey through Scottish golf history. Play the Old Course at St Andrews, Carnoustie, and Kingsbarns while enjoying luxury accommodations and exclusive access.',
-    highlights: [
-      'Old Course at St Andrews',
-      'Carnoustie Championship Course',
-      'Kingsbarns Golf Links',
-      'Fairmont St Andrews stay',
-      'Whisky tasting experience'
-    ],
-    image: 'https://images.unsplash.com/photo-1697846461121-201fde5a4fad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    status: 'limited',
-    price: 'From $14,500 CAD',
-    spotsRemaining: 4
-  },
-  {
-    id: 'irish-links-adventure-2025',
-    name: 'The Wild Atlantic Links',
-    host: {
-      name: 'Sean O\'Connor',
-      title: 'Ireland Golf Director',
-      photo: '' // TODO: Replace with real host headshot
-    },
-    dates: 'June 8-15, 2025',
-    startDate: '2025-06-08',
-    destination: 'Ireland',
-    description: 'Experience the raw beauty of Ireland\'s western coast with rounds at the world\'s most spectacular links courses. From the towering dunes of Ballybunion to the dramatic cliffs of Lahinch, this is links golf at its finest.',
-    highlights: [
-      'Ballybunion Old Course',
-      'Lahinch Golf Club',
-      'Waterville Golf Links',
-      'Trump International Doonbeg',
-      'Traditional Irish pub evening'
-    ],
-    image: 'https://images.unsplash.com/photo-1693113448288-015fb6eed7c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    description:
+      'A week in the Scottish Highlands, built for 2028 and planned from now. The route, the courses and the pace are still being set — which is exactly why this is the moment to tell us what you want out of it.',
+    highlights: [],
+    image: imageUrl(images.tripHighlands2028, 1200, 80),
     status: 'open',
-    price: 'From $12,300 CAD'
   },
-  {
-    id: 'royal-championship-2025',
-    name: 'The Royal Championship Tour',
-    host: {
-      name: 'James Whitfield',
-      title: 'Senior Tour Director',
-      photo: '' // TODO: Replace with real host headshot
-    },
-    dates: 'September 3-10, 2025',
-    startDate: '2025-09-03',
-    destination: 'England',
-    description: 'Play the courses where Open Championship history was made. This prestigious tour takes you through England\'s finest royal venues, complete with exclusive clubhouse access and championship-quality conditions.',
-    highlights: [
-      'Royal Birkdale Golf Club',
-      'Royal Lytham & St Annes',
-      'Royal Liverpool (Hoylake)',
-      'Formby Golf Club',
-      'Championship dinner experience'
-    ],
-    image: 'https://images.unsplash.com/photo-1523982765444-622af25647b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    status: 'open',
-    price: 'From $16,700 CAD'
-  },
-  {
-    id: 'celtic-manor-retreat-2025',
-    name: 'The Ryder Cup Heritage',
-    host: {
-      name: 'David Evans',
-      title: 'Wales Golf Specialist',
-      photo: '' // TODO: Replace with real host headshot
-    },
-    dates: 'July 20-25, 2025',
-    startDate: '2025-07-20',
-    destination: 'Wales',
-    description: 'Relive Ryder Cup glory at Celtic Manor and discover the hidden gems of Welsh golf. This intimate tour combines world-class courses with the stunning natural beauty of the Welsh countryside.',
-    highlights: [
-      'Celtic Manor Twenty Ten Course',
-      'Royal Porthcawl Golf Club',
-      'Pennard Golf Club',
-      'Luxury spa experience',
-      'Welsh castle dinner'
-    ],
-    image: 'https://images.unsplash.com/photo-1702912092980-05aca31e5243?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    status: 'sold_out',
-    price: 'From $11,100 CAD'
-  }
 ];
 
 export function getExperienceById(id: string): HostedExperience | undefined {

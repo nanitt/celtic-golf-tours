@@ -1,8 +1,12 @@
+import { images, imageUrl } from './images';
+
 export const site = {
   name: 'Celtic Golf Tours',
   url: import.meta.env.PUBLIC_SITE_URL || 'https://www.celticgolftours.com',
   email: import.meta.env.PUBLIC_SITE_EMAIL || 'info@celticgolftours.com',
-  ogImage: import.meta.env.PUBLIC_SITE_OG_IMAGE || 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=70',
+  // Falls back to the manifest slot so every image on the site lives in one
+  // file. Swapping the real OG card is then an images.ts edit like any other.
+  ogImage: import.meta.env.PUBLIC_SITE_OG_IMAGE || imageUrl(images.ogImage, 1200, 85),
   phone: import.meta.env.PUBLIC_SITE_PHONE || '',
   address: {
     line1: import.meta.env.PUBLIC_SITE_ADDRESS_LINE1 || '',
@@ -19,6 +23,38 @@ export const site = {
     linkedin: import.meta.env.PUBLIC_SOCIAL_LINKEDIN || ''
   }
 };
+
+/**
+ * The licensed travel operator behind the brand.
+ *
+ * "Celtic Golf Tours" is the marketing name; "Centre Holidays" is the name
+ * registered to sell travel in Ontario. Terry's requirement is that the
+ * operator name appears on every page — it accompanies the brand, it never
+ * replaces it.
+ *
+ * The TICO registration number is gated the same way the stats are: an
+ * invented registration number is worse than none, so nothing renders until
+ * PUBLIC_TICO_REGISTRATION holds the real one.
+ */
+export const operator = {
+  name: 'Centre Holidays',
+  url: 'https://www.centreholidays.com',
+  region: 'Ontario',
+  tico: import.meta.env.PUBLIC_TICO_REGISTRATION || ''
+};
+
+export const hasTico = () => Boolean(operator.tico);
+
+/**
+ * Whether the site may claim it can secure tee times at a named course.
+ *
+ * Terry named the courses he wants featured but has not confirmed access to
+ * them. Course names are safe to print as regional character; "we can get you
+ * on it" is a promise, and promises wait for confirmation. Same contract as
+ * PUBLIC_STATS_VERIFIED — see tasks/content-needed.md §3.
+ */
+export const courseAccessVerified =
+  import.meta.env.PUBLIC_COURSE_ACCESS_VERIFIED === 'true';
 
 /**
  * Headline figures shown on the home and about pages.

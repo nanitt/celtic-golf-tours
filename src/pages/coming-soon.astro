@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import CelticDivider from '../components/CelticDivider.astro';
 import CelticKnot from '../components/icons/CelticKnot.astro';
+import OperatorLine from '../components/OperatorLine.astro';
 
 ---
 
@@ -10,7 +11,7 @@ import CelticKnot from '../components/icons/CelticKnot.astro';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Celtic Golf Tours — Coming Soon. Luxury golf tours across Scotland, Ireland, Wales and England." />
+    <meta name="description" content="Celtic Golf Tours — Coming Soon. Guided golf trips across Scotland and Ireland, operated by Centre Holidays." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -48,6 +49,8 @@ import CelticKnot from '../components/icons/CelticKnot.astro';
           <img
             src="/CELTIC GHOST LOGO-01-01.png"
             alt="Celtic Golf Tours"
+            width="128"
+            height="128"
             class="w-24 md:w-32 mx-auto mb-6 animate-fade-in-up drop-shadow-[0_4px_30px_rgba(0,0,0,0.6)]" loading="eager" decoding="async"
           />
 
@@ -76,7 +79,7 @@ import CelticKnot from '../components/icons/CelticKnot.astro';
       </div>
 
       <!-- Value props section -->
-      <!-- TODO: Replace placeholder - access, local expertise, and white-glove service claims need verified CGT proof before launch. -->
+      <!-- Access and "we've played every course" claims removed — unverified. -->
       <div class="relative z-10 py-16 md:py-24">
         <div class="value-props-backdrop max-w-4xl mx-auto px-8 py-10 md:px-12 md:py-14 rounded-sm">
           <p class="font-body text-brass text-xs tracking-[0.3em] uppercase text-center mb-10 animate-fade-in-up animation-delay-300">
@@ -85,15 +88,15 @@ import CelticKnot from '../components/icons/CelticKnot.astro';
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="text-center border-t border-brass/30 pt-6 animate-fade-in-up animation-delay-300">
-              <h3 class="font-heading text-brass text-lg tracking-wide mb-3">Priority Access</h3>
+              <h3 class="font-heading text-brass text-lg tracking-wide mb-3">Planned Around You</h3>
               <p class="text-champagne/90 text-sm leading-relaxed">
-                Our relationships with premier courses mean guaranteed tee times at even the most exclusive venues.
+                Routes built so you are not driving three hours after a round, with the whole week held in one place.
               </p>
             </div>
             <div class="text-center border-t border-brass/30 pt-6 animate-fade-in-up animation-delay-400">
-              <h3 class="font-heading text-brass text-lg tracking-wide mb-3">Local Expertise</h3>
+              <h3 class="font-heading text-brass text-lg tracking-wide mb-3">Scotland &amp; Ireland</h3>
               <p class="text-champagne/90 text-sm leading-relaxed">
-                We've played every course we recommend and know the hidden gems off the beaten path.
+                Northern Scotland, East Lothian, Northern Ireland, the northwest and Dublin.
               </p>
             </div>
             <div class="text-center border-t border-brass/30 pt-6 animate-fade-in-up animation-delay-500">
@@ -119,6 +122,9 @@ import CelticKnot from '../components/icons/CelticKnot.astro';
             >
               celticgolftours@centreholidays.com
             </a>
+
+            <!-- This page bypasses Layout.astro, so the operator line is explicit. -->
+            <OperatorLine tone="dark" class="mt-8" />
           </div>
         </div>
       </div>

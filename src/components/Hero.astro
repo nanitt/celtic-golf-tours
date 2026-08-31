@@ -113,17 +113,15 @@ const isEditorial = layout === 'editorial';
   <!-- Content Area -->
   <div class="relative z-10 flex-1 flex items-center">
     {isEditorial ? (
-      <!-- Editorial Layout - Open, floating content inspired by Wanderlush -->
+      <>
       <div class="w-full h-full flex flex-col justify-center px-6 lg:px-16 xl:px-24">
         <div class="max-w-3xl">
-          <!-- Pill Kicker Badge -->
           {kicker && (
             <div class="kicker-pill inline-block text-white text-sm font-medium tracking-wide mb-6 animate-fade-in-up">
               {kicker}
             </div>
           )}
 
-          <!-- Title -->
           <h1 class="font-heading text-white mb-6 leading-[1.0] tracking-tight animate-fade-in-up animation-delay-100" style="font-size: clamp(3rem, 8vw, 5.5rem);">
             {title}
             {titleAccent && (
@@ -131,14 +129,12 @@ const isEditorial = layout === 'editorial';
             )}
           </h1>
 
-          <!-- Subtitle -->
           {subtitle && (
             <p class="text-lg lg:text-xl text-white/85 mb-10 max-w-xl font-light tracking-wide leading-relaxed animate-fade-in-up animation-delay-200">
               {subtitle}
             </p>
           )}
 
-          <!-- CTA Buttons -->
           <div class="flex flex-wrap items-center gap-4 animate-fade-in-up animation-delay-300">
             {ctaText && (
               <a
@@ -162,7 +158,6 @@ const isEditorial = layout === 'editorial';
           </div>
         </div>
 
-        <!-- Bottom Stats Row -->
         {stats && stats.length > 0 && (
           <div class="absolute bottom-0 left-0 right-0 hero-bottom-stats py-6 px-6 lg:px-16 xl:px-24 animate-fade-in-up animation-delay-400">
             <div class="flex flex-wrap gap-8 lg:gap-16">
@@ -181,16 +176,14 @@ const isEditorial = layout === 'editorial';
           </div>
         )}
       </div>
+      </>
     ) : isSplit ? (
-      <!-- Split Layout -->
+      <>
       <div class="w-full h-full flex flex-col lg:flex-row">
-        <!-- Empty side (shows background) - hidden on mobile -->
         <div class={`hidden lg:block lg:w-1/2 ${isRight ? 'order-1' : 'order-2'}`}></div>
 
-        <!-- Content Panel -->
         <div class={`flex-1 lg:w-1/2 flex items-center ${isRight ? 'order-2 lg:justify-end' : 'order-1 lg:justify-start'}`}>
           <div class={`w-full lg:max-w-2xl ${panelStyles[panelStyle]} p-8 md:p-12 lg:p-16`}>
-            <!-- Location Badge -->
             {location && (
               <div class="flex items-center gap-2 text-white/70 text-sm mb-6 animate-fade-in-up">
                 <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -201,14 +194,12 @@ const isEditorial = layout === 'editorial';
               </div>
             )}
 
-            <!-- Kicker -->
             {kicker && (
               <p class="text-brass text-sm font-medium tracking-wider uppercase mb-4 animate-fade-in-up animation-delay-100">
                 {kicker}
               </p>
             )}
 
-            <!-- Title -->
             <h1 class="font-heading text-white mb-4 leading-[1.05] tracking-tight animate-fade-in-up animation-delay-200" style="font-size: clamp(2.5rem, 6vw, 4rem);">
               {title}
               {titleAccent && (
@@ -216,14 +207,12 @@ const isEditorial = layout === 'editorial';
               )}
             </h1>
 
-            <!-- Subtitle -->
             {subtitle && (
               <p class="text-lg text-white/85 mb-8 max-w-xl font-light tracking-wide leading-relaxed animate-fade-in-up animation-delay-300">
                 {subtitle}
               </p>
             )}
 
-            <!-- Stats Row -->
             {stats && stats.length > 0 && (
               <div class="flex flex-wrap gap-8 mb-10 animate-fade-in-up animation-delay-300">
                 {stats.map((stat) => (
@@ -235,7 +224,6 @@ const isEditorial = layout === 'editorial';
               </div>
             )}
 
-            <!-- CTA Buttons -->
             <div class="flex flex-wrap gap-4 animate-fade-in-up animation-delay-400">
               {ctaText && (
                 <a
@@ -257,16 +245,15 @@ const isEditorial = layout === 'editorial';
           </div>
         </div>
       </div>
+      </>
     ) : (
-      <!-- Centered Layout (default/backward compatible) -->
+      <>
       <div class="text-center px-6 max-w-4xl mx-auto">
-        <!-- Kicker with decorative divider -->
         {kicker && (
           <div class="mb-8 animate-fade-in-up">
             <p class="text-white/90 text-sm font-medium tracking-[0.35em] uppercase mb-4 hero-text-shadow">
               {kicker}
             </p>
-            <!-- Decorative gold divider -->
             <div class="flex items-center justify-center gap-3">
               <div class="w-12 h-px bg-gradient-to-r from-transparent to-brass"></div>
               <div class="w-1.5 h-1.5 bg-brass rotate-45"></div>
@@ -288,7 +275,6 @@ const isEditorial = layout === 'editorial';
           </p>
         )}
 
-        <!-- Stats Row (centered) -->
         {stats && stats.length > 0 && (
           <div class="flex flex-wrap justify-center gap-8 md:gap-12 mb-10 animate-fade-in-up animation-delay-200">
             {stats.map((stat) => (
@@ -300,7 +286,6 @@ const isEditorial = layout === 'editorial';
           </div>
         )}
 
-        <!-- CTA Buttons -->
         <div class="flex flex-wrap justify-center gap-4 animate-fade-in-up animation-delay-300">
           {ctaText && (
             <a
@@ -323,6 +308,7 @@ const isEditorial = layout === 'editorial';
           )}
         </div>
       </div>
+      </>
     )}
   </div>
 

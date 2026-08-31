@@ -1,12 +1,17 @@
 ---
-import { activeDestinations } from '../data/destinations';
+import { activeDestinations, destinationHref } from '../data/destinations';
+import { operator } from '../data/site';
+import OperatorLine from './OperatorLine.astro';
 
 const currentPath = Astro.url.pathname;
 
+// Testimonials is deliberately absent: the page is still a "coming soon"
+// placeholder, and a dead end in the primary nav undercuts the trust this
+// site exists to build. Restore it when Terry supplies real quotes.
 const navLinks = [
+  { href: '/trips', label: 'Trips' },
   { href: '/experiences', label: 'Experiences' },
   { href: '/about', label: 'About' },
-  { href: '/testimonials', label: 'Testimonials' },
   { href: '/contact', label: 'Contact' },
 ];
 ---
@@ -18,15 +23,27 @@ const navLinks = [
   <nav class="max-w-[1400px] mx-auto px-6 lg:px-12">
     <div class="flex justify-between items-center h-20 lg:h-24">
 
-      <!-- Logo -->
-      <a href="/" class="z-50 relative shrink-0" id="logo">
-        <img
-          src="/CELTIC GHOST LOGO-01-01.png"
-          alt="Celtic Golf Tours"
-          class="h-14 lg:h-20 w-auto transition-all duration-300 ease-smooth"
-          id="logo-img" loading="eager" decoding="async"
-        />
-      </a>
+      <!--
+        Logo lockup. The operator name sits beside the mark rather than under
+        it so the 20/24 header height is unchanged. Desktop only — on mobile it
+        appears in the drawer, and the footer carries it on every page either way.
+      -->
+      <div class="z-50 relative shrink-0 flex items-center gap-4">
+        <a href="/" id="logo">
+          <img
+            src="/CELTIC GHOST LOGO-01-01.png"
+            alt="Celtic Golf Tours"
+            width="80"
+            height="80"
+            class="h-14 lg:h-20 w-auto transition-all duration-300 ease-smooth"
+            id="logo-img" loading="eager" decoding="async"
+          />
+        </a>
+        <span class="hidden lg:block pl-4 border-l operator-lockup">
+          <span class="block text-[0.55rem] tracking-[0.2em] uppercase opacity-60">Operated by</span>
+          <span class="block text-[0.7rem] tracking-[0.12em] uppercase mt-0.5">{operator.name}</span>
+        </span>
+      </div>
 
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center gap-10">
@@ -61,7 +78,7 @@ const navLinks = [
             <div>
               {activeDestinations.map((dest) => (
                 <a
-                  href={dest.href}
+                  href={destinationHref(dest)}
                   class="dropdown-item block px-6 py-3 hover:bg-stone-50 transition-colors duration-150"
                 >
                   <span class="block font-heading text-lg text-charcoal hover-brass leading-tight">{dest.name}</span>
@@ -169,6 +186,7 @@ const navLinks = [
     >
       Plan Your Journey
     </a>
+    <OperatorLine tone="light" class="mt-6" />
   </div>
 </aside>
 
@@ -176,6 +194,26 @@ const navLinks = [
   /* Logo */
   #logo-img {
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  }
+
+  /*
+    Operator lockup follows the header's two states: light over the hero,
+    charcoal once the header goes white. Colours are set here rather than with
+    utilities because currentColor opacity does not resolve reliably for the
+    divider rule.
+  */
+  .operator-lockup {
+    color: rgba(255, 255, 255, 0.85);
+    border-left-color: rgba(255, 255, 255, 0.25);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    transition: color var(--duration-normal) var(--ease-smooth),
+                border-color var(--duration-normal) var(--ease-smooth);
+  }
+
+  #header.scrolled .operator-lockup {
+    color: var(--color-charcoal);
+    border-left-color: rgba(50, 55, 60, 0.2);
+    text-shadow: none;
   }
 
   /* ========================================

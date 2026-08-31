@@ -1,13 +1,15 @@
 ---
 import { site } from '../data/site';
+import OperatorLine from './OperatorLine.astro';
 
 const currentYear = new Date().getFullYear();
 
+// Testimonials omitted while the page is a placeholder — see Header.astro.
 const footerLinks = [
   { href: '/destinations', label: 'Destinations' },
+  { href: '/trips', label: 'Trips' },
   { href: '/experiences', label: 'Experiences' },
   { href: '/about', label: 'About' },
-  { href: '/testimonials', label: 'Testimonials' },
   { href: '/contact', label: 'Contact' },
 ];
 ---
@@ -121,7 +123,11 @@ const footerLinks = [
             class="h-14 w-auto"
           />
         </a>
-        <p>Powered by <a href="https://www.centreholidays.com" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white/90 transition-colors duration-200">Centre Holidays</a></p>
+        <!--
+          Licensed-operator disclosure. This was a "Powered by" credit; Terry
+          needs it to read as the legal operator name, not a partner mention.
+        -->
+        <OperatorLine tone="dark" class="max-w-xl mx-auto" />
       </div>
     </div>
   </div>
