@@ -10,7 +10,7 @@ anything broken is broken for real visitors right now.
 
 ## 1. Where the work is
 
-**Branch `terry-restructure`, 9 commits ahead of `main`, not pushed and not
+**Branch `terry-restructure`, 10 commits ahead of `main`, pushed and not
 merged.** `main` is 1 commit ahead of where it was (the security hardening and
 Astro 7 upgrade that had been sitting uncommitted).
 
