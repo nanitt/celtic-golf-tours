@@ -25,6 +25,13 @@ const destinations = activeDestinations.map(d => ({
   ...d,
   image: unsplashUrl(d.photoId, 2000, 85),
 }));
+const isDestinationPair = destinations.length === 2;
+const destinationGridClass = isDestinationPair
+  ? 'grid grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-6'
+  : 'grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6';
+const destinationCardClass = isDestinationPair
+  ? 'group relative aspect-[3/4] lg:aspect-[16/9] overflow-hidden card-lift'
+  : 'group relative aspect-[3/4] overflow-hidden card-lift';
 
 const featuredExperiences = await getFeaturedExperiences(3);
 ---
@@ -114,11 +121,11 @@ const featuredExperiences = await getFeaturedExperiences(3);
         <h2 class="font-heading text-charcoal" style="font-size: clamp(2rem, 4vw, var(--text-section));">Two countries. One obsession.</h2>
       </div>
 
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+      <div class={destinationGridClass}>
         {destinations.map((dest, index) => (
           <a
             href={dest.href}
-            class="group relative aspect-[3/4] overflow-hidden card-lift"
+            class={destinationCardClass}
             data-reveal="fade-up"
             data-reveal-delay={index + 1}
           >

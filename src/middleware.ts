@@ -1,4 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
+import { isValidPreviewSession } from './lib/preview-session';
 
 const PUBLIC_PATHS = ['/login', '/api/auth/login', '/api/auth/logout', '/api/contact'];
 
@@ -38,9 +39,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   // Check for auth cookie
-  const authCookie = context.cookies.get('auth');
+  const previewSession = context.cookies.get('preview_session');
 
-  if (!authCookie || authCookie.value !== 'authenticated') {
+  if (!await isValidPreviewSession(previewSession?.value, sitePassword)) {
     // Redirect to login
     return context.redirect('/login');
   }

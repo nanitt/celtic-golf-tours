@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { timingSafeEqual } from 'crypto';
+import { createPreviewSession } from '../../../lib/preview-session';
 
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   const formData = await request.formData();
@@ -19,7 +20,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     timingSafeEqual(Buffer.from(password), Buffer.from(sitePassword));
 
   if (passwordMatch) {
-    cookies.set('auth', 'authenticated', {
+    cookies.set('preview_session', await createPreviewSession(sitePassword), {
       path: '/',
       httpOnly: true,
       secure: true,

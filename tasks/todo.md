@@ -1,3 +1,72 @@
+# Security hardening — 2026-08-18
+
+## Acceptance criteria
+
+- [x] A forged `auth=authenticated` cookie cannot pass the preview gate.
+- [x] Contact-form failures do not place visitor data in URLs, and inputs are bounded server-side.
+- [x] Contact abuse protection can be enabled with a provider-backed challenge; required production setup is documented.
+- [x] Production dependencies are upgraded only to a verified compatible release.
+- [x] Build and focused security checks pass.
+
+## Checklist
+
+- [x] Replace the fixed preview cookie with an expiring HMAC-signed session.
+- [x] Add request and field bounds; remove form-value redirects.
+- [x] Add optional Turnstile verification and document the required Vercel variables.
+- [x] Assess and apply a compatible Astro/Vercel security update.
+- [x] Verify and record results.
+
+## Working notes
+
+- In-memory serverless rate limiting is not a reliable control; use Vercel Firewall rate limiting or a durable external store for production enforcement.
+- The owner must rotate the previously exposed Sanity write token outside this repository.
+
+## Production follow-up
+
+- [ ] Create a Cloudflare Turnstile widget for the production domain and add both `PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` to Vercel Production.
+- [ ] Add a Vercel Firewall rate-limit rule for `POST /api/contact` (start with five requests per minute per IP, then tune from legitimate traffic).
+- [ ] Rotate `SANITY_API_WRITE_TOKEN` and replace it in local/CI environments only where required.
+
+## Results
+
+- Preview access now requires an expiring HMAC-signed `preview_session` cookie; a forged `auth=authenticated` cookie is rejected.
+- Contact submissions are bounded to 16 KiB and validated by field length. Failed submissions redirect only with an error code, never visitor data.
+- Turnstile is fail-closed when its server secret is configured. The public script and CSP allowance render only when its site key is configured.
+- Upgraded Astro 5 → 7.2.2, the Vercel adapter 8 → 11.0.5, and Sanity 5 → 6.9.2. Astro 7 required replacing HTML comments inside conditional template branches with Astro-safe fragments.
+- `npm run build` and fresh-server signed-session, contact-privacy, and configured-Turnstile fail-closed checks passed. `npm audit --omit=dev` dropped from 56 findings (3 critical) to 19 (0 critical); remaining advisories need separate upstream review rather than an unsafe downgrade.
+
+---
+
+# CMS experience date filtering — 2026-08-18
+
+## Acceptance criteria
+
+- [x] A future-dated Sanity experience is returned by the site data functions.
+- [x] Changing that experience to a past date removes it from all and featured/upcoming results.
+- [x] The temporary Sanity document is deleted after verification.
+- [x] `npm run build` succeeds.
+
+## Checklist
+
+- [x] Inspect every CMS and fallback use of `isUpcoming` for the `Array.filter` callback arity trap.
+- [x] Run a live Sanity create → date change → query reproduction.
+- [x] Verify the production build configuration retains the Studio environment loading fix.
+- [x] Record results.
+
+## Working notes
+
+- The handoff says the dataset must remain empty; only a `tmp-test` document may be used and it must be deleted.
+- `astro.config.mjs` already contains the `loadEnv` Studio registration fix in the current HEAD, despite no outstanding diff.
+
+## Results
+
+- All current `isUpcoming` call sites use wrapper callbacks, avoiding `Array.filter` passing its index as the `now` argument.
+- A temporary Sanity entry was created with a 2027 departure, changed to 2025, and the Sanity client returned it as non-upcoming. The document was deleted; raw and CDN datasets both report zero experiences.
+- The local authenticated `/studio` route returned 200.
+- `npm run build` passed. A first attempt encountered an `ENOSPC` condition; removing the untracked, partial `dist/` output recovered enough space for the successful retry.
+
+---
+
 # Content Audit - Placeholder Copy and Imagery
 
 Audit date: 2026-05-21
