@@ -39,11 +39,11 @@ export const images = {
 
   // --- About ----------------------------------------------------------------
   aboutHero: stock('photo-1743185836009-848e5035422b',
-    'About hero. The CGT team, the Celtic Golf Centre, or a real tour group.'),
+    'About hero. The CGT team, the Centre Holidays office, or a real tour group.'),
   aboutStory: stock('photo-1725835567442-7f39d9199f8c',
     'Our Story supporting image. Founders, team, or an early trip.'),
   aboutCentre: stock('photo-1674884070794-b61d85f9adf8',
-    'Celtic Golf Centre relationship section. Approved imagery of the Centre.'),
+    'Operator section on /about. Approved Centre Holidays imagery, or the CGT team.'),
 
   // --- Experiences ----------------------------------------------------------
   experiencesHero: stock('photo-1683169285928-eb93b0169793',
