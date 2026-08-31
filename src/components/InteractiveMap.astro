@@ -37,7 +37,13 @@ const regionCourses = activeMapRegions.map(region => ({
         aria-label="Interactive map of golf destinations in the British Isles"
         loading="lazy"
       >
-        <p>Your browser does not support SVG</p>
+        <img
+          src="/maps/british-isles.svg"
+          alt="Map of golf destinations in the British Isles"
+          class="map-fallback"
+          loading="lazy"
+          decoding="async"
+        />
       </object>
       <p class="map-hint">
         <span class="desktop-hint"><kbd>Tab</kbd> to navigate · <kbd>Enter</kbd> to explore</span>
@@ -186,6 +192,12 @@ const regionCourses = activeMapRegions.map(region => ({
   .map-object {
     position: relative;
     z-index: 1;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .map-fallback {
     width: 100%;
     height: auto;
     display: block;
