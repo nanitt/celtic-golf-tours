@@ -5,53 +5,19 @@ import Hero from '../components/Hero.astro';
 import HostedExperienceCard from '../components/HostedExperienceCard.astro';
 import { getAllExperiences, getUpcomingExperiences } from '../data/sanity-experiences';
 
-const experienceTypes = [
-  {
-    title: 'Custom Tours',
-    description: 'Your vision, our expertise. We craft fully bespoke golf tours tailored to your exact preferences, handicap level, and travel style. From course selection to accommodation, every detail is personalised.',
-    features: [
-      'Personalised itinerary design',
-      'Choice of any courses and destinations',
-      'Flexible dates and group sizes',
-      'Accommodation to suit your style',
-      'Private transfers throughout',
-      'Dedicated tour coordinator'
-    ],
-    image: imageUrl(images.wayCustomTours, 800, 80)
-  },
-  {
-    title: 'Small Group Tours',
-    description: 'Join fellow golf enthusiasts on expertly curated trips to the world\'s greatest courses. Our small group tours offer the perfect blend of camaraderie, expert guidance, and exceptional golf.',
-    features: [
-      'Maximum 12 golfers per tour',
-      'Expert tour host throughout',
-      'Pre-planned premium itineraries',
-      'All-inclusive pricing',
-      'Meet like-minded golfers',
-      'Best value for money'
-    ],
-    image: imageUrl(images.waySmallGroup, 800, 80)
-  },
-  {
-    title: 'Corporate Events',
-    description: 'Impress clients, reward teams, and build relationships through unforgettable golf experiences. We handle every detail so you can focus on your guests.',
-    features: [
-      'Client entertainment packages',
-      'Team building golf days',
-      'Tournament organisation',
-      'Branded experiences available',
-      'Full event management',
-      'Flexible budgets and formats'
-    ],
-    image: imageUrl(images.wayCorporate, 800, 80)
-  }
-];
+import { tripTypes, tripTypeHref, PLANNING_NOTE } from '../data/trip-types';
+
+const tripTypeCards = tripTypes.map((t) => ({
+  ...t,
+  href: tripTypeHref(t),
+  imageSrc: imageUrl(images[t.image], 900, 80),
+}));
 
 const inclusions = [
-  { title: 'Premium Accommodation', description: 'Carefully selected hotels and resorts' },
-  { title: 'Guaranteed Tee Times', description: 'Priority access at top courses' },
-  { title: 'All Transfers', description: 'Airport pickups and transport throughout' },
-  { title: '24/7 Support', description: 'Dedicated assistance before, during, and after' }
+  { title: 'Somewhere Good to Sleep', description: 'Hotels chosen for the drive to the next first tee, not the brochure' },
+  { title: 'All Transfers', description: 'Airport pickups and transport throughout, so nobody is the designated driver' },
+  { title: 'One Point of Contact', description: 'The same person from the first call to the flight home' },
+  { title: 'Support While You Are There', description: 'Someone reachable if a plan needs changing mid-trip' }
 ];
 
 const hostedExperiences = await getAllExperiences();
@@ -60,15 +26,19 @@ const upcomingExperiences = await getUpcomingExperiences();
 const faqs = [
   {
     q: "What's included in a hosted experience?",
-    a: "All hosted experiences include premium accommodation, guaranteed tee times at every course on the itinerary, private transfers throughout, an expert Celtic Golf Tours host for the duration, and 24/7 support. Flights are not included."
+    // "Guaranteed tee times at every course" was an access claim CGT has not
+    // confirmed — the same one removed from the homepage and /destinations.
+    a: "Hosted experiences include accommodation, transfers throughout, a Celtic Golf Tours host for the duration, and someone reachable while you are away. Tee times are arranged as part of the itinerary and confirmed with you before you commit. Flights are not included."
   },
   {
     q: "How far ahead should I book?",
-    a: "For hosted experiences, we recommend booking 6–12 months in advance. Popular departures — particularly anything touching St Andrews or Royal Portrush — often fill six months out. For custom tours, 3–6 months typically works, though peak summer dates fill quickly."
+    // Terry's number, and the reason the call happens now rather than later.
+    // This answer used to say 6-12 months, which contradicted it.
+    a: "Further ahead than most people expect. The popular weeks are held around 18 months out, so if a particular season matters to you, the conversation needs to happen well before the year it falls in. Shorter notice is sometimes possible — it just narrows what we can put together."
   },
   {
     q: "What's the typical group size?",
-    a: "Hosted experiences run with a maximum of 12 golfers — deliberately small, so your experience is personal rather than a package tour. Custom groups can be as small as 2 or as large as 12."
+    a: "Buddy Trips are usually four to sixteen friends travelling together. Concierge Trips have no fixed size — we have run them for two people and for twenty. Hosted departures are kept deliberately small so they do not feel like a package tour."
   },
   {
     q: "Do I need to be a low handicap to join?",
@@ -76,11 +46,11 @@ const faqs = [
   },
   {
     q: "What standard of accommodation can I expect?",
-    a: "We work exclusively with hotels and properties that we've personally stayed in and assessed. Expect 4 and 5-star properties, often within walking distance of the courses you're playing."
+    a: "We choose hotels for where they put you the next morning rather than for the star rating, and we will tell you honestly what each one is like. If a property matters to you more than the drive, say so and we will build around that instead."
   },
   {
     q: "Can I customise a hosted experience?",
-    a: "Hosted experiences have a set itinerary and departure date. If you'd like a fully bespoke trip — your courses, your dates, your pace — a Custom Tour is what you're after. Get in touch and we'll build it from scratch."
+    a: "Hosted experiences have a set itinerary and departure date. If you want your own courses, dates and pace, that is a <a href='/trips/concierge' class='underline hover:text-charcoal'>Concierge Trip</a> — built from scratch around your group. Get in touch and we will start there."
   },
   {
     q: "What is your cancellation policy?",
@@ -137,49 +107,38 @@ const faqs = [
     </div>
   </section>
 
-  <!-- Experience Types Section -->
-  <!-- TODO: Replace placeholder - generic tour-type copy, feature bullets, and Unsplash images need real CGT package details. -->
+  <!--
+    Ways to travel.
+
+    Was Custom Tours / Small Group / Corporate Events — a menu describing the
+    company. Terry replaced it with the two things a customer actually picks
+    between. Detail lives on /trips/*; this is the fork.
+  -->
   <section class="section-padding bg-stone">
     <div class="content-wide px-6 lg:px-12">
       <div class="text-center mb-16">
         <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">Ways to Travel</h2>
-        <p class="text-text max-w-2xl mx-auto">
-          Choose from our range of expertly crafted tour options
-        </p>
       </div>
 
-      <div class="space-y-32">
-        {experienceTypes.map((exp, index) => (
-          <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center`}>
+      <div class="space-y-24 lg:space-y-32">
+        {tripTypeCards.map((trip, index) => (
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div class={index % 2 === 1 ? 'lg:order-2' : ''}>
-              <h3 class="font-heading text-3xl md:text-4xl mb-6">
-                {exp.title}
-              </h3>
-              <p class="text-text leading-relaxed mb-8">
-                {exp.description}
+              <p class="section-kicker mb-4">{trip.kicker}</p>
+              <h3 class="font-heading text-3xl md:text-4xl mb-6">{trip.name}</h3>
+              <p class="font-heading-display text-xl lg:text-2xl text-charcoal leading-snug mb-6" style="font-weight: 300;">
+                {trip.promise}
               </p>
-              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                {exp.features.map((feature) => (
-                  <li class="flex items-center text-sm text-text">
-                    <svg aria-hidden="true" class="w-4 h-4 text-celtic mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                    </svg>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href="/contact"
-                class="btn-primary btn-md"
-              >
-                Enquire About {exp.title}
+              <p class="text-text leading-relaxed mb-10">{trip.forWho}</p>
+              <a href={trip.href} class="btn-primary btn-md">
+                About {trip.name}
               </a>
             </div>
             <div class={index % 2 === 1 ? 'lg:order-1' : ''}>
               <div class="group relative aspect-[4/3] overflow-hidden">
                 <div
                   class="absolute inset-0 bg-cover bg-center scale-on-hover"
-                  style={`background-image: url('${exp.image}')`}
+                  style={`background-image: url('${trip.imageSrc}')`}
                 ></div>
                 <div class="absolute inset-0 overlay-default overlay-hover transition-premium"></div>
               </div>
@@ -187,17 +146,22 @@ const faqs = [
           </div>
         ))}
       </div>
+
+      <!-- Terry: the planning window is why the call happens now, not later. -->
+      <p class="text-text-muted text-sm leading-relaxed mt-20 max-w-2xl mx-auto text-center">
+        {PLANNING_NOTE}
+      </p>
     </div>
   </section>
 
   <!-- What's Included Section -->
-  <!-- TODO: Replace placeholder - inclusions such as guaranteed tee times, transfers, and 24/7 support need confirmed package terms. -->
+  <!-- TODO: Terry to confirm the real inclusions list and package terms. -->
   <section class="section-padding bg-white">
     <div class="content-narrow px-6 lg:px-12">
       <div class="text-center mb-16">
         <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">What's Included</h2>
         <p class="text-text max-w-xl mx-auto">
-          Every Celtic Golf Tours experience includes these essentials as standard
+          On every trip, whichever way you travel
         </p>
       </div>
 

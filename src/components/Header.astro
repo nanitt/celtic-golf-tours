@@ -5,10 +5,13 @@ import OperatorLine from './OperatorLine.astro';
 
 const currentPath = Astro.url.pathname;
 
+// Testimonials is deliberately absent: the page is still a "coming soon"
+// placeholder, and a dead end in the primary nav undercuts the trust this
+// site exists to build. Restore it when Terry supplies real quotes.
 const navLinks = [
+  { href: '/trips', label: 'Trips' },
   { href: '/experiences', label: 'Experiences' },
   { href: '/about', label: 'About' },
-  { href: '/testimonials', label: 'Testimonials' },
   { href: '/contact', label: 'Contact' },
 ];
 ---
