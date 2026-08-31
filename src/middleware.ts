@@ -1,7 +1,18 @@
 import { defineMiddleware } from 'astro:middleware';
 import { isValidPreviewSession } from './lib/preview-session';
 
-const PUBLIC_PATHS = ['/login', '/api/auth/login', '/api/auth/logout', '/api/contact'];
+// /robots.txt and /sitemap-index.xml must stay reachable behind the password
+// gate: robots.txt is now an SSR endpoint rather than a file in public/, so
+// unlike a static asset it passes through this middleware and would otherwise
+// redirect to /login.
+const PUBLIC_PATHS = [
+  '/login',
+  '/api/auth/login',
+  '/api/auth/logout',
+  '/api/contact',
+  '/robots.txt',
+  '/sitemap-index.xml',
+];
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
