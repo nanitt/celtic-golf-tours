@@ -650,7 +650,12 @@ const regionCourses = activeMapRegions.map(region => ({
       regions.forEach(r => r.classList.add('loaded'));
     }
 
+    let fallbackStarted = false;
+
     async function renderInlineMapFallback() {
+      if (mapIsReady || fallbackStarted) return;
+      fallbackStarted = true;
+
       try {
         const response = await fetch('/maps/british-isles.svg');
         if (!response.ok) return;
@@ -683,6 +688,12 @@ const regionCourses = activeMapRegions.map(region => ({
       if (mapObject.contentDocument?.querySelector('svg')) {
         setupSVGInteractions(mapObject.contentDocument);
       }
+
+      // A few browsers fail an <object> SVG without dispatching an error/load
+      // event. Avoid leaving the static fallback in place in that case.
+      window.setTimeout(() => {
+        if (!mapIsReady && document.contains(mapObject)) renderInlineMapFallback();
+      }, 1500);
     }
   }
 
