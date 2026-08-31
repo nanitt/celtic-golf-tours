@@ -160,7 +160,8 @@ Decide:
 
 - [ ] `COMING_SOON=true` → `false`
 - [ ] Remove `SITE_PASSWORD` gate
-- [ ] Set `PUBLIC_SITE_URL` for canonical URLs + sitemap
+- [x] Set `PUBLIC_SITE_URL` for canonical URLs + sitemap in Vercel Production
+      (takes effect with the next production deployment)
 - [ ] Verify contact form delivers to a monitored inbox
 
 ## Blockers for Terry, restated

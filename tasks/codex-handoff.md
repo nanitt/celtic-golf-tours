@@ -123,25 +123,33 @@ cross-file invariants, make them types.
 
 ### Ours
 
-- [ ] **Deploy the branch to a preview URL and show Terry** before merging.
+- [x] **Deploy the branch to a public preview URL for Terry's review** before merging.
+      Preview: `https://celtic-golf-tours-cppkk1xpi-nanitts-projects.vercel.app`
+      (31 Aug). Vercel Deployment Protection was disabled so this link is
+      shareable; production has not been changed.
 - [ ] **Add the domains in Vercel.** Both `.com` and `.ca` are owned. Add both
       plus their `www` variants, and set `celticgolftours.ca` to redirect (308)
       to `www.celticgolftours.com`. Deliberately *not* in `vercel.json` — that
       file is strict JSON and one malformed key has already killed a deploy
       before the build with no logs — and deliberately not in middleware, which
       would spend a function invocation on every `.ca` request.
-- [ ] **Set `PUBLIC_SITE_URL`** in Vercel Production. It is the single flip that
-      moves canonical URLs, `robots.txt`, the sitemap and the enquiry email.
-- [ ] **Set `BOOKING_EMAIL=celticgolftours@centreholidays.com`** in Vercel.
-      Without it, enquiries fall back to `NOTIFICATION_EMAIL`.
+- [x] **Set `PUBLIC_SITE_URL`** in Vercel Production to
+      `https://www.celticgolftours.com` (31 Aug). It will take effect on the
+      next production deployment.
+- [x] **Set `BOOKING_EMAIL=celticgolftours@centreholidays.com`** in Vercel
+      Production (31 Aug).
 - [ ] **Verify a sending domain in Resend** and set `ENQUIRY_FROM_EMAIL`.
       Currently sends from `onboarding@resend.dev`, which only delivers to the
-      account owner. Blocked on DNS, which is now unblocked.
+      account owner. The connected Resend account has only
+      `celticgolfkingston.ca` verified (checked 31 Aug); the final Celtic Golf
+      Tours domain must be added and verified once DNS access is available.
 - [ ] **Rotate the borrowed Resend key.** The contact form authenticates with
       the API key from a different client project (`golf-ai-agency`). Rotating
       that key for the other client silently kills Celtic's contact form.
-- [ ] Cloudflare Turnstile widget for the production domain, and a Vercel
-      Firewall rate-limit rule on `POST /api/contact`.
+- [ ] Cloudflare Turnstile widget for the production domain. Blocked until the
+      final domain can be configured in Cloudflare.
+- [x] Vercel Firewall rate-limit rule on `POST /api/contact`: 10 requests per
+      IP per 60 seconds, deny when exceeded (31 Aug).
 - [ ] Rotate `SANITY_API_WRITE_TOKEN` — it was pasted into a chat transcript.
 
 ### Terry's
