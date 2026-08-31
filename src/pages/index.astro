@@ -24,7 +24,7 @@ const statsBar = [
 const destinations = activeDestinations.map(d => ({
   ...d,
   href: destinationHref(d),
-  image: imageUrl(images[d.image], 2000, 85),
+  image: imageUrl(images[d.image], 1200, 75),
 }));
 const isDestinationPair = destinations.length === 2;
 const destinationGridClass = isDestinationPair
@@ -51,10 +51,11 @@ const featuredExperiences = await getFeaturedExperiences(3);
   <!-- TODO: Replace placeholder - Unsplash hero image with licensed CGT course/trip photography. -->
   <CinematicHero
     title="The links worth crossing an ocean for. Without the part where you organise it."
-    subtitle="Guided golf trips through Scotland and Ireland, planned end to end by the people who will answer the phone when you call."
+    subtitle="Golf trips through Scotland and Ireland, shaped around your group, your dates and the pace you want to travel."
     ctaText="Start the conversation"
     ctaLink="/contact"
-    backgroundImage={imageUrl(images.homeHero, 2400, 90)}
+    backgroundImage={imageUrl(images.homeHero, 1800, 82)}
+    backgroundImageMobile={imageUrl(images.homeHero, 1000, 75)}
     showScrollProgress={false}
     showTrustBar={true}
   />
@@ -113,7 +114,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
         <!-- Right: body copy + CTA -->
         <div data-reveal="fade-up" data-reveal-delay="2">
           <p class="text-text leading-relaxed mb-10">
-            Celtic Golf Tours is the golf arm of {operator.name}, a licensed {operator.region} travel operator, and a member of IAGTO. We plan the trip, hold the tee times, book the rooms and drive the route — so the only thing left for your group to argue about is the order of play. No call centres, no scripts, no booking engine. You get a person, and you keep the same one.
+            Celtic Golf Tours is the golf arm of {operator.name}, a licensed {operator.region} travel operator, and a member of IAGTO. Start with your group, dates and the kind of week you want; we will talk through the right way to shape the trip from there.
           </p>
           <a href="/about" class="btn-ghost btn-md">
             Our Story
@@ -186,7 +187,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
       <div class="mb-12" data-reveal="fade-up">
         <p class="section-kicker mb-4">Upcoming Departures</p>
         <h2 class="font-heading text-charcoal" style="font-size: clamp(2rem, 4vw, var(--text-section));">Hosted Experiences</h2>
-        <p class="text-text mt-4 max-w-xl">Join an expert-led group departure to the world's greatest links courses. We keep groups deliberately small.</p>
+        <p class="text-text mt-4 max-w-xl">A 2028 Highlands departure is taking shape. Register your interest and we will share the details as the itinerary is confirmed.</p>
       </div>
 
       {featuredExperiences.length > 0 ? (
@@ -233,7 +234,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
   <section class="group relative py-40 lg:py-48 overflow-hidden">
     <div
       class="absolute inset-0 bg-cover bg-center scale-on-hover"
-      style={`background-image: url('${imageUrl(images.homeCta)}')`}
+      style={`background-image: url('${imageUrl(images.homeCta, 1200, 75)}')`}
     />
     <div class="absolute inset-0 overlay-default overlay-hover transition-premium" />
     <div class="relative z-10 max-w-2xl mx-auto px-6 lg:px-12 text-center">
@@ -245,7 +246,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
       </p>
       <!-- Terry: the planning window is the reason to call now rather than later. -->
       <p class="text-white/55 text-sm mb-10 max-w-lg mx-auto">
-        The best weeks are held around 18 months ahead — if you're thinking about 2028, this is the moment.
+        Popular weeks often take around 18 months to plan — if you're thinking about 2028, this is a good time to start the conversation.
       </p>
       <a href="/contact" class="btn-primary btn-lg btn-primary-inverted">
         Start the conversation

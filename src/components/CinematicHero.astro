@@ -9,6 +9,7 @@ interface Props {
   ctaText?: string;
   ctaLink?: string;
   backgroundImage: string;       // Required poster/fallback image
+  backgroundImageMobile?: string;
   backgroundVideo?: string;      // MP4 video URL (optional)
   backgroundVideoWebm?: string;  // WebM video URL (optional, better compression)
   enableScrub?: boolean;         // Enable scroll-linked playback
@@ -23,6 +24,7 @@ const {
   ctaText = "Begin Your Journey",
   ctaLink = "/contact",
   backgroundImage,
+  backgroundImageMobile,
   backgroundVideo,
   backgroundVideoWebm,
   enableScrub = true,
@@ -60,7 +62,7 @@ const trustPoints = [
   ) : (
     <div
       class="cinematic-hero-bg absolute inset-0 bg-cover bg-center ken-burns-zoom"
-      style={`background-image: url('${backgroundImage}')`}
+      style={`--cinematic-hero-background: url('${backgroundImage}');${backgroundImageMobile ? ` --cinematic-hero-background-mobile: url('${backgroundImageMobile}');` : ''}`}
     >
     </div>
   )}
@@ -174,8 +176,15 @@ const trustPoints = [
 
   /* Ken Burns zoom animation for static images - slower, subtler */
   .ken-burns-zoom {
+    background-image: var(--cinematic-hero-background);
     animation: ken-burns 30s ease-in-out infinite alternate;
     transform-origin: center center;
+  }
+
+  @media (max-width: 767px) {
+    .ken-burns-zoom {
+      background-image: var(--cinematic-hero-background-mobile, var(--cinematic-hero-background));
+    }
   }
 
   @keyframes ken-burns {

@@ -14,10 +14,10 @@ const tripTypeCards = tripTypes.map((t) => ({
 }));
 
 const inclusions = [
-  { title: 'Somewhere Good to Sleep', description: 'Hotels chosen for the drive to the next first tee, not the brochure' },
-  { title: 'All Transfers', description: 'Airport pickups and transport throughout, so nobody is the designated driver' },
-  { title: 'One Point of Contact', description: 'The same person from the first call to the flight home' },
-  { title: 'Support While You Are There', description: 'Someone reachable if a plan needs changing mid-trip' }
+  { title: 'Accommodation', description: 'Options discussed around the route, pace and standard that suit your group' },
+  { title: 'Transfers', description: 'Transport can be included when it fits the trip you are planning' },
+  { title: 'Trip coordination', description: 'One clear place to keep the details of your itinerary' },
+  { title: 'Support', description: 'The level of support is agreed with you as the trip takes shape' }
 ];
 
 const hostedExperiences = await getAllExperiences();
@@ -28,36 +28,36 @@ const faqs = [
     q: "What's included in a hosted experience?",
     // "Guaranteed tee times at every course" was an access claim CGT has not
     // confirmed — the same one removed from the homepage and /destinations.
-    a: "Hosted experiences include accommodation, transfers throughout, a Celtic Golf Tours host for the duration, and someone reachable while you are away. Tee times are arranged as part of the itinerary and confirmed with you before you commit. Flights are not included."
+    a: "Each hosted departure has its own itinerary and inclusions. We will publish those details and confirm the arrangements with you before you commit."
   },
   {
     q: "How far ahead should I book?",
     // Terry's number, and the reason the call happens now rather than later.
     // This answer used to say 6-12 months, which contradicted it.
-    a: "Further ahead than most people expect. The popular weeks are held around 18 months out, so if a particular season matters to you, the conversation needs to happen well before the year it falls in. Shorter notice is sometimes possible — it just narrows what we can put together."
+    a: "Further ahead than most people expect. Popular weeks can take around 18 months to plan, so if a particular season matters to you, start the conversation well before the year it falls in."
   },
   {
     q: "What's the typical group size?",
-    a: "Buddy Trips are usually four to sixteen friends travelling together. Concierge Trips have no fixed size — we have run them for two people and for twenty. Hosted departures are kept deliberately small so they do not feel like a package tour."
+    a: "Buddy Trips suit friends travelling together. Concierge Trips are shaped around the group you are bringing. Any hosted-departure group size will be published with that departure."
   },
   {
     q: "Do I need to be a low handicap to join?",
-    a: "Not at all. Our hosted experiences welcome golfers of all abilities. Some courses require a handicap certificate for booking purposes — we'll let you know which ones apply to your itinerary and help you arrange documentation."
+    a: "Requirements vary by itinerary and course. We will explain any handicap or documentation requirements before you commit."
   },
   {
     q: "What standard of accommodation can I expect?",
-    a: "We choose hotels for where they put you the next morning rather than for the star rating, and we will tell you honestly what each one is like. If a property matters to you more than the drive, say so and we will build around that instead."
+    a: "Accommodation options are discussed around your route, pace and preferences. We will explain the available choices before you commit."
   },
   {
     q: "Can I customise a hosted experience?",
-    a: "Hosted experiences have a set itinerary and departure date. If you want your own courses, dates and pace, that is a <a href='/trips/concierge' class='underline hover:text-charcoal'>Concierge Trip</a> — built from scratch around your group. Get in touch and we will start there."
+    a: "Hosted experiences have a set itinerary and departure date. If you want your own dates and pace, a <a href='/trips/concierge' class='underline hover:text-charcoal'>Concierge Trip</a> is the place to start."
   },
   {
     q: "What is your cancellation policy?",
     // Deliberately defers to /terms rather than restating the policy. The previous
     // answer ("deposits are non-refundable") directly contradicted the Terms page,
     // which promises a full refund at 90+ days. Keep one source of truth.
-    a: "Our full cancellation terms are set out on our <a href='/terms' class='underline hover:text-charcoal'>Terms &amp; Conditions</a> page, and we'll walk you through exactly how they apply to your trip before you commit. We also strongly recommend travel insurance."
+    a: "We will provide the applicable booking and cancellation terms in writing before you commit."
   }
 ];
 ---
@@ -65,8 +65,8 @@ const faqs = [
 <Layout title="Golf Trip Experiences" description="Explore Celtic Golf Tours experiences: Buddy Trips for groups of friends, Concierge Trips planned around your group, and upcoming hosted departures.">
   <!-- TODO: Replace placeholder - Unsplash hero image and broad experience copy need real CGT offering photography/copy. -->
   <Hero
-    title="Extraordinary Golf Experiences"
-    subtitle="From intimate custom tours to our signature hosted journeys, discover the perfect way to experience the world's finest courses"
+    title="Golf Trip Experiences"
+    subtitle="Two ways to travel: a Buddy Trip with friends or a Concierge Trip shaped around your group."
     backgroundImage={imageUrl(images.experiencesHero, 1800, 80)}
     size="large"
     ctaText=""
@@ -77,10 +77,10 @@ const faqs = [
   <section class="section-padding bg-white">
     <div class="content-wide px-6 lg:px-12">
       <div class="text-center mb-16">
-        {hostedExperiences.length > 0 && <p class="section-kicker mb-4">Limited Availability</p>}
+        {hostedExperiences.length > 0 && <p class="section-kicker mb-4">Upcoming departure</p>}
         <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">Hosted Experiences</h2>
         <p class="text-text max-w-2xl mx-auto">
-          Our signature bucket-list trips led by the Celtic Golf Tours team. Carefully crafted journeys to extraordinary destinations with exclusive access and unforgettable moments.
+          We are sharing an early 2028 Highlands departure. Its route, dates and final arrangements will be published when they are confirmed.
         </p>
       </div>
 

@@ -50,7 +50,7 @@ export const tripTypes: TripType[] = [
       "Everyone agrees it's a great idea. Then someone has to pick the courses, find the hotel, work out the driving, collect the money, and re-book it all when two people change their dates. That is the part that kills these trips, and that is the part we take.\n\nYou keep the fun bit: deciding who's in, and settling the bets afterwards.",
     weHandle: [
       'The route, so you are not driving three hours after a round',
-      'Tee times, held in your group’s name before anyone has paid',
+      'Tee-time requests and scheduling details, discussed with you before you commit',
       'Hotels within sensible reach of the next first tee',
       'One invoice, or one per player — your call',
       'The re-planning when someone’s dates move',
@@ -69,7 +69,7 @@ export const tripTypes: TripType[] = [
       'A concierge trip is the version where you hand it over. We build the itinerary around how you actually want to play — the pace, the rest days, where you eat, how far you are willing to drive — and then we run it.\n\nYou get one person who knows your trip, from the first phone call to the airport on the way home.',
     weHandle: [
       'An itinerary built around your pace, not a fixed departure',
-      'Every booking made and held in one place',
+      'Accommodation, transfers and trip details kept in one place',
       'Transfers, so nobody is nominated as the driver',
       'A single point of contact who knows your trip by name',
       'Someone on the end of a phone while you are over there',
@@ -90,4 +90,4 @@ export const findTripType = (slug: string) =>
 export const PLANNING_MONTHS = 18;
 
 export const PLANNING_NOTE =
-  'The best tee times are held around 18 months ahead. If a season matters to you, the call needs to happen well before the year it falls in.';
+  'Popular weeks can take around 18 months to plan. If a particular season matters to you, start the conversation well before the year it falls in.';
