@@ -137,11 +137,22 @@ FAQ and terms are generic placeholder text. Needs CGT's real language for:
 
 ## 8. Sanity CMS
 
-`PUBLIC_SANITY_PROJECT_ID` is empty, so all trips render from fallback sample
-data. Decide on the call:
+`PUBLIC_SANITY_PROJECT_ID` is empty in production, so trips render from the
+fallback data in `src/data/hosted-experiences.ts` — which is where the featured
+2028 Highlands teaser lives.
 
-- [ ] Connect Sanity and load real trips, **or**
-- [ ] Drop the CMS for launch and hardcode the real trips
+> **Do not set `PUBLIC_SANITY_PROJECT_ID` in production until a trip exists in
+> the dataset.** The moment it is set, the site reads Sanity *instead of* the
+> fallback, and the dataset is currently empty — so Terry's featured 2028 trip
+> would silently disappear and the "next season is being finalised" empty state
+> would come back. This is exactly what happens on a local dev server today,
+> where the project id is set in `.env.local`.
+
+Decide:
+
+- [ ] Connect Sanity, recreate the Highlands teaser as a document, **then** set
+      the project id, or
+- [ ] Drop the CMS for launch and keep the trips in `hosted-experiences.ts`
 
 ---
 
