@@ -10,7 +10,7 @@
       ]
     },
     {
-      "source": "/((?!studio).*)",
+      "source": "/((?!studio|maps/british-isles\\.svg).*)",
       "headers": [
         {
           "key": "X-Frame-Options",
