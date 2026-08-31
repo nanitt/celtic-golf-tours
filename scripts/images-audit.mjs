@@ -6,9 +6,17 @@ import { readFileSync } from 'fs';
 
 const src = readFileSync(new URL('../src/data/images.ts', import.meta.url), 'utf-8');
 
+const imageConstants = Object.fromEntries(
+  [...src.matchAll(/const\s+(\w+)\s*=\s*'([^']+)';/g)].map(([, key, value]) => [key, value])
+);
+
 const slots = [...src.matchAll(
-  /(\w+):\s*stock\('([^']+)',\s*\n?\s*'([^']*(?:\\'[^']*)*)'\)/g
-)].map(([, key, photo, needs]) => ({ key, photo, needs: needs.replace(/\s+/g, ' ') }));
+  /(\w+):\s*stock\(([^,]+),\s*\n?\s*'([^']*(?:\\'[^']*)*)'\)/g
+)].map(([, key, ref, needs]) => {
+  const value = ref.trim();
+  const photo = value.startsWith("'") ? value.slice(1, -1) : imageConstants[value];
+  return { key, photo, needs: needs.replace(/\s+/g, ' ') };
+});
 
 const real = [...src.matchAll(/(\w+):\s*\{\s*src:\s*'([^']+)'[^}]*placeholder:\s*false/g)];
 
