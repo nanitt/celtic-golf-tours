@@ -406,11 +406,16 @@ const regionCourses = activeMapRegions.map(region => ({
       placeholder?.classList.remove('hidden');
     }
 
-    function setupSVGInteractions(svgDoc: Document) {
-      const regions = svgDoc.querySelectorAll('.map-region');
+    let mapIsReady = false;
+
+    function setupSVGInteractions(svgRoot: ParentNode) {
+      if (mapIsReady) return;
+      mapIsReady = true;
+
+      const regions = svgRoot.querySelectorAll('.map-region');
 
       // Hide custom cursor when hovering over SVG (cursor doesn't work well inside object tag)
-      const svgElement = svgDoc.querySelector('svg');
+      const svgElement = svgRoot.querySelector('svg');
       const luxuryCursor = document.getElementById('luxury-cursor');
       if (svgElement && luxuryCursor) {
         svgElement.addEventListener('mouseenter', () => {
@@ -455,7 +460,10 @@ const regionCourses = activeMapRegions.map(region => ({
       }
 
       // Apply styles to SVG - progressive loading (starts gray, fills to green)
-      const style = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
+      const svgDocument = svgElement?.ownerDocument;
+      if (!svgElement || !svgDocument) return;
+
+      const style = svgDocument.createElementNS('http://www.w3.org/2000/svg', 'style');
       style.textContent = `
         .map-region { cursor: pointer; outline: none; }
         .map-region text { pointer-events: none; }
@@ -506,14 +514,14 @@ const regionCourses = activeMapRegions.map(region => ({
       `;
 
       // Inject enhanced gold glow filter into SVG defs
-      const svg = svgDoc.querySelector('svg');
+      const svg = svgElement;
       if (svg) {
         let defs = svg.querySelector('defs');
         if (!defs) {
-          defs = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'defs');
+          defs = svgDocument.createElementNS('http://www.w3.org/2000/svg', 'defs');
           svg.insertBefore(defs, svg.firstChild);
         }
-        const glowFilter = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'filter');
+        const glowFilter = svgDocument.createElementNS('http://www.w3.org/2000/svg', 'filter');
         glowFilter.setAttribute('id', 'glow-enhanced');
         glowFilter.setAttribute('x', '-30%');
         glowFilter.setAttribute('y', '-30%');
@@ -530,7 +538,7 @@ const regionCourses = activeMapRegions.map(region => ({
         `;
         defs.appendChild(glowFilter);
       }
-      svgDoc.querySelector('svg')?.insertBefore(style, svgDoc.querySelector('svg')?.firstChild || null);
+      svg.insertBefore(style, svg.firstChild || null);
 
       // Detect touch device for mobile tap interaction
       const isTouchDevice = 'ontouchstart' in window;
@@ -642,12 +650,32 @@ const regionCourses = activeMapRegions.map(region => ({
       regions.forEach(r => r.classList.add('loaded'));
     }
 
-    // Wait for SVG to load
+    async function renderInlineMapFallback() {
+      try {
+        const response = await fetch('/maps/british-isles.svg');
+        if (!response.ok) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'map-object';
+        wrapper.setAttribute('aria-label', 'Interactive map of golf destinations in the British Isles');
+        wrapper.innerHTML = await response.text();
+        wrapper.querySelector('svg')?.setAttribute('role', 'img');
+        mapObject.replaceWith(wrapper);
+        setupSVGInteractions(wrapper);
+      } catch {
+        // The image nested inside <object> remains as the non-interactive fallback.
+      }
+    }
+
+    // Wait for SVG to load. Some browsers block <object> SVG documents even
+    // when normal SVG images are supported; inline the same local map in that case.
     if (mapObject) {
       mapObject.addEventListener('load', () => {
         const svgDoc = mapObject.contentDocument;
         if (svgDoc) {
           setupSVGInteractions(svgDoc);
+        } else {
+          renderInlineMapFallback();
         }
       });
 
