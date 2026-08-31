@@ -27,7 +27,7 @@ const other = tripTypes.find((t) => t.slug !== trip.slug)!;
 const paragraphs = trip.body.split('\n\n');
 ---
 
-<Layout title={trip.name} description={trip.promise}>
+<Layout title={trip.seoTitle} description={trip.seoDescription}>
   <!-- TODO: Replace placeholder - hero is stock; slot is {trip.image} in src/data/images.ts. -->
   <Hero
     title={trip.name}

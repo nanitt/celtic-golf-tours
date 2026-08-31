@@ -21,6 +21,9 @@ import type { ImageKey } from './images';
 export interface TripType {
   slug: 'buddy' | 'concierge';
   name: string;
+  /** Search title and description; kept separate from the short on-page pitch. */
+  seoTitle: string;
+  seoDescription: string;
   /** Small label above the title. */
   kicker: string;
   /** The one-line sell. Shown on cards. */
@@ -38,6 +41,8 @@ export const tripTypes: TripType[] = [
   {
     slug: 'buddy',
     name: 'Buddy Trips',
+    seoTitle: 'Buddy Golf Trips in Scotland & Ireland',
+    seoDescription: 'Plan a Scotland or Ireland golf trip for your group. Celtic Golf Tours coordinates the itinerary, hotels and logistics so friends can travel together.',
     kicker: 'For a group that already has a group chat',
     promise: 'The trip your foursome has been talking about for six years. Actually booked.',
     forWho: 'Friends travelling together — usually four to sixteen, usually overdue.',
@@ -55,6 +60,8 @@ export const tripTypes: TripType[] = [
   {
     slug: 'concierge',
     name: 'Concierge Trips',
+    seoTitle: 'Concierge Golf Trips in Scotland & Ireland',
+    seoDescription: 'Plan a Scotland or Ireland golf trip around your group, pace and preferred dates with a Concierge Trip managed end to end by Celtic Golf Tours.',
     kicker: 'For anyone who would rather just arrive',
     promise: 'We plan everything. You do not have to do a thing.',
     forWho: 'Any group size, from two people to twenty. Managed end to end.',

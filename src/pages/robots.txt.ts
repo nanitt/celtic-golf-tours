@@ -12,7 +12,14 @@ import { site } from '../data/site';
  * src/middleware.ts — it is listed in PUBLIC_PATHS so the preview password
  * gate does not redirect crawlers to /login.
  */
-export const GET: APIRoute = ({ site: astroSite }) => {
+export const GET: APIRoute = ({ request, site: astroSite }) => {
+  // Review deployments are public for feedback but should never be crawled.
+  if (new URL(request.url).hostname.endsWith('.vercel.app')) {
+    return new Response('User-agent: *\nDisallow: /\n', {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
+  }
+
   const origin = (astroSite?.href ?? site.url).replace(/\/$/, '');
 
   const body = [
