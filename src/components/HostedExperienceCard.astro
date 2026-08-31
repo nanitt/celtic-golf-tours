@@ -15,7 +15,9 @@ const statusText: Record<string, string> = {
 };
 
 const isSoldOut = experience.status === 'sold_out';
-const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
+// Teasers have no itinerary to show yet, so they funnel to a conversation
+// rather than a detail page that would render mostly empty.
+const linkHref = isSoldOut || experience.teaser ? '/contact' : `/experiences/${experience.id}`;
 ---
 
 {featured ? (
