@@ -14,20 +14,22 @@ interface Props {
 
 const { class: className = '' } = Astro.props;
 
-// Heritage photos - mix of historical and modern golf imagery
+// Heritage photos, retargeted August 2026 to the five regions the site now
+// sells. The captions used to name St Andrews, Ballybunion and Lahinch, all of
+// which came off with Terry's region change.
 const photos = [
   {
     src: imageUrl(images.heritageOldCourseDawn, 600, 80),
-    alt: 'St Andrews Old Course',
-    caption: 'The Old Course at Dawn',
-    year: 'St Andrews, Scotland',
+    alt: 'Links at dawn in Northern Scotland',
+    caption: 'First Light on the Firth',
+    year: 'Northern Scotland',
     rotation: -2
   },
   {
     src: imageUrl(images.heritageWalkingLinks, 600, 80),
-    alt: 'Irish coastal links',
+    alt: 'Coastal links in Northern Ireland',
     caption: 'Walking the Links',
-    year: 'Ballybunion, Ireland',
+    year: 'Northern Ireland',
     rotation: 1.5
   },
   {
@@ -41,21 +43,21 @@ const photos = [
     src: imageUrl(images.heritageHighland, 600, 80),
     alt: 'Links golf course',
     caption: 'Highland Glory',
-    year: 'The Highlands',
+    year: 'The Highlands, Scotland',
     rotation: 2
   },
   {
     src: imageUrl(images.heritageWildAtlantic, 600, 80),
-    alt: 'Golfer at Lahinch',
-    caption: 'Wild Atlantic Way',
-    year: 'County Clare, Ireland',
+    alt: 'Golfer on the Atlantic coast of northwest Ireland',
+    caption: 'The Atlantic Edge',
+    year: 'Northwest Ireland',
     rotation: -1.5
   },
   {
     src: imageUrl(images.heritageTradition, 600, 80),
     alt: 'Traditional golf scene',
     caption: 'Timeless Tradition',
-    year: 'The British Isles',
+    year: 'Scotland & Ireland',
     rotation: 1
   }
 ];
@@ -70,8 +72,8 @@ const photos = [
       <h2 class="heritage-title">A Century of Links Golf</h2>
       <CelticDivider variant="ornate" color="brass" width="medium" class="my-6" />
       <p class="heritage-intro">
-        From the windswept dunes of Ballybunion to the hallowed grounds of St Andrews,
-        these courses have witnessed over a century of golf's greatest moments.
+        From the dunes of Donegal and Mayo to the old links north of Inverness,
+        these coasts have been playing host for well over a century.
       </p>
     </div>
 

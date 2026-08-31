@@ -5,7 +5,7 @@ import Hero from '../components/Hero.astro';
 import HeritageWall from '../components/HeritageWall.astro';
 import CelticDivider from '../components/CelticDivider.astro';
 import TexturedSection from '../components/TexturedSection.astro';
-import { stats, showStat, hasStats } from '../data/site';
+import { stats, showStat, hasStats, operator } from '../data/site';
 
 const numbers = [
   { value: stats.happyGolfers, label: 'Happy Golfers', accent: 'text-champagne' },
@@ -34,9 +34,10 @@ const numbers = [
           <p class="section-kicker mb-4">Our Story</p>
           <h2 class="font-heading text-section mb-8" style="font-size: clamp(2rem, 4vw, var(--text-section));">Born From a Love of the Game</h2>
           <p class="text-text leading-relaxed mb-6">
-            Celtic Golf Tours was born from a simple belief: that golf travel should be extraordinary.
-            As a proud part of the Celtic Golf Centre family, we bring decades of golfing expertise
-            and a genuine passion for the game to every tour we create.
+            Celtic Golf Tours is the golf arm of {operator.name}, a licensed {operator.region}
+            travel operator. That is the boring, important part: your money sits with a
+            registered operator, and the trip is put together by people who have spent
+            their working lives on these coasts.
           </p>
 
           <!-- Pulled blockquote -->
@@ -125,31 +126,41 @@ const numbers = [
   <!-- TODO: Replace placeholder - HeritageWall uses stock imagery/captions; replace with CGT/course-owned or licensed historical assets. -->
   <HeritageWall />
 
-  <!-- Celtic Golf Centre Connection -->
-  <!-- TODO: Replace placeholder - Celtic Golf Centre relationship copy and Unsplash image need real details and approved photography. -->
+  <!--
+    The operator relationship.
+
+    This section used to name "Celtic Golf Centre" as the parent company. That
+    is not the licensed operator — Centre Holidays is, and Terry's requirement
+    is that the operator name is on every page. If Celtic Golf Centre is a real
+    separate entity he wants credited, it needs its own copy from him; it should
+    not stand in for the operator. See tasks/content-needed.md.
+
+    TODO: Terry to supply the Centre Holidays relationship in his own words, and
+    approved photography for this slot.
+  -->
   <section class="section-padding bg-white">
     <div class="content-wide px-6 lg:px-12">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         <div class="lg:order-2">
           <p class="section-kicker mb-4">Our Heritage</p>
-          <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">Part of the Celtic Golf Family</h2>
+          <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">Who you are actually booking with</h2>
           <!-- Brass diamond divider -->
           <div class="flex items-center gap-3 mb-8">
             <div class="w-12 h-0.5 bg-brass"></div>
             <div class="w-1.5 h-1.5 bg-brass rotate-45"></div>
           </div>
           <p class="text-text leading-relaxed mb-6">
-            Celtic Golf Tours is a proud part of Celtic Golf Centre, bringing
-            together our extensive golfing expertise with a passion for travel.
+            Celtic Golf Tours is the name on the trip. <a href={operator.url} target="_blank" rel="noopener noreferrer" class="underline hover:text-charcoal">{operator.name}</a>
+            is the licensed {operator.region} travel operator behind it, and we are a member of IAGTO.
           </p>
           <p class="text-text leading-relaxed mb-6">
-            This connection means we have deep roots in the golf industry, established
-            relationships with courses across the British Isles, and the experience
-            to deliver exceptional tours every time.
+            That matters more than it sounds. It means there is a regulated operator
+            standing behind your booking, not a website and a hopeful invoice.
           </p>
           <p class="text-text leading-relaxed">
-            When you book with Celtic Golf Tours, you're not just getting a travel agent—
-            you're getting a team of golf professionals dedicated to your perfect trip.
+            What you get on top of that is the part we care about: someone who knows
+            these coasts, who will tell you when an idea is a bad one, and who picks
+            up the phone while you are over there.
           </p>
         </div>
         <div class="lg:order-1 group relative aspect-[4/3] overflow-hidden">

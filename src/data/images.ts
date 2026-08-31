@@ -125,11 +125,11 @@ export const images = {
   tripHighlands2028: stock('photo-1535131749006-b7f58c99034b',
     'Featured 2028 Highlands trip. The single image selling the flagship departure.'),
   // --- Heritage wall (About page) -------------------------------------------
-  heritageOldCourseDawn: stock('photo-1687291133565-767706032bed', 'Heritage wall: "The Old Course at Dawn".'),
-  heritageWalkingLinks: stock('photo-1693113448288-015fb6eed7c9', 'Heritage wall: "Walking the Links".'),
+  heritageOldCourseDawn: stock('photo-1687291133565-767706032bed', 'Heritage wall: "First Light on the Firth" — Northern Scotland at dawn.'),
+  heritageWalkingLinks: stock('photo-1693113448288-015fb6eed7c9', 'Heritage wall: "Walking the Links" — Northern Ireland coast.'),
   heritageClubhouse: stock('photo-1600011689032-8b628b8a8747', 'Heritage wall: "The Clubhouse".'),
   heritageHighland: stock('photo-1535131749006-b7f58c99034b', 'Heritage wall: "Highland Glory".'),
-  heritageWildAtlantic: stock('photo-1693113448333-0123750f17f6', 'Heritage wall: "Wild Atlantic Way".'),
+  heritageWildAtlantic: stock('photo-1693113448333-0123750f17f6', 'Heritage wall: "The Atlantic Edge" — northwest Ireland.'),
   heritageTradition: stock('photo-1594750197419-829e3bc11d1f', 'Heritage wall: "Timeless Tradition".'),
 } satisfies Record<string, SiteImage>;
 
