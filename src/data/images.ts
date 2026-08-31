@@ -46,7 +46,7 @@ const irishKildare = 'photo-1731957235491-c190bbf9fc8d';
 
 export const images = {
   // --- Home -----------------------------------------------------------------
-  homeHero: stock(scottishLinks,
+  homeHero: stock('photo-1672871583040-42826d4e9ca4',
     'Hero. A recognisable links course, landscape, 2400px+. The single most important image on the site.'),
   homeCta: stock(irishDonegal,
     'Closing CTA background. A real CGT trip or course, landscape.'),
