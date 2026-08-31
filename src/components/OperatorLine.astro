@@ -1,0 +1,38 @@
+---
+/**
+ * The licensed-operator disclosure.
+ *
+ * Terry's requirement: "Centre Holidays" is the name licensed to sell travel
+ * in Ontario and must appear on every page. Two pages — coming-soon.astro and
+ * login.astro — render standalone HTML and never touch Layout.astro, so this
+ * lives in a component that all three paths import rather than in the layout.
+ *
+ * The TICO registration number renders only once it is real; see
+ * `operator` in src/data/site.ts.
+ */
+import { operator, hasTico, site } from '../data/site';
+
+interface Props {
+  /** 'dark' for light text on a dark ground, 'light' for the inverse. */
+  tone?: 'dark' | 'light';
+  class?: string;
+}
+
+const { tone = 'dark', class: className = '' } = Astro.props;
+
+const textClass = tone === 'dark' ? 'text-white/50' : 'text-text-muted';
+const linkClass = tone === 'dark'
+  ? 'text-white/60 hover:text-white/90'
+  : 'text-charcoal/70 hover:text-charcoal';
+---
+
+<p class={`text-xs leading-relaxed ${textClass} ${className}`}>
+  {site.name} is a brand of <a
+    href={operator.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={`${linkClass} underline underline-offset-2 transition-colors duration-200`}
+  >{operator.name}</a>, a licensed {operator.region} travel operator.{
+    hasTico() && <span> TICO registration #{operator.tico}.</span>
+  }
+</p>

@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import CelticDivider from '../components/CelticDivider.astro';
 import CelticKnot from '../components/icons/CelticKnot.astro';
+import OperatorLine from '../components/OperatorLine.astro';
 
 ---
 
@@ -119,6 +120,9 @@ import CelticKnot from '../components/icons/CelticKnot.astro';
             >
               celticgolftours@centreholidays.com
             </a>
+
+            <!-- This page bypasses Layout.astro, so the operator line is explicit. -->
+            <OperatorLine tone="dark" class="mt-8" />
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import AmbientSoundToggle from '../components/AmbientSoundToggle.astro';
 import DigitalCaddie from '../components/DigitalCaddie.astro';
-import { site, hasAddress, formatAddressLines } from '../data/site';
+import { site, operator, hasTico, hasAddress, formatAddressLines } from '../data/site';
 
 interface Props {
   title: string;
@@ -65,6 +65,19 @@ const includeAddress = hasAddress();
       "name": site.name,
       "url": site.url,
       "description": "Luxury golf tours across Scotland and Ireland.",
+      // Centre Holidays is the licensed Ontario operator behind the brand.
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": operator.name,
+        "url": operator.url
+      },
+      ...(hasTico() ? {
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "TICO Registration",
+          "value": operator.tico
+        }
+      } : {}),
       "contactPoint": {
         "@type": "ContactPoint",
         "email": site.email,

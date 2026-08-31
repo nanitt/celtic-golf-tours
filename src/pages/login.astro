@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import OperatorLine from '../components/OperatorLine.astro';
 
 const error = Astro.url.searchParams.get('error');
 ---
@@ -53,6 +54,9 @@ const error = Astro.url.searchParams.get('error');
             Enter Site
           </button>
         </form>
+
+        <!-- This page bypasses Layout.astro, so the operator line is explicit. -->
+        <OperatorLine tone="light" class="mt-8 text-center" />
       </div>
     </div>
   </body>

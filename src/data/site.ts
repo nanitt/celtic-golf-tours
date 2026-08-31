@@ -21,6 +21,38 @@ export const site = {
 };
 
 /**
+ * The licensed travel operator behind the brand.
+ *
+ * "Celtic Golf Tours" is the marketing name; "Centre Holidays" is the name
+ * registered to sell travel in Ontario. Terry's requirement is that the
+ * operator name appears on every page — it accompanies the brand, it never
+ * replaces it.
+ *
+ * The TICO registration number is gated the same way the stats are: an
+ * invented registration number is worse than none, so nothing renders until
+ * PUBLIC_TICO_REGISTRATION holds the real one.
+ */
+export const operator = {
+  name: 'Centre Holidays',
+  url: 'https://www.centreholidays.com',
+  region: 'Ontario',
+  tico: import.meta.env.PUBLIC_TICO_REGISTRATION || ''
+};
+
+export const hasTico = () => Boolean(operator.tico);
+
+/**
+ * Whether the site may claim it can secure tee times at a named course.
+ *
+ * Terry named the courses he wants featured but has not confirmed access to
+ * them. Course names are safe to print as regional character; "we can get you
+ * on it" is a promise, and promises wait for confirmation. Same contract as
+ * PUBLIC_STATS_VERIFIED — see tasks/content-needed.md §3.
+ */
+export const courseAccessVerified =
+  import.meta.env.PUBLIC_COURSE_ACCESS_VERIFIED === 'true';
+
+/**
  * Headline figures shown on the home and about pages.
  *
  * Every one of these is a public claim about the business, so none of them
