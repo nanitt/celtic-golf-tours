@@ -54,7 +54,9 @@ export async function isValidPreviewSession(
   return crypto.subtle.verify(
     'HMAC',
     await signingKey(password),
-    signatureBytes,
+    // TS types BufferSource as ArrayBuffer-backed; a Uint8Array from a
+    // possibly-shared buffer does not narrow. The bytes are ours and plain.
+    signatureBytes as unknown as BufferSource,
     encoder.encode(expiresAtText),
   );
 }

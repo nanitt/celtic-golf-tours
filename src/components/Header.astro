@@ -1,5 +1,5 @@
 ---
-import { activeDestinations } from '../data/destinations';
+import { activeDestinations, destinationHref } from '../data/destinations';
 import { operator } from '../data/site';
 import OperatorLine from './OperatorLine.astro';
 
@@ -73,7 +73,7 @@ const navLinks = [
             <div>
               {activeDestinations.map((dest) => (
                 <a
-                  href={dest.href}
+                  href={destinationHref(dest)}
                   class="dropdown-item block px-6 py-3 hover:bg-stone-50 transition-colors duration-150"
                 >
                   <span class="block font-heading text-lg text-charcoal hover-brass leading-tight">{dest.name}</span>

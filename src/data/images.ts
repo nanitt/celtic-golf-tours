@@ -82,27 +82,48 @@ export const images = {
   /** Social share card. 1200x630. */
   ogImage: stock('photo-1587174486073-ae5e5cff23aa',
     'Open Graph share image, exactly 1200x630. Appears in every link preview.'),
-  // --- Courses --------------------------------------------------------------
-  // One slot per course card. These are the courses the homepage names, so they
-  // are also the ones whose access Terry has to confirm — if a course comes off
-  // the site, delete its slot here too.
-  courseStAndrews: stock('photo-1687291133565-767706032bed', 'St Andrews — Old Course.'),
-  courseTurnberry: stock('photo-1642550918683-0196bda8be7f', 'Turnberry — Ailsa Course.'),
-  courseRoyalTroon: stock('photo-1655658786619-b50dafb92701', 'Royal Troon.'),
-  courseCarnoustie: stock('photo-1672871583040-42826d4e9ca4', 'Carnoustie.'),
-  courseMuirfield: stock('photo-1672871583062-7613925d0734', 'Muirfield.'),
-  courseRoyalDornoch: stock('photo-1639156353290-4dda45b9281a', 'Royal Dornoch.'),
-  courseBallybunion: stock('photo-1693113448288-015fb6eed7c9', 'Ballybunion — Old Course.'),
-  courseRoyalCountyDown: stock('photo-1593167963207-fbc91640c60f', 'Royal County Down.'),
-  courseRoyalPortrush: stock('photo-1616939472071-a69e775e4d8a', 'Royal Portrush.'),
-  courseLahinch: stock('photo-1693113448333-0123750f17f6', 'Lahinch.'),
-  courseWaterville: stock('photo-1505216128104-44f34619861f', 'Waterville.'),
-  coursePortmarnock: stock('photo-1760294752180-50102c9334ac', 'Portmarnock.'),
+  // --- Sub-regions ----------------------------------------------------------
+  // The five regions Terry named. Each gets one wide, atmospheric image — these
+  // carry the destination pages now that the copy has been cut back, so they
+  // matter more than the individual course shots below.
+  regionNorthernScotland: stock('photo-1535131749006-b7f58c99034b',
+    'Northern Scotland. Dunes north of Inverness — wide, empty, weather in the sky.'),
+  regionEastLothian: stock('photo-1672871583062-7613925d0734',
+    'East Lothian. The Firth of Forth coastline, links running to the shore.'),
+  regionNorthernIreland: stock('photo-1616939472071-a69e775e4d8a',
+    'Northern Ireland. The Antrim or Down coast — cliffs and dunes.'),
+  regionNorthwestIreland: stock('photo-1693113448333-0123750f17f6',
+    'Northwest Ireland. Sligo/Mayo dunes, Atlantic light.'),
+  regionDublin: stock('photo-1760294752180-50102c9334ac',
+    'Dublin. Links on the peninsula north of the city.'),
 
-  // --- Ways to travel cards -------------------------------------------------
-  wayCustomTours: stock('photo-1685880841774-d3cd18c3207a', 'Custom Tours card.'),
-  waySmallGroup: stock('photo-1694636507260-8b2428e3b738', 'Small Group Tours card.'),
-  wayCorporate: stock('photo-1635328800844-0e68e80ab258', 'Corporate Events card.'),
+  // --- Courses --------------------------------------------------------------
+  // One slot per course named on the site. Course names are printed as regional
+  // character, never as an access promise — see courseAccessVerified in
+  // src/data/site.ts. If a course comes off the site, delete its slot here too.
+  courseRoyalDornoch: stock('photo-1639156353290-4dda45b9281a', 'Royal Dornoch.'),
+  courseCrudenBay: stock('photo-1642550918683-0196bda8be7f', 'Cruden Bay.'),
+  courseMachrihanishDunes: stock('photo-1655658786619-b50dafb92701', 'Machrihanish Dunes.'),
+  courseMuirfield: stock('photo-1672871583062-7613925d0734', 'Muirfield.'),
+  courseNorthBerwick: stock('photo-1672871583040-42826d4e9ca4', 'North Berwick — the West Links.'),
+  courseGullane: stock('photo-1687291133565-767706032bed', 'Gullane.'),
+  courseRoyalPortrush: stock('photo-1616939472071-a69e775e4d8a', 'Royal Portrush.'),
+  courseRoyalCountyDown: stock('photo-1593167963207-fbc91640c60f', 'Royal County Down.'),
+  coursePortstewart: stock('photo-1505216128104-44f34619861f', 'Portstewart — the Strand.'),
+  courseCountySligo: stock('photo-1693113448333-0123750f17f6', 'County Sligo — Rosses Point.'),
+  courseEnniscrone: stock('photo-1594750197419-829e3bc11d1f', 'Enniscrone.'),
+  courseCarne: stock('photo-1600011689032-8b628b8a8747', 'Carne — Belmullet.'),
+  coursePortmarnock: stock('photo-1760294752180-50102c9334ac', 'Portmarnock.'),
+  courseTheIsland: stock('photo-1693113448288-015fb6eed7c9', 'The Island.'),
+  courseRoyalDublin: stock('photo-1683169285928-eb93b0169793', 'Royal Dublin — Bull Island.'),
+
+  // --- Trip types -----------------------------------------------------------
+  tripBuddy: stock('photo-1694636507260-8b2428e3b738',
+    'Buddy Trips. A group of friends on course — candid, not posed.'),
+  tripConcierge: stock('photo-1685880841774-d3cd18c3207a',
+    'Concierge Trips. Something that reads as effortless: a car waiting, a clubhouse, a first tee.'),
+  tripHighlands2028: stock('photo-1535131749006-b7f58c99034b',
+    'Featured 2028 Highlands trip. The single image selling the flagship departure.'),
   // --- Heritage wall (About page) -------------------------------------------
   heritageOldCourseDawn: stock('photo-1687291133565-767706032bed', 'Heritage wall: "The Old Course at Dawn".'),
   heritageWalkingLinks: stock('photo-1693113448288-015fb6eed7c9', 'Heritage wall: "Walking the Links".'),

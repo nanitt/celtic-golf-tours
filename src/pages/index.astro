@@ -4,8 +4,8 @@ import Layout from '../layouts/Layout.astro';
 import CinematicHero from '../components/CinematicHero.astro';
 import HostedExperienceCard from '../components/HostedExperienceCard.astro';
 import { getFeaturedExperiences } from '../data/sanity-experiences';
-import { activeDestinations, unsplashUrl } from '../data/destinations';
-import { stats, showStat, hasStats } from '../data/site';
+import { activeDestinations, allSubRegions, destinationHref } from '../data/destinations';
+import { stats, showStat, hasStats, operator } from '../data/site';
 
 // Public claims about the business — nothing renders until Terry signs the numbers off.
 const inlineStats = [
@@ -23,7 +23,8 @@ const statsBar = [
 
 const destinations = activeDestinations.map(d => ({
   ...d,
-  image: unsplashUrl(d.photoId, 2000, 85),
+  href: destinationHref(d),
+  image: imageUrl(images[d.image], 2000, 85),
 }));
 const isDestinationPair = destinations.length === 2;
 const destinationGridClass = isDestinationPair
@@ -33,6 +34,11 @@ const destinationCardClass = isDestinationPair
   ? 'group relative aspect-[3/4] lg:aspect-[16/9] overflow-hidden card-lift'
   : 'group relative aspect-[3/4] overflow-hidden card-lift';
 
+// Split the five regions across two display lines, longest line first.
+const regionNames = allSubRegions.map(s => s.name);
+const regionBandTop = regionNames.slice(0, 3);
+const regionBandBottom = regionNames.slice(3);
+
 const featuredExperiences = await getFeaturedExperiences(3);
 ---
 
@@ -41,25 +47,31 @@ const featuredExperiences = await getFeaturedExperiences(3);
   <!-- Hero -->
   <!-- TODO: Replace placeholder - Unsplash hero image with licensed CGT course/trip photography. -->
   <CinematicHero
-    title="St Andrews. Royal Portrush. Turnberry. Played the way they were meant to be."
-    subtitle="Expert-led golf tours to Scotland and Ireland — built on real relationships with the courses and the people who run them."
-    ctaText="Plan Your Trip"
+    title="The links worth crossing an ocean for. Without the part where you organise it."
+    subtitle="Guided golf trips through Scotland and Ireland, planned end to end by the people who will answer the phone when you call."
+    ctaText="Start the conversation"
     ctaLink="/contact"
     backgroundImage={imageUrl(images.homeHero, 2400, 90)}
     showScrollProgress={false}
     showTrustBar={true}
   />
 
-  <!-- Course Name Showcase -->
-  <!-- TODO: Replace placeholder - verify named-course access claim against actual CGT relationships and bookable offerings. -->
+  <!--
+    Region band.
+
+    This was eight course names under "If it matters to golfers, we know how to
+    get you on it" — an access claim CGT has not confirmed, over a course list
+    Terry has since cut. Regions are what he confirmed, so regions are what it
+    names. See src/data/destinations.ts.
+  -->
   <section class="py-20 lg:py-28 bg-celtic-dark relative overflow-hidden">
     <div class="absolute inset-0 opacity-[0.04]" style="background-image: url('/textures/topo-lines.svg'); background-size: 400px;"></div>
     <div class="content-wide px-6 lg:px-12 relative text-center" data-reveal="fade-up">
       <p class="font-heading-display text-3xl md:text-4xl lg:text-5xl text-champagne leading-relaxed" style="font-weight: 300; letter-spacing: 0.01em;">
-        St&nbsp;Andrews&ensp;&middot;&ensp;Royal&nbsp;Portrush&ensp;&middot;&ensp;Turnberry&ensp;&middot;&ensp;Muirfield
+        {regionBandTop.join(' · ')}
       </p>
       <p class="font-heading-display text-3xl md:text-4xl lg:text-5xl leading-relaxed mt-1" style="font-weight: 300; letter-spacing: 0.01em; color: rgba(245,245,241,0.5);">
-        Lahinch&ensp;&middot;&ensp;Royal&nbsp;Dornoch&ensp;&middot;&ensp;Ballybunion&ensp;&middot;&ensp;Carnoustie
+        {regionBandBottom.join(' · ')}
       </p>
       <div class="flex items-center justify-center gap-4 mt-10 mb-6">
         <div class="w-16 h-px bg-brass/30"></div>
@@ -67,7 +79,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
         <div class="w-16 h-px bg-brass/30"></div>
       </div>
       <p class="section-kicker-light">
-        If it matters to golfers, we know how to get you on it
+        Five coasts. Two countries. One trip you don't have to plan.
       </p>
     </div>
   </section>
@@ -97,11 +109,8 @@ const featuredExperiences = await getFeaturedExperiences(3);
 
         <!-- Right: body copy + CTA -->
         <div data-reveal="fade-up" data-reveal-delay="2">
-          <p class="text-text leading-relaxed mb-6">
-            Celtic Golf Tours is a specialist golf travel company built around the courses of the British Isles, operating with Centre Holidays and accredited by IAGTO. We plan the trips serious golfers can't easily plan themselves — the ones that require years of on-the-ground knowledge, real relationships with the clubs, and the kind of access that only comes from decades of showing up.
-          </p>
           <p class="text-text leading-relaxed mb-10">
-            When you call us, you speak to someone who has walked the 18th at St Andrews, who knows the head pro at Lahinch, and who has scouted every hotel within striking distance of Royal Portrush. No call centres, no scripts. Just people who genuinely love this game.
+            Celtic Golf Tours is the golf arm of {operator.name}, a licensed {operator.region} travel operator, and a member of IAGTO. We plan the trip, hold the tee times, book the rooms and drive the route — so the only thing left for your group to argue about is the order of play. No call centres, no scripts, no booking engine. You get a person, and you keep the same one.
           </p>
           <a href="/about" class="btn-ghost btn-md">
             Our Story
@@ -136,7 +145,7 @@ const featuredExperiences = await getFeaturedExperiences(3);
             <div class="absolute inset-0 overlay-default overlay-hover transition-premium" />
             <div class="absolute inset-0 flex flex-col justify-end p-5">
               <h3 class="font-heading text-2xl lg:text-3xl text-white">{dest.name}</h3>
-              <p class="text-white/70 text-[0.7rem] tracking-wider mt-2 leading-relaxed">{dest.courses}</p>
+              <p class="text-white/70 text-[0.7rem] tracking-wider mt-2 leading-relaxed">{dest.subRegions.map(s => s.name).join(" · ")}</p>
             </div>
           </a>
         ))}
@@ -226,13 +235,17 @@ const featuredExperiences = await getFeaturedExperiences(3);
     <div class="absolute inset-0 overlay-default overlay-hover transition-premium" />
     <div class="relative z-10 max-w-2xl mx-auto px-6 lg:px-12 text-center">
       <h2 class="font-heading-display text-4xl md:text-5xl lg:text-6xl text-white mb-6" style="font-weight: 300;">
-        Your round at St Andrews<br class="hidden md:block" /> starts with a conversation.
+        Every trip we run<br class="hidden md:block" /> started with a conversation.
       </h2>
-      <p class="text-white/75 text-lg mb-10 max-w-lg mx-auto">
-        Tell us which courses are on your list. We'll handle the rest.
+      <p class="text-white/75 text-lg mb-4 max-w-lg mx-auto">
+        Tell us who's coming and roughly when. We'll take it from there.
+      </p>
+      <!-- Terry: the planning window is the reason to call now rather than later. -->
+      <p class="text-white/55 text-sm mb-10 max-w-lg mx-auto">
+        The best weeks are held around 18 months ahead — if you're thinking about 2028, this is the moment.
       </p>
       <a href="/contact" class="btn-primary btn-lg btn-primary-inverted">
-        Start Planning
+        Start the conversation
       </a>
     </div>
   </section>

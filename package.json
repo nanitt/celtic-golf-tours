@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check": "tsc --noEmit",
     "preview": "astro preview",
     "astro": "astro",
     "seed": "node scripts/seed-sanity.mjs",

@@ -188,7 +188,8 @@ export function initSimpleHorizontalScroll(containerSelector: string): () => voi
   // Enable CSS scroll snap
   container.style.scrollSnapType = 'x mandatory';
   container.style.overflowX = 'auto';
-  container.style.webkitOverflowScrolling = 'touch';
+  // Non-standard iOS property, absent from CSSStyleDeclaration's typings.
+  container.style.setProperty('-webkit-overflow-scrolling', 'touch');
 
   // Hide scrollbar but keep functionality
   container.style.scrollbarWidth = 'none';

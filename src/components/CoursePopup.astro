@@ -22,7 +22,7 @@ const { course, class: className = '' } = Astro.props;
     <div class="polaroid-image">
       <Image
         src={course.signatureHoleImage}
-        alt={`${course.name} - ${course.signatureHole}`}
+        alt={course.signatureHole ? `${course.name} — ${course.signatureHole}` : course.name}
         width={400}
         height={320}
         format="webp"
@@ -37,7 +37,10 @@ const { course, class: className = '' } = Astro.props;
     <!-- Caption area -->
     <div class="polaroid-caption">
       <h4 class="course-name">{course.name}</h4>
-      <p class="signature-hole">{course.signatureHole}</p>
+      {/* Optional: signature holes are factual claims, left out where unconfirmed. */}
+      {course.signatureHole
+        ? <p class="signature-hole">{course.signatureHole}</p>
+        : <p class="signature-hole">{course.location}</p>}
       {course.established && (
         <p class="established">Est. {course.established}</p>
       )}

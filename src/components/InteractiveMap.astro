@@ -365,9 +365,10 @@ const regionCourses = activeMapRegions.map(region => ({
     if (!container) return;
 
     // Regions we actually sell. The SVG ships paths for all four home nations,
-    // but Wales and England are hidden in map-regions.ts and their destination
-    // pages 301-redirect — so hovering them used to look interactive and then
-    // do nothing, and tapping them on mobile navigated to a redirect loop.
+    // but map-regions.ts now defines only Scotland and Ireland, and the England
+    // and Wales destination pages 301-redirect — so hovering them used to look
+    // interactive and then do nothing, and tapping them on mobile navigated to
+    // a redirect loop.
     const activeRegionIds = (container.getAttribute('data-active-regions') || '')
       .split(',')
       .filter(Boolean);

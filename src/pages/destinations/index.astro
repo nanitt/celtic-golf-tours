@@ -5,11 +5,12 @@ import Hero from '../../components/Hero.astro';
 import InteractiveMap from '../../components/InteractiveMap.astro';
 import TexturedSection from '../../components/TexturedSection.astro';
 import CelticDivider from '../../components/CelticDivider.astro';
-import { activeDestinations, unsplashUrl } from '../../data/destinations';
+import { activeDestinations, destinationHref } from '../../data/destinations';
 
 const destinations = activeDestinations.map(d => ({
   ...d,
-  image: unsplashUrl(d.photoId, 800),
+  href: destinationHref(d),
+  imageSrc: imageUrl(images[d.image], 1200, 80),
 }));
 ---
 
@@ -37,65 +38,68 @@ const destinations = activeDestinations.map(d => ({
   </TexturedSection>
 
   <!-- Destinations Grid -->
-  <!-- TODO: Replace placeholder - grid imagery comes from Unsplash photo IDs in src/data/destinations.ts and needs real assets. -->
+  <!-- TODO: Replace placeholder - grid imagery is stock; slots are scotlandHero / irelandHero in src/data/images.ts. -->
   <section class="section-padding bg-white">
     <div class="content-wide px-6 lg:px-12">
-      <div class="text-center mb-12">
-        <h2 class="font-heading text-2xl mb-4">All Destinations</h2>
-      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
         {destinations.map((dest) => (
           <a href={dest.href} class="group block">
             <div class="relative aspect-[16/10] overflow-hidden mb-6">
               <div
                 class="absolute inset-0 bg-cover bg-center scale-on-hover"
-                style={`background-image: url('${dest.image}')`}
+                style={`background-image: url('${dest.imageSrc}')`}
               >
               </div>
               <div class="absolute inset-0 overlay-default overlay-hover transition-premium"></div>
-              <div class="absolute bottom-6 left-6">
-                <span class="inline-block bg-white/90 text-charcoal px-4 py-2 text-sm font-medium tracking-wide">
-                  Explore
-                </span>
-              </div>
             </div>
             <h2 class="font-heading text-2xl lg:text-3xl text-charcoal mb-2">{dest.name}</h2>
             <p class="text-brass text-sm font-medium mb-3">{dest.tagline}</p>
-            <p class="text-text leading-relaxed">{dest.description}</p>
+            <p class="text-text leading-relaxed mb-4">{dest.standfirst}</p>
+            <!--
+              Region names, not course names. Where CGT operates is confirmed;
+              which courses it can secure is not. See src/data/destinations.ts.
+            -->
+            <p class="text-text-muted text-xs tracking-[0.15em] uppercase">
+              {dest.subRegions.map(s => s.name).join(' · ')}
+            </p>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Why Choose Us Section -->
-  <!-- TODO: Replace placeholder - access, local knowledge, and logistics claims need verified CGT service proof. -->
+  <!--
+    Why Travel With Us.
+
+    This section used to claim "guaranteed tee times at even the most exclusive
+    venues" and "we've played every course we recommend" — both unverified, and
+    both the class of claim tasks/codex-handoff.md rules out. Replaced with
+    three things that are true today: where we go, how we sell, and when you
+    need to call.
+  -->
   <section class="section-padding bg-stone">
     <div class="content-narrow px-6 lg:px-12">
       <div class="text-center mb-16">
         <h2 class="font-heading text-section mb-4" style="font-size: clamp(2rem, 4vw, var(--text-section));">Why Travel With Us</h2>
-        <p class="text-text max-w-xl mx-auto">
-          Our deep connections and local expertise ensure an exceptional experience
-        </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
         <div class="text-center">
-          <h3 class="font-heading text-xl mb-4">Priority Access</h3>
+          <h3 class="font-heading text-xl mb-4">Regions, Not Checklists</h3>
           <p class="text-text leading-relaxed">
-            Our relationships with courses mean guaranteed tee times at even the most exclusive venues.
+            We build trips around the coasts where the golf is worth the airfare — not the handful of names everyone else quotes on.
           </p>
         </div>
         <div class="text-center">
-          <h3 class="font-heading text-xl mb-4">Local Knowledge</h3>
+          <h3 class="font-heading text-xl mb-4">A Conversation, Not a Cart</h3>
           <p class="text-text leading-relaxed">
-            We've played every course we recommend and know the hidden gems off the beaten path.
+            There is no booking engine here. You tell us what you want out of the week, and we build it around that.
           </p>
         </div>
         <div class="text-center">
-          <h3 class="font-heading text-xl mb-4">Seamless Logistics</h3>
+          <h3 class="font-heading text-xl mb-4">Eighteen Months Ahead</h3>
           <p class="text-text leading-relaxed">
-            From airport pickup to farewell dinner, every detail is handled with precision.
+            The best tee times are spoken for a year and a half out. Starting early is the whole advantage — so start with a call.
           </p>
         </div>
       </div>
