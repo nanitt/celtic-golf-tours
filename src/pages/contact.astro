@@ -3,6 +3,7 @@ import { images, imageUrl } from '../data/images';
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import { site, hasAddress, formatAddressLines } from '../data/site';
+import { PLANNING_NOTE } from '../data/trip-types';
 
 const addressLines = formatAddressLines();
 
@@ -56,6 +57,25 @@ const showAddress = hasAddress();
           )}
               <input type="hidden" name="bot-field" />
 
+            <!--
+              0. What kind of enquiry. Drives which inbox this lands in —
+              booking questions to Celtic's booking contact, everything else to
+              Terry. The routing itself happens server-side in api/contact.ts.
+            -->
+            <div>
+              <label for="enquiryType" class="block text-sm font-medium text-charcoal mb-3">
+                What can we help with?
+              </label>
+              <select
+                id="enquiryType"
+                name="enquiryType"
+                class="w-full px-5 py-4 input-premium select-premium text-charcoal appearance-none"
+              >
+                <option value="booking">Planning or booking a trip</option>
+                <option value="general">Something else</option>
+              </select>
+            </div>
+
             <!-- 1. Dream trip (story-first) -->
             <div>
               <label for="message" class="block text-sm font-medium text-charcoal mb-3">
@@ -88,6 +108,21 @@ const showAddress = hasAddress();
                   <option value="ireland">Ireland</option>
                   <option value="multiple">Both Scotland & Ireland</option>
                   <option value="unsure">Not Sure Yet</option>
+                </select>
+              </div>
+              <div>
+                <label for="tripType" class="block text-sm font-medium text-charcoal mb-3">
+                  Which sounds more like you?
+                </label>
+                <select
+                  id="tripType"
+                  name="tripType"
+                  class="w-full px-5 py-4 input-premium select-premium text-charcoal appearance-none"
+                >
+                  <option value="">Select a trip type</option>
+                  <option value="buddy">A Buddy Trip — friends travelling together</option>
+                  <option value="concierge">A Concierge Trip — you plan nothing</option>
+                  <option value="unsure">Not sure yet</option>
                 </select>
               </div>
               <div>
@@ -246,6 +281,16 @@ const showAddress = hasAddress();
                   </address>
                 </div>
               )}
+
+              <!--
+                Planning window. This is read at the moment of intent, which is
+                why it sits above response time: it reframes "that's years away"
+                as "that's why I'm calling now".
+              -->
+              <div class="pt-4 border-t border-brass/30">
+                <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Planning Window</p>
+                <p class="text-text leading-relaxed">{PLANNING_NOTE}</p>
+              </div>
 
               <div class="pt-4 border-t border-brass/30">
                 <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Response Time</p>
