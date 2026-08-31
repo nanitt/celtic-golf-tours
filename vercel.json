@@ -1,6 +1,15 @@
 {
   "headers": [
     {
+      "source": "/maps/british-isles.svg",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    },
+    {
       "source": "/((?!studio).*)",
       "headers": [
         {
@@ -51,15 +60,6 @@
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' blob: data: https:; connect-src 'self' https://*.sanity.io https://*.apicdn.sanity.io wss://*.api.sanity.io; frame-src 'self' blob:; object-src 'none'"
-        }
-      ]
-    },
-    {
-      "source": "/maps/british-isles.svg",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
         }
       ]
     }
