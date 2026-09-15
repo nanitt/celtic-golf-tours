@@ -21,7 +21,7 @@ export interface HostedExperience {
   status: 'open' | 'limited' | 'sold_out';
   price?: string;
   spotsRemaining?: number;
-  /** Link to a downloadable trip poster/itinerary document, when one exists. */
+  /** The trip's poster artwork, shown in full on the detail page, when one exists. */
   poster?: string;
   /**
    * A trip we are promoting before the details exist. Teasers link to /contact
@@ -87,7 +87,7 @@ export const hostedExperiences: HostedExperience[] = [
     image: imageUrl(images.tripWestIreland2027, 1200, 80),
     status: 'open',
     price: 'CDN $6,495 per person',
-    poster: '/posters/west-ireland-2027.pptx',
+    poster: imageUrl(images.tripWestIreland2027Poster),
   },
 ];
 

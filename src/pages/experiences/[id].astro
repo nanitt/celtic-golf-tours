@@ -3,7 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 import HostedExperienceCard from '../../components/HostedExperienceCard.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
-import { site } from '../../data/site';
 import { getExperienceBySlug, getAllExperiences } from '../../data/sanity-experiences';
 
 const { id } = Astro.params;
@@ -63,21 +62,13 @@ const statusClass = {
           {experience.poster && (
             <div class="mb-12">
               <h3 class="font-heading text-2xl mb-6">Trip Poster</h3>
-              <div class="border border-gray-200 rounded-sm overflow-hidden bg-stone">
-                <iframe
-                  src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(new URL(experience.poster, site.url).toString())}`}
-                  class="w-full aspect-[4/3] lg:aspect-[16/10]"
-                  loading="lazy"
-                  title={`${experience.name} trip poster`}
-                ></iframe>
-              </div>
-              <a
-                href={experience.poster}
-                download
-                class="btn-secondary btn-md mt-4 inline-block"
-              >
-                Download the Poster
-              </a>
+              <img
+                src={experience.poster}
+                alt={`${experience.name} trip poster`}
+                class="w-full max-w-2xl border border-gray-200 rounded-sm"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           )}
 

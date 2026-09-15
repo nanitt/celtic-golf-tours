@@ -143,6 +143,11 @@ export const images = {
     needs: 'West Ireland 2027 trip. Supplied by the client with the approved trip poster.',
     placeholder: false,
   },
+  tripWestIreland2027Poster: {
+    src: '/images/west-ireland-2027-poster.jpg',
+    needs: 'The client-approved West Ireland 2027 poster, rendered from the supplied PowerPoint.',
+    placeholder: false,
+  },
   // --- Heritage wall (About page) -------------------------------------------
   heritageOldCourseDawn: stock(scottishLinks, 'Heritage wall: "First Light on the Firth" — Northern Scotland at dawn.'),
   heritageWalkingLinks: stock(northernIreland, 'Heritage wall: "Walking the Links" — Northern Ireland coast.'),
