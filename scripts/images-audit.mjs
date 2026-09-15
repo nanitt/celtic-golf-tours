@@ -1,5 +1,6 @@
 /**
- * Lists every image slot still using stock photography.
+ * Lists every image slot still using stock photography, and flags any two
+ * full-bleed hero or CTA slots that have ended up sharing one photograph.
  * Run: npm run images:audit
  */
 import { readFileSync } from 'fs';
@@ -33,4 +34,37 @@ if (slots.length) {
   console.log(`  and change placeholder: true -> false in src/data/images.ts\n`);
 } else {
   console.log(`  🎉 No stock imagery left.\n`);
+}
+
+/*
+ * Heroes and CTA bands render full-bleed, so a photo reused across two of them
+ * is obvious to a visitor in a way a repeated course thumbnail is not. These
+ * slots are expected to stay one-photo-each; the course and region slots below
+ * them are still deliberately shared while the real photography is outstanding.
+ */
+const heroSlots = [
+  'homeHero', 'homeCta', 'aboutHero', 'experiencesHero', 'destinationsHero',
+  'destinationsCta', 'scotlandHero', 'scotlandCta', 'irelandHero', 'irelandCta',
+  'contactHero', 'thankYouHero', 'testimonialsHero', 'notFoundHero', 'heroFallback',
+];
+
+const byPhoto = new Map();
+for (const key of heroSlots) {
+  const slot = slots.find(s => s.key === key);
+  if (!slot) continue;
+  if (!byPhoto.has(slot.photo)) byPhoto.set(slot.photo, []);
+  byPhoto.get(slot.photo).push(key);
+}
+
+const collisions = [...byPhoto].filter(([, keys]) => keys.length > 1);
+
+if (collisions.length) {
+  console.log(`  ⚠ ${collisions.length} hero/CTA photo${collisions.length === 1 ? '' : 's'} used more than once:\n`);
+  for (const [photo, keys] of collisions) {
+    console.log(`  ${photo}`);
+    console.log(`    ${keys.join(', ')}`);
+  }
+  console.log(`\n  Give each of these its own image in src/data/images.ts.\n`);
+} else {
+  console.log(`  ✓ All ${heroSlots.length} hero/CTA slots use a distinct photograph.\n`);
 }

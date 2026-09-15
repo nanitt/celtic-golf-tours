@@ -44,6 +44,19 @@ const irishDonegal = 'photo-1586051972887-be25a12a8177';
 const northernIreland = 'photo-1667018580007-bf2ae2e0692a';
 const irishKildare = 'photo-1731957235491-c190bbf9fc8d';
 
+// Added to break up hero reuse: every full-bleed hero and CTA band now gets its
+// own photograph. Before this, nine photos covered fifteen hero slots, so
+// /experiences and /contact opened on the identical image, and three CTA bands
+// shared one more. Same rule as above — regional, never a named-course claim.
+const scottishLinksFlag = 'photo-1672871583062-7613925d0734';
+const scottishHolyrood = 'photo-1643826492883-843da11e544b';
+const scottishSeaCliff = 'photo-1697028387347-c5279db4df7a';
+const scottishCaddie = 'photo-1697846461121-201fde5a4fad';
+const irishMoher = 'photo-1755169725421-87af9143e0db';
+const irishDingle = 'photo-1633294070758-68ab308898ca';
+const irishAntrim = 'photo-1646225717772-0d853e1a3220';
+const irishDuneGrass = 'photo-1616934039524-f00338045bcf';
+
 export const images = {
   // --- Home -----------------------------------------------------------------
   homeHero: stock('photo-1672871583040-42826d4e9ca4',
@@ -60,27 +73,27 @@ export const images = {
     'Operator section on /about. Approved Centre Holidays imagery, or the CGT team.'),
 
   // --- Experiences ----------------------------------------------------------
-  experiencesHero: stock(irishLahinchGolfer,
+  experiencesHero: stock(irishDuneGrass,
     'Experiences hero. A hosted group on course.'),
 
   // --- Destinations ---------------------------------------------------------
   destinationsHero: stock(scottishLinks,
     'Destinations hero. Wide landscape spanning Scotland/Ireland.'),
-  destinationsCta: stock(irishDonegal,
+  destinationsCta: stock(irishDingle,
     'Destinations CTA background.'),
 
-  scotlandHero: stock(scottishLinks,
+  scotlandHero: stock(scottishLinksFlag,
     'Scotland hero. A recognisable Scottish links.'),
-  scotlandCta: stock(scottishFife,
+  scotlandCta: stock(scottishHolyrood,
     'Scotland CTA background.'),
 
-  irelandHero: stock(irishLahinchLandscape,
+  irelandHero: stock(irishMoher,
     'Ireland hero. A recognisable Irish links.'),
-  irelandCta: stock(irishDonegal,
+  irelandCta: stock(irishAntrim,
     'Ireland CTA background.'),
 
   // --- Contact / utility ----------------------------------------------------
-  contactHero: stock(irishLahinchGolfer,
+  contactHero: stock(scottishCaddie,
     'Contact hero. Something warm and human — a group, a clubhouse.'),
   thankYouHero: stock(irishLahinchLandscape,
     'Thank-you page hero.'),
@@ -90,7 +103,7 @@ export const images = {
     '404 background. Low priority.'),
 
   /** Default background for the shared <Hero> component. */
-  heroFallback: stock(scottishArran,
+  heroFallback: stock(scottishSeaCliff,
     'Fallback hero used when a page supplies no image of its own.'),
 
   /** Social share card. 1200x630. */
