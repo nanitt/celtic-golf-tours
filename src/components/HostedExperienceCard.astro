@@ -4,9 +4,17 @@ import type { HostedExperience } from '../data/hosted-experiences';
 interface Props {
   experience: HostedExperience;
   featured?: boolean;
+  /**
+   * Spotlight mode, for the single trip promoted above the departures grid.
+   * The split card is otherwise one big link, which leaves no room for a real
+   * call to action — an <a> cannot legally contain another <a>. Spotlight drops
+   * the wrapping link so the panel can carry an explicit button, and stops
+   * trimming the highlight list, which costs West Ireland its on-tour host.
+   */
+  spotlight?: boolean;
 }
 
-const { experience, featured = false } = Astro.props;
+const { experience, featured = false, spotlight = false } = Astro.props;
 
 const statusText: Record<string, string> = {
   open: 'Spots Available',
@@ -18,13 +26,21 @@ const isSoldOut = experience.status === 'sold_out';
 // Teasers have no itinerary to show yet, so they funnel to a conversation
 // rather than a detail page that would render mostly empty.
 const linkHref = isSoldOut || experience.teaser ? '/contact' : `/experiences/${experience.id}`;
+
+// Spotlight keeps the same geometry but is not itself a link; see Props above.
+const SplitWrapper = spotlight ? 'div' : 'a';
+const splitWrapperProps = spotlight
+  ? { class: 'block lg:flex' }
+  : { href: linkHref, class: 'block lg:flex' };
+
+const shownHighlights = spotlight ? experience.highlights : experience.highlights.slice(0, 4);
 ---
 
 {featured ? (
   <>
   {/* Featured Card: Split layout */}
   <article class="group relative overflow-hidden">
-    <a href={linkHref} class="block lg:flex">
+    <SplitWrapper {...splitWrapperProps}>
       {/* Image (60% on desktop) */}
       <div class="relative overflow-hidden aspect-[3/4] lg:aspect-auto lg:w-[60%] lg:min-h-[500px]">
         <div
@@ -66,7 +82,7 @@ const linkHref = isSoldOut || experience.teaser ? '/contact' : `/experiences/${e
 
           {/* Highlights with brass diamonds */}
           <ul class="mb-8 space-y-3">
-            {experience.highlights.slice(0, 4).map((highlight) => (
+            {shownHighlights.map((highlight) => (
               <li class="flex items-center text-sm text-text">
                 <span class="w-1.5 h-1.5 bg-brass rotate-45 mr-3 flex-shrink-0"></span>
                 {highlight}
@@ -84,7 +100,9 @@ const linkHref = isSoldOut || experience.teaser ? '/contact' : `/experiences/${e
                 </div>
               )}
               {experience.price && (
-                <p class="text-charcoal/60 text-sm">{experience.price}</p>
+                <p class={spotlight
+                  ? 'font-heading text-charcoal text-lg lg:text-xl'
+                  : 'text-charcoal/60 text-sm'}>{experience.price}</p>
               )}
             </div>
           )}
@@ -98,9 +116,23 @@ const linkHref = isSoldOut || experience.teaser ? '/contact' : `/experiences/${e
               <span class="text-charcoal/40 text-xs font-medium tracking-widest uppercase">{statusText[experience.status]}</span>
             )}
           </div>
+
+          {/*
+            Spotlight's call to action. Wording stays descriptive: there is no
+            booking system behind this, so it must not imply a place can be held.
+            See the unverifiable-claims rule in tasks/codex-handoff.md.
+          */}
+          {spotlight && (
+            <div class="mt-8">
+              <a href={linkHref} class="btn-primary btn-md">
+                View the full itinerary
+                <span class="arrow ml-2">→</span>
+              </a>
+            </div>
+          )}
         </div>
       </div>
-    </a>
+    </SplitWrapper>
   </article>
   </>
 ) : (

@@ -3,7 +3,7 @@ import { images, imageUrl } from '../data/images';
 import Layout from '../layouts/Layout.astro';
 import CinematicHero from '../components/CinematicHero.astro';
 import HostedExperienceCard from '../components/HostedExperienceCard.astro';
-import { getFeaturedExperiences } from '../data/sanity-experiences';
+import { getFeaturedExperiences, getSpotlightExperience } from '../data/sanity-experiences';
 import { activeDestinations, allSubRegions, destinationHref } from '../data/destinations';
 import { stats, showStat, hasStats, operator } from '../data/site';
 
@@ -39,7 +39,12 @@ const regionNames = allSubRegions.map(s => s.name);
 const regionBandTop = regionNames.slice(0, 3);
 const regionBandBottom = regionNames.slice(3);
 
-const featuredExperiences = await getFeaturedExperiences(3);
+const spotlight = await getSpotlightExperience();
+// The spotlight trip gets its own band above the grid, so it must not also
+// appear inside it. Ask for one extra to backfill the slot it vacates.
+const featuredExperiences = (await getFeaturedExperiences(4))
+  .filter(exp => exp.id !== spotlight?.id)
+  .slice(0, 3);
 ---
 
 <Layout
@@ -178,6 +183,31 @@ const featuredExperiences = await getFeaturedExperiences(3);
       </div>
     </div>
   </section>
+  )}
+
+  <!--
+    Featured departure.
+
+    The next bookable trip, promoted above the departures grid. It used to sit
+    inside that grid in array order, which put the Highlands teaser — no dates,
+    no price, nothing to book — ahead of the one departure a visitor can act on.
+    getSpotlightExperience() picks by date and skips teasers, so this band
+    follows the calendar rather than a hand-set order.
+  -->
+  {spotlight && (
+    <section class="section-padding bg-cream">
+      <div class="content-wide px-6 lg:px-12">
+        <div class="mb-12" data-reveal="fade-up">
+          <p class="section-kicker mb-4">Featured Departure</p>
+          <h2 class="font-heading text-charcoal" style="font-size: clamp(2rem, 4vw, var(--text-section));">
+            {spotlight.name}, {spotlight.dates.split(' ').slice(-1)[0]}
+          </h2>
+        </div>
+        <div data-reveal="fade-up" data-reveal-delay="1">
+          <HostedExperienceCard experience={spotlight} featured={true} spotlight={true} />
+        </div>
+      </div>
+    </section>
   )}
 
   <!-- Experiences -->

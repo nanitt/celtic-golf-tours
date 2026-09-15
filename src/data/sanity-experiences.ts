@@ -7,6 +7,7 @@ import {
   getUpcomingExperiences as fallbackGetUpcoming,
   getFeaturedExperiences as fallbackGetFeatured,
   getExperiencesByDestination as fallbackGetByDest,
+  getSpotlightExperience as fallbackGetSpotlight,
   isUpcoming,
 } from './hosted-experiences';
 
@@ -110,6 +111,25 @@ export async function getFeaturedExperiences(count: number = 3): Promise<HostedE
   );
   // Slice after fetching: GROQ slice bounds must be literals, so [0...$count] errors.
   return docs.map(mapToExperience).filter(exp => isUpcoming(exp)).slice(0, count);
+}
+
+/**
+ * Mirrors getSpotlightExperience() in the fallback module — keep the two in
+ * step, per the symmetry rule in tasks/codex-handoff.md §4.
+ *
+ * Sorted by startDate here too, not by sortOrder: the spotlight is about which
+ * departure is next and bookable, which a hand-set sortOrder can silently
+ * contradict once a date passes.
+ */
+export async function getSpotlightExperience(): Promise<HostedExperience | undefined> {
+  if (!sanityClient) return fallbackGetSpotlight();
+  const docs = await sanityClient.fetch<SanityExperienceDoc[]>(
+    `*[_type == "experience" && status != "sold_out" && teaser != true]`
+  );
+  return docs
+    .map(mapToExperience)
+    .filter(exp => isUpcoming(exp))
+    .sort((a, b) => a.startDate.localeCompare(b.startDate))[0];
 }
 
 export async function getExperiencesByDestination(destination: string): Promise<HostedExperience[]> {

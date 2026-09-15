@@ -120,3 +120,19 @@ export function getFeaturedExperiences(count: number = 3): HostedExperience[] {
   // Must wrap: a bare filter(isUpcoming) passes the array index as `now`.
   return hostedExperiences.filter(exp => isUpcoming(exp)).slice(0, count);
 }
+
+/**
+ * The one departure the homepage promotes above the grid.
+ *
+ * Sorted by date rather than array order, and teasers are never eligible. Array
+ * order had the Highlands teaser — no dates, no price, nothing to book — sitting
+ * ahead of West Ireland, the only departure a visitor can actually act on.
+ *
+ * Returns undefined when nothing qualifies, so the homepage can drop the band
+ * rather than render an empty one.
+ */
+export function getSpotlightExperience(): HostedExperience | undefined {
+  return hostedExperiences
+    .filter(exp => isUpcoming(exp) && !exp.teaser && exp.status !== 'sold_out')
+    .sort((a, b) => a.startDate.localeCompare(b.startDate))[0];
+}
