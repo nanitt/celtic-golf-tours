@@ -47,11 +47,41 @@ const statusClass = {
     ctaText=""
   />
 
+  <!-- Fact Strip: only for trips with a structured course list (currently West Ireland) -->
+  {experience.courses && (
+    <div class="bg-stone py-8 lg:py-10 border-y border-brass/20">
+      <div class="content-wide px-6 lg:px-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0">
+          <div class="md:px-8">
+            <p class="text-[10px] uppercase tracking-widest text-brass-text font-bold mb-2">Dates</p>
+            <p class="text-charcoal font-medium">{experience.dates}</p>
+          </div>
+          <div class="md:px-8 md:border-l border-gray-200">
+            <p class="text-[10px] uppercase tracking-widest text-brass-text font-bold mb-2">Golf</p>
+            <p class="text-charcoal font-medium">{experience.courses.length} Rounds</p>
+          </div>
+          {experience.nights && (
+            <div class="md:px-8 md:border-l border-gray-200">
+              <p class="text-[10px] uppercase tracking-widest text-brass-text font-bold mb-2">Stay</p>
+              <p class="text-charcoal font-medium">{experience.nights} Nights</p>
+            </div>
+          )}
+          {experience.price && (
+            <div class="md:px-8 md:border-l border-gray-200">
+              <p class="text-[10px] uppercase tracking-widest text-brass-text font-bold mb-2">Value</p>
+              <p class="text-charcoal font-medium">{experience.price}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )}
+
   <section class="section-padding bg-white">
     <div class="content-wide px-6 lg:px-12">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
         <!-- Left Column: Details -->
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-2 order-2 lg:order-1">
           <p class="section-kicker mb-4">Hosted Experience</p>
           <h2 class="font-heading text-3xl lg:text-4xl mb-6">{experience.name}</h2>
           <div class="flex items-center gap-3 mb-10">
@@ -61,16 +91,45 @@ const statusClass = {
 
           <p class="text-text text-lg leading-relaxed mb-12">{experience.description}</p>
 
-          <!-- Highlights -->
-          <h3 class="font-heading text-2xl mb-6">Tour Highlights</h3>
-          <ul class="space-y-4 mb-12">
-            {experience.highlights.map((highlight) => (
-              <li class="flex items-start gap-3">
-                <span class="w-2 h-2 bg-brass rotate-45 mt-1.5 flex-shrink-0"></span>
-                <span class="text-text">{highlight}</span>
-              </li>
-            ))}
-          </ul>
+          <!-- Highlights: split courses from inclusions when structured data is available -->
+          {experience.courses ? (
+            <div class="grid md:grid-cols-2 gap-12 mb-12">
+              <div>
+                <h3 class="font-heading text-2xl mb-6">The Courses</h3>
+                <ul class="space-y-4">
+                  {experience.courses.map((course) => (
+                    <li class="flex items-center gap-3">
+                      <span class="w-1.5 h-1.5 bg-brass rotate-45 flex-shrink-0"></span>
+                      <span class="text-text">{course}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 class="font-heading text-2xl mb-6">Included in Your Trip</h3>
+                <ul class="space-y-4">
+                  {(experience.inclusions ?? []).map((item) => (
+                    <li class="flex items-center gap-3">
+                      <span class="w-1.5 h-1.5 bg-brass rotate-45 flex-shrink-0"></span>
+                      <span class="text-text">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <>
+              <h3 class="font-heading text-2xl mb-6">Tour Highlights</h3>
+              <ul class="space-y-4 mb-12">
+                {experience.highlights.map((highlight) => (
+                  <li class="flex items-start gap-3">
+                    <span class="w-2 h-2 bg-brass rotate-45 mt-1.5 flex-shrink-0"></span>
+                    <span class="text-text">{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
 
           <!-- Host Info -->
           <!-- TODO: Replace placeholder - initials-only host block needs real host identity, bio, and headshot if hosted trips are offered. -->
@@ -87,11 +146,6 @@ const statusClass = {
               </div>
             </div>
           </div>}
-          {experience.poster && (
-            <p class="text-text mb-8">
-              <a href={experience.poster} download class="underline hover:text-celtic">Download the West Ireland trip poster (PowerPoint)</a>
-            </p>
-          )}
           {experience.contactName && (
             <div class="border-t border-gray-200 pt-8">
               <h3 class="font-heading text-2xl mb-6">Trip Contact</h3>
@@ -103,7 +157,7 @@ const statusClass = {
         </div>
 
         <!-- Right Column: Booking Card -->
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-1 order-1 lg:order-2">
           <div class="glass-card card-lift p-8 lg:p-10 sticky top-32">
             <!-- Status Badge -->
             <div class="mb-6">
@@ -112,11 +166,13 @@ const statusClass = {
               </span>
             </div>
 
-            <!-- Dates -->
-            <div class="mb-6">
-              <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Dates</p>
-              <p class="text-text">{experience.dates}</p>
-            </div>
+            <!-- Dates: only shown here when not already covered by the fact strip above -->
+            {!experience.courses && (
+              <div class="mb-6">
+                <p class="text-sm font-medium text-charcoal tracking-wider uppercase mb-2">Dates</p>
+                <p class="text-text">{experience.dates}</p>
+              </div>
+            )}
 
             <!-- Price -->
             {experience.price && (
@@ -148,6 +204,19 @@ const statusClass = {
                 class="btn-secondary btn-md block w-full text-center"
               >
                 Join Waitlist
+              </a>
+            )}
+
+            {experience.poster && (
+              <a
+                href={experience.poster}
+                download
+                class="flex items-center justify-center gap-2 w-full py-4 mt-2 text-xs font-medium text-text-muted hover:text-charcoal transition-colors"
+              >
+                <svg aria-hidden="true" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M7 10l5 5 5-5M12 15V3" />
+                </svg>
+                <span>Download the Trip Poster</span>
               </a>
             )}
 

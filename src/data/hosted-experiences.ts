@@ -15,6 +15,12 @@ export interface HostedExperience {
   destination: string;
   description: string;
   highlights: string[];
+  /** Golf courses played, shown as their own list on the detail page. Falls back to `highlights` when absent. */
+  courses?: string[];
+  /** Non-golf inclusions (accommodation, transport, etc), shown separately from `courses` when both are present. */
+  inclusions?: string[];
+  /** Nights of accommodation, surfaced in the detail page's fact strip. */
+  nights?: number;
   image: string;
   status: 'open' | 'limited' | 'sold_out' | 'interest';
   poster?: string;
@@ -41,6 +47,9 @@ export const approvedExperiences: HostedExperience[] = [
       'Coach transport',
       'On-tour host',
     ],
+    courses: ['Killeen Castle', 'Lahinch', 'County Sligo', 'Enniscrone', 'Carne', 'Galway Bay'],
+    inclusions: ['7 nights accommodations', 'Daily breakfast', 'Coach transport', 'On-tour host'],
+    nights: 7,
     image: '/images/west-ireland-2027.jpg',
     poster: '/posters/west-ireland-2027.pptx',
     status: 'interest',
