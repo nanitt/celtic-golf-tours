@@ -76,10 +76,12 @@ const linkHref = isSoldOut || experience.teaser ? '/contact' : `/experiences/${e
 
           {/* Host & Price */}
           <div class="flex items-center justify-between pt-6 border-t border-charcoal/10">
-            <div>
-              <p class="text-charcoal text-sm font-medium">{experience.host.name}</p>
-              <p class="text-text-muted text-xs">{experience.host.title}</p>
-            </div>
+            {experience.host.name && (
+              <div>
+                <p class="text-charcoal text-sm font-medium">{experience.host.name}</p>
+                <p class="text-text-muted text-xs">{experience.host.title}</p>
+              </div>
+            )}
             {experience.price && (
               <p class="text-charcoal/60 text-sm">{experience.price}</p>
             )}
@@ -142,7 +144,7 @@ const linkHref = isSoldOut || experience.teaser ? '/contact' : `/experiences/${e
         </h3>
 
         {/* Host */}
-        <p class="text-white/50 text-xs mb-3">Hosted by {experience.host.name}</p>
+        {experience.host.name && <p class="text-white/50 text-xs mb-3">Hosted by {experience.host.name}</p>}
 
         {/* Price (understated) */}
         {experience.price && (

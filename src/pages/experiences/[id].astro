@@ -71,19 +71,21 @@ const statusClass = {
 
           <!-- Host Info -->
           <!-- TODO: Replace placeholder - initials-only host block needs real host identity, bio, and headshot if hosted trips are offered. -->
-          <div class="border-t border-gray-200 pt-8">
-            <h3 class="font-heading text-2xl mb-6">Your Host</h3>
-            <div class="flex items-center gap-5">
-              <div class="w-20 h-20 rounded-full bg-celtic/10 border-2 border-brass/30 flex items-center justify-center flex-shrink-0">
-                <span class="text-celtic font-semibold text-xl">{initials}</span>
-              </div>
-              <div>
-                <p class="font-heading text-xl text-charcoal">{experience.host.name}</p>
-                <p class="text-text-muted text-sm">{experience.host.title}</p>
-                <p class="text-text-muted text-xs mt-1 italic">Your personal guide throughout this experience</p>
+          {experience.host.name && (
+            <div class="border-t border-gray-200 pt-8">
+              <h3 class="font-heading text-2xl mb-6">Your Host</h3>
+              <div class="flex items-center gap-5">
+                <div class="w-20 h-20 rounded-full bg-celtic/10 border-2 border-brass/30 flex items-center justify-center flex-shrink-0">
+                  <span class="text-celtic font-semibold text-xl">{initials}</span>
+                </div>
+                <div>
+                  <p class="font-heading text-xl text-charcoal">{experience.host.name}</p>
+                  <p class="text-text-muted text-sm">{experience.host.title}</p>
+                  <p class="text-text-muted text-xs mt-1 italic">Your personal guide throughout this experience</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         <!-- Right Column: Booking Card -->
@@ -132,6 +134,16 @@ const statusClass = {
                 class="btn-secondary btn-md block w-full text-center"
               >
                 Join Waitlist
+              </a>
+            )}
+
+            {experience.poster && (
+              <a
+                href={experience.poster}
+                download
+                class="block w-full text-center text-sm text-text-muted underline hover:text-charcoal mt-4"
+              >
+                Download the trip poster
               </a>
             )}
 

@@ -21,6 +21,8 @@ export interface HostedExperience {
   status: 'open' | 'limited' | 'sold_out';
   price?: string;
   spotsRemaining?: number;
+  /** Link to a downloadable trip poster/itinerary document, when one exists. */
+  poster?: string;
   /**
    * A trip we are promoting before the details exist. Teasers link to /contact
    * rather than a detail page, because there is nothing to detail yet.
@@ -64,6 +66,28 @@ export const hostedExperiences: HostedExperience[] = [
     highlights: [],
     image: imageUrl(images.tripHighlands2028, 1200, 80),
     status: 'open',
+  },
+  {
+    id: 'west-ireland-2027',
+    name: 'West Ireland',
+    // No on-tour host named yet — Terry is the booking contact, not a confirmed guide.
+    host: { name: '', title: '', photo: '' },
+    dates: '10–17 October 2027',
+    startDate: '2027-10-10',
+    destination: 'Ireland',
+    description:
+      'A small-group hosted tour of West Ireland: six rounds of golf, seven nights of accommodation, daily breakfast, coach transport, and an on-tour host.',
+    highlights: [
+      '6 rounds of golf: Killeen Castle, Lahinch, County Sligo, Enniscrone, Carne, and Galway Bay',
+      '7 nights accommodations',
+      'Daily breakfast',
+      'Coach transport',
+      'On-tour host',
+    ],
+    image: imageUrl(images.tripWestIreland2027, 1200, 80),
+    status: 'open',
+    price: 'CDN $6,495 per person',
+    poster: '/posters/west-ireland-2027.pptx',
   },
 ];
 

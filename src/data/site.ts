@@ -3,7 +3,7 @@ import { images, imageUrl } from './images';
 export const site = {
   name: 'Celtic Golf Tours',
   url: import.meta.env.PUBLIC_SITE_URL || 'https://www.celticgolftours.com',
-  email: import.meta.env.PUBLIC_SITE_EMAIL || 'info@celticgolftours.com',
+  email: import.meta.env.PUBLIC_SITE_EMAIL || 'celticgolftours@centreholidays.com',
   // Falls back to the manifest slot so every image on the site lives in one
   // file. Swapping the real OG card is then an images.ts edit like any other.
   ogImage: import.meta.env.PUBLIC_SITE_OG_IMAGE || imageUrl(images.ogImage, 1200, 85),

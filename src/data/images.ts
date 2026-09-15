@@ -138,6 +138,11 @@ export const images = {
     'Concierge Trips. Something that reads as effortless: a car waiting, a clubhouse, a first tee.'),
   tripHighlands2028: stock(scottishLinks,
     'Featured 2028 Highlands trip. The single image selling the flagship departure.'),
+  tripWestIreland2027: {
+    src: '/images/west-ireland-2027.jpg',
+    needs: 'West Ireland 2027 trip. Supplied by the client with the approved trip poster.',
+    placeholder: false,
+  },
   // --- Heritage wall (About page) -------------------------------------------
   heritageOldCourseDawn: stock(scottishLinks, 'Heritage wall: "First Light on the Firth" — Northern Scotland at dawn.'),
   heritageWalkingLinks: stock(northernIreland, 'Heritage wall: "Walking the Links" — Northern Ireland coast.'),
