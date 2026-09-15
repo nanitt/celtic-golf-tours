@@ -62,7 +62,9 @@ and Preview.
 
 ### Site details
 
-`PUBLIC_SITE_URL`, `PUBLIC_SITE_EMAIL`, `PUBLIC_SITE_OG_IMAGE`,
+The public contact email is maintained in `src/data/site.ts`.
+
+`PUBLIC_SITE_URL`, `PUBLIC_SITE_OG_IMAGE`,
 `PUBLIC_SITE_PHONE`, `PUBLIC_SITE_ADDRESS_*`, `PUBLIC_SOCIAL_*` — all have
 fallbacks in `src/data/site.ts` and render as empty/hidden when blank.
 

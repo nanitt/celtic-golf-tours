@@ -1,7 +1,7 @@
 export const site = {
   name: 'Celtic Golf Tours',
   url: import.meta.env.PUBLIC_SITE_URL || 'https://www.celticgolftours.com',
-  email: import.meta.env.PUBLIC_SITE_EMAIL || 'info@celticgolftours.com',
+  email: 'celticgolftours@centreholidays.com',
   ogImage: import.meta.env.PUBLIC_SITE_OG_IMAGE || 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=70',
   phone: import.meta.env.PUBLIC_SITE_PHONE || '',
   address: {
