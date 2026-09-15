@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 import HostedExperienceCard from '../../components/HostedExperienceCard.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
+import { site } from '../../data/site';
 import { getExperienceBySlug, getAllExperiences } from '../../data/sanity-experiences';
 
 const { id } = Astro.params;
@@ -57,6 +58,28 @@ const statusClass = {
           </div>
 
           <p class="text-text text-lg leading-relaxed mb-12">{experience.description}</p>
+
+          <!-- Trip Poster -->
+          {experience.poster && (
+            <div class="mb-12">
+              <h3 class="font-heading text-2xl mb-6">Trip Poster</h3>
+              <div class="border border-gray-200 rounded-sm overflow-hidden bg-stone">
+                <iframe
+                  src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(new URL(experience.poster, site.url).toString())}`}
+                  class="w-full aspect-[4/3] lg:aspect-[16/10]"
+                  loading="lazy"
+                  title={`${experience.name} trip poster`}
+                ></iframe>
+              </div>
+              <a
+                href={experience.poster}
+                download
+                class="btn-secondary btn-md mt-4 inline-block"
+              >
+                Download the Poster
+              </a>
+            </div>
+          )}
 
           <!-- Highlights -->
           <h3 class="font-heading text-2xl mb-6">Tour Highlights</h3>
@@ -134,16 +157,6 @@ const statusClass = {
                 class="btn-secondary btn-md block w-full text-center"
               >
                 Join Waitlist
-              </a>
-            )}
-
-            {experience.poster && (
-              <a
-                href={experience.poster}
-                download
-                class="block w-full text-center text-sm text-text-muted underline hover:text-charcoal mt-4"
-              >
-                Download the trip poster
               </a>
             )}
 
