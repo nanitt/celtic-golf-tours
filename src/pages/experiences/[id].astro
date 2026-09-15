@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 import HostedExperienceCard from '../../components/HostedExperienceCard.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
+import { site } from '../../data/site';
 import { getExperienceBySlug, getAllExperiences } from '../../data/sanity-experiences';
 
 const { id } = Astro.params;
@@ -17,12 +18,14 @@ const otherExperiences = allExperiences.filter(exp => exp.id !== experience.id).
 const initials = experience.host.name.split(' ').map(n => n[0]).join('');
 
 const statusLabel = {
+  interest: 'Register Your Interest',
   open: 'Spots Available',
   limited: experience.spotsRemaining ? `Only ${experience.spotsRemaining} Spots Left` : 'Limited Spots',
   sold_out: 'Sold Out',
 };
 
 const statusClass = {
+  interest: 'bg-celtic text-white',
   open: 'bg-celtic text-white',
   limited: 'bg-brass text-white',
   sold_out: 'bg-gray-400 text-white',
@@ -71,7 +74,7 @@ const statusClass = {
 
           <!-- Host Info -->
           <!-- TODO: Replace placeholder - initials-only host block needs real host identity, bio, and headshot if hosted trips are offered. -->
-          <div class="border-t border-gray-200 pt-8">
+          {experience.host.name && <div class="border-t border-gray-200 pt-8">
             <h3 class="font-heading text-2xl mb-6">Your Host</h3>
             <div class="flex items-center gap-5">
               <div class="w-20 h-20 rounded-full bg-celtic/10 border-2 border-brass/30 flex items-center justify-center flex-shrink-0">
@@ -83,7 +86,20 @@ const statusClass = {
                 <p class="text-text-muted text-xs mt-1 italic">Your personal guide throughout this experience</p>
               </div>
             </div>
-          </div>
+          </div>}
+          {experience.poster && (
+            <p class="text-text mb-8">
+              <a href={experience.poster} download class="underline hover:text-celtic">Download the West Ireland trip poster (PowerPoint)</a>
+            </p>
+          )}
+          {experience.contactName && (
+            <div class="border-t border-gray-200 pt-8">
+              <h3 class="font-heading text-2xl mb-6">Trip Contact</h3>
+              <p class="text-text">{experience.contactName}</p>
+              <a href={`mailto:${site.email}`} class="text-celtic underline break-words">{site.email}</a>
+              <p class="text-text-muted text-sm mt-4">Centre Holidays · TICO #50018114</p>
+            </div>
+          )}
         </div>
 
         <!-- Right Column: Booking Card -->
@@ -121,7 +137,7 @@ const statusClass = {
             <!-- CTA -->
             {experience.status !== 'sold_out' ? (
               <a
-                href={`/contact?experience=${experience.id}`}
+                href={`/contact?${new URLSearchParams({ experience: experience.id, message: `I'm interested in ${experience.name} (${experience.dates}).` })}`}
                 class="btn-primary btn-md btn-primary-celtic block w-full text-center"
               >
                 Enquire Now

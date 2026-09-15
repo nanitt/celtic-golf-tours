@@ -2,6 +2,7 @@ import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 import type { HostedExperience } from './hosted-experiences';
 import {
+  approvedExperiences,
   hostedExperiences as fallbackExperiences,
   getExperienceById as fallbackGetById,
   getUpcomingExperiences as fallbackGetUpcoming,
@@ -79,10 +80,12 @@ export async function getAllExperiences(): Promise<HostedExperience[]> {
   const docs = await sanityClient.fetch<SanityExperienceDoc[]>(
     `*[_type == "experience"] | order(sortOrder asc)`
   );
-  return docs.map(mapToExperience).filter(exp => isUpcoming(exp));
+  return withApproved(docs.map(mapToExperience)).filter(exp => isUpcoming(exp));
 }
 
 export async function getExperienceBySlug(slug: string): Promise<HostedExperience | undefined> {
+  const approved = approvedExperiences.find(exp => exp.id === slug);
+  if (approved) return approved;
   if (!sanityClient) return fallbackGetById(slug);
   const doc = await sanityClient.fetch<SanityExperienceDoc | null>(
     `*[_type == "experience" && slug.current == $slug][0]`,
@@ -96,7 +99,7 @@ export async function getUpcomingExperiences(): Promise<HostedExperience[]> {
   const docs = await sanityClient.fetch<SanityExperienceDoc[]>(
     `*[_type == "experience" && status != "sold_out"] | order(sortOrder asc)`
   );
-  return docs.map(mapToExperience).filter(exp => isUpcoming(exp));
+  return withApproved(docs.map(mapToExperience)).filter(exp => isUpcoming(exp));
 }
 
 export async function getFeaturedExperiences(count: number = 3): Promise<HostedExperience[]> {
@@ -105,7 +108,7 @@ export async function getFeaturedExperiences(count: number = 3): Promise<HostedE
     `*[_type == "experience" && featured == true] | order(sortOrder asc)`
   );
   // Slice after fetching: GROQ slice bounds must be literals, so [0...$count] errors.
-  return docs.map(mapToExperience).filter(exp => isUpcoming(exp)).slice(0, count);
+  return withApproved(docs.map(mapToExperience)).filter(exp => isUpcoming(exp)).slice(0, count);
 }
 
 export async function getExperiencesByDestination(destination: string): Promise<HostedExperience[]> {
@@ -114,5 +117,9 @@ export async function getExperiencesByDestination(destination: string): Promise<
     `*[_type == "experience" && lower(destination) == lower($destination)]`,
     { destination }
   );
-  return docs.map(mapToExperience);
+  return withApproved(docs.map(mapToExperience)).filter(exp => exp.destination.toLowerCase() === destination.toLowerCase());
+}
+
+function withApproved(experiences: HostedExperience[]): HostedExperience[] {
+  return [...approvedExperiences, ...experiences.filter(exp => !approvedExperiences.some(approved => approved.id === exp.id))];
 }

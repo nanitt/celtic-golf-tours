@@ -16,12 +16,40 @@ export interface HostedExperience {
   description: string;
   highlights: string[];
   image: string;
-  status: 'open' | 'limited' | 'sold_out';
+  status: 'open' | 'limited' | 'sold_out' | 'interest';
+  poster?: string;
+  contactName?: string;
   price?: string;
   spotsRemaining?: number;
 }
 
+// Client-approved poster content, available with or without Sanity configured.
+export const approvedExperiences: HostedExperience[] = [
+  {
+    id: 'west-ireland-2027',
+    name: 'West Ireland',
+    host: { name: '', title: '', photo: '' },
+    contactName: 'Terry Benson',
+    dates: '10–17 October 2027',
+    startDate: '2027-10-10',
+    destination: 'Ireland',
+    description: 'A small-group hosted tour of West Ireland with six rounds of golf, seven nights of accommodation, daily breakfast, coach transport, and an on-tour host.',
+    highlights: [
+      '6 rounds of golf: Killeen Castle, Lahinch, County Sligo, Enniscrone, Carne, and Galway Bay',
+      '7 nights accommodations',
+      'Daily breakfast',
+      'Coach transport',
+      'On-tour host',
+    ],
+    image: '/images/west-ireland-2027.jpg',
+    poster: '/posters/west-ireland-2027.pptx',
+    status: 'interest',
+    price: 'CDN $6,495 per person',
+  },
+];
+
 export const hostedExperiences: HostedExperience[] = [
+  ...approvedExperiences,
   {
     id: 'st-andrews-pilgrimage-2025',
     name: 'The St Andrews Pilgrimage',

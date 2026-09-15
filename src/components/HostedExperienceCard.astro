@@ -137,7 +137,7 @@ const linkHref = isSoldOut ? '/contact' : `/experiences/${experience.id}`;
         </h3>
 
         <!-- Host -->
-        <p class="text-white/50 text-xs mb-3">Hosted by {experience.host.name}</p>
+        {experience.host.name && <p class="text-white/50 text-xs mb-3">Hosted by {experience.host.name}</p>}
 
         <!-- Price (understated) -->
         {experience.price && (
