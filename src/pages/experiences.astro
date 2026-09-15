@@ -86,8 +86,8 @@ const faqs = [
 
       {hostedExperiences.length > 0 ? (
         <div class="space-y-8">
-          {hostedExperiences.map((experience, index) => (
-            <HostedExperienceCard experience={experience} featured={index === 0} />
+          {hostedExperiences.map((experience) => (
+            <HostedExperienceCard experience={experience} featured={true} />
           ))}
         </div>
       ) : (

@@ -192,16 +192,16 @@ const featuredExperiences = await getFeaturedExperiences(3);
 
       {featuredExperiences.length > 0 ? (
         <>
-          {featuredExperiences[0] && (
-            <div class="mb-8" data-reveal="slide-left">
-              <HostedExperienceCard experience={featuredExperiences[0]} featured={true} />
-            </div>
-          )}
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
-            {featuredExperiences.slice(1).map((exp, index) => (
-              <div data-reveal="slide-right" data-reveal-delay={index + 1}>
-                <HostedExperienceCard experience={exp} />
+          {/*
+            Every departure gets the split card. Mixing the split layout with the
+            portrait one left a wide landscape card stacked above a half-width
+            portrait card — the same trip section read as two unrelated shapes.
+            The homepage caps at three departures, so stacking full-width is fine.
+          */}
+          <div class="space-y-8">
+            {featuredExperiences.map((exp, index) => (
+              <div data-reveal={index % 2 === 0 ? 'slide-left' : 'slide-right'} data-reveal-delay={index}>
+                <HostedExperienceCard experience={exp} featured={true} />
               </div>
             ))}
           </div>

@@ -74,18 +74,20 @@ const linkHref = isSoldOut || experience.teaser ? '/contact' : `/experiences/${e
             ))}
           </ul>
 
-          {/* Host & Price */}
-          <div class="flex items-center justify-between pt-6 border-t border-charcoal/10">
-            {experience.host.name && (
-              <div>
-                <p class="text-charcoal text-sm font-medium">{experience.host.name}</p>
-                <p class="text-text-muted text-xs">{experience.host.title}</p>
-              </div>
-            )}
-            {experience.price && (
-              <p class="text-charcoal/60 text-sm">{experience.price}</p>
-            )}
-          </div>
+          {/* Host & Price — the row draws a divider, so it must not render empty */}
+          {(experience.host.name || experience.price) && (
+            <div class="flex items-center justify-between pt-6 border-t border-charcoal/10">
+              {experience.host.name && (
+                <div>
+                  <p class="text-charcoal text-sm font-medium">{experience.host.name}</p>
+                  <p class="text-text-muted text-xs">{experience.host.title}</p>
+                </div>
+              )}
+              {experience.price && (
+                <p class="text-charcoal/60 text-sm">{experience.price}</p>
+              )}
+            </div>
+          )}
 
           {/* Status (desktop) */}
           <div class="hidden lg:block mt-6">
